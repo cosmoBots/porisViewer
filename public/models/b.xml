@@ -1,30 +1,30 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <poris>
-    <poris-value>
+    <value>
         <id type="integer">-1</id>
         <ident>VIRT-1</ident>
         <name>Photometry</name>
         <node-type-id type="integer">5</node-type-id>
         <project-id type="integer">13</project-id>
         <type>PORISValue</type>
-        <poris-value-formatter-id type="integer" nil="true"/>
+        <value-formatter-id type="integer" nil="true"/>
         <destinations type="array"/>
         <node-attributes type="array"/>
         <labels type="array"/>
-    </poris-value>
-    <poris-value>
+    </value>
+    <value>
         <id type="integer">-2</id>
         <ident>VIRT-2</ident>
         <name>Spectroscopy</name>
         <node-type-id type="integer">5</node-type-id>
         <project-id type="integer">13</project-id>
         <type>PORISValue</type>
-        <poris-value-formatter-id type="integer" nil="true"/>
+        <value-formatter-id type="integer" nil="true"/>
         <destinations type="array"/>
         <node-attributes type="array"/>
         <labels type="array"/>
-    </poris-value>
-    <poris-mode>
+    </value>
+    <mode>
         <default-mode-id type="integer" nil="true"/>
         <default-value-id type="integer" nil="true"/>
         <id type="integer">2000000001</id>
@@ -41,8 +41,8 @@
         </destinations>
         <node-attributes type="array"/>
         <labels type="array"/>
-    </poris-mode>
-    <poris-mode>
+    </mode>
+    <mode>
         <default-mode-id type="integer" nil="true"/>
         <default-value-id type="integer" nil="true"/>
         <id type="integer">2000000002</id>
@@ -59,8 +59,8 @@
         </destinations>
         <node-attributes type="array"/>
         <labels type="array"/>
-    </poris-mode>
-    <poris-node>
+    </mode>
+    <sub-system>
         <default-mode-id type="integer" nil="true"/>
         <id type="integer">2000000003</id>
         <ident>n0</ident>
@@ -88,5 +88,5 @@
         </destinations>
         <node-attributes type="array"/>
         <labels type="array"/>
-    </poris-node>
+    </sub-system>
 </poris>

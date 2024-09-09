@@ -24,16 +24,16 @@ const XMLTypeToPorisType = {
 
 // Foloowing XML tag names used for selecting the elements 
 const XMLValueTagNames = [
-  'poris-value',
-  'poris-value-string',
-  'poris-value-float',
-  'poris-value-date',
-  'poris-value-file-path'
+  'value',
+  'value-string',
+  'value-double-range',
+  'value-date',
+  'value-file-path'
 ]
 
-const XMLModeTagName = 'poris-mode'
+const XMLModeTagName = 'mode'
 
-const XMLSystemTagName = 'poris-node'
+const XMLSystemTagName = 'sub-system'
 
 /**
  * Returns the value of text XML, converted to the type defined on the 
@@ -270,52 +270,52 @@ export function parseToPorisModel(store, xmlText) {
   const xmlDoc = parser.parseFromString(xmlText, 'text/xml')
 
   /*
-      <poris-value>
+      <value>
           <id type="integer">2000000012</id>
           <ident>n0::n0::n0::n1::n2</ident>
           <name>R2000</name>
           <node-type-id type="integer">5</node-type-id>
           <project-id type="integer">13</project-id>
           <type>Value</type>
-          <poris-value-formatter-id type="integer" nil="true"/>
+          <value-formatter-id type="integer" nil="true"/>
           <destinations type="array"/>
           <node-attributes type="array"/>
           <labels type="array"/>
-      </poris-value>
+      </value>
   
-      <poris-value-double-range>
+      <value-double-range>
           <id type="integer">2000000014</id>
           <ident>n0::n0::n0::n2::n0::n0</ident>
           <name>NormalRange</name>
           <node-type-id type="integer">5</node-type-id>
           <project-id type="integer">13</project-id>
           <type>ValueDoubleRange</type>
-          <poris-value-formatter-id type="integer">5</poris-value-formatter-id>
+          <value-formatter-id type="integer">5</value-formatter-id>
           <default-float type="float">1</default-float>
           <rangemax type="float">3600</rangemax>
           <rangemin type="float">0</rangemin>
           <destinations type="array"/>
           <node-attributes type="array"/>
           <labels type="array"/>
-      </poris-value-double-range>
+      </value-double-range>
   
   
-      <poris-value-string>
+      <value-string>
           <id type="integer">2000000035</id>
           <ident>EX-1860</ident>
           <name>userFilter</name>
           <node-type-id type="integer">5</node-type-id>
           <project-id type="integer">13</project-id>
           <type>ValueString</type>
-          <poris-value-formatter-id type="integer" nil="true"/>
+          <value-formatter-id type="integer" nil="true"/>
           <default-string>mycustomfilter</default-string>
           <destinations type="array"/>
           <node-attributes type="array"/>
           <labels type="array"/>
-      </poris-value-string>
+      </value-string>
   
   
-      <poris-value-date-range>
+      <value-date>
         <date-max type="timestamp">2040-12-31 23:59:00 UTC</date-max>
         <date-min type="timestamp">2006-02-01 00:00:00 UTC</date-min>
         <default-date type="timestamp">2011-04-09 00:00:00 UTC</default-date>
@@ -324,13 +324,13 @@ export function parseToPorisModel(store, xmlText) {
         <node-type-id type="integer">5</node-type-id>
         <project-id type="integer">17</project-id>
         <type>ValueDateRange</type>
-        <poris-value-formatter-id type="integer">6</poris-value-formatter-id>
+        <value-formatter-id type="integer">6</value-formatter-id>
         <labels type="array"/>
         <node-attributes type="array"/>
         <destinations type="array"/>
-      </poris-value-date-range>
+      </value-date>
   
-      <poris-value-file-path>
+      <value-file-path>
         <default-string>mypreimagingfile.fits</default-string>
         <file-description>FITS file containing the pre imaging mosaic.</file-description>
         <file-extension>fits</file-extension>
@@ -339,11 +339,11 @@ export function parseToPorisModel(store, xmlText) {
         <node-type-id type="integer">5</node-type-id>
         <project-id type="integer">17</project-id>
         <type>ValueFilePath</type>
-        <poris-value-formatter-id type="integer" nil="true"></poris-value-formatter-id>
+        <value-formatter-id type="integer" nil="true"></value-formatter-id>
         <labels type="array"/>
         <node-attributes type="array"/>
         <destinations type="array"/>
-      </poris-value-file-path>
+      </value-file-path>
       
   */
 
@@ -393,7 +393,7 @@ export function parseToPorisModel(store, xmlText) {
   }
 
   /*
-   <poris-mode>
+   <mode>
           <default-mode-id type="integer" nil="true"/>
           <default-value-id type="integer" nil="true"/>
           <id type="integer">2000000007</id>
@@ -414,7 +414,7 @@ export function parseToPorisModel(store, xmlText) {
           </destinations>
           <node-attributes type="array"/>
           <labels type="array"/>
-      </poris-mode>
+      </mode>
       */
 
   const modeElements = xmlDoc.getElementsByTagName(XMLModeTagName)
@@ -433,7 +433,7 @@ export function parseToPorisModel(store, xmlText) {
 
   /**
      
-      <poris-node>
+      <sub-system>
           <default-mode-id type="integer" nil="true"/>
           <id type="integer">2000000054</id>
           <ident>n0::n0</ident>
@@ -461,7 +461,7 @@ export function parseToPorisModel(store, xmlText) {
           </destinations>
           <node-attributes type="array"/>
           <labels type="array"/>
-      </poris-node>
+      </sub-system>
      */
 
   const subsystemsElements = xmlDoc.getElementsByTagName(XMLSystemTagName)

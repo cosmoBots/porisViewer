@@ -1,6 +1,6 @@
 <?xml version="1.0" ?>
 <poris id="systems">
-	<poris-value-file-path>
+	<value-file-path>
 		<name>PreImagingFile</name>
 		<id type="integer">628</id>
 		<type>PORISValueFilePath</type>
@@ -16,12 +16,12 @@
 				<visibility type="boolean">true</visibility>
 			</node-attribute>
 		</node-attributes>
-		<poris-value-formatter-id type="integer" nil="true"/>
+		<value-formatter-id type="integer" nil="true"/>
 		<default-string>mypreimagingfile.fits</default-string>
 		<file-extension>fits</file-extension>
 		<file-description>FITS file</file-description>
-	</poris-value-file-path>
-	<poris-value>
+	</value-file-path>
+	<value>
 		<name>R300B</name>
 		<id type="integer">537</id>
 		<type>PORISValue</type>
@@ -62,9 +62,9 @@
 				<visibility type="boolean">false</visibility>
 			</node-attribute>
 		</node-attributes>
-		<poris-value-formatter-id type="integer" nil="true"/>
-	</poris-value>
-	<poris-value>
+		<value-formatter-id type="integer" nil="true"/>
+	</value>
+	<value>
 		<name>R300R</name>
 		<id type="integer">538</id>
 		<type>PORISValue</type>
@@ -105,9 +105,9 @@
 				<visibility type="boolean">false</visibility>
 			</node-attribute>
 		</node-attributes>
-		<poris-value-formatter-id type="integer" nil="true"/>
-	</poris-value>
-	<poris-value>
+		<value-formatter-id type="integer" nil="true"/>
+	</value>
+	<value>
 		<name>R500B</name>
 		<id type="integer">539</id>
 		<type>PORISValue</type>
@@ -148,9 +148,9 @@
 				<visibility type="boolean">false</visibility>
 			</node-attribute>
 		</node-attributes>
-		<poris-value-formatter-id type="integer" nil="true"/>
-	</poris-value>
-	<poris-value>
+		<value-formatter-id type="integer" nil="true"/>
+	</value>
+	<value>
 		<name>R500R</name>
 		<id type="integer">540</id>
 		<type>PORISValue</type>
@@ -191,9 +191,9 @@
 				<visibility type="boolean">false</visibility>
 			</node-attribute>
 		</node-attributes>
-		<poris-value-formatter-id type="integer" nil="true"/>
-	</poris-value>
-	<poris-value>
+		<value-formatter-id type="integer" nil="true"/>
+	</value>
+	<value>
 		<name>R1000B</name>
 		<id type="integer">541</id>
 		<type>PORISValue</type>
@@ -234,9 +234,9 @@
 				<visibility type="boolean">false</visibility>
 			</node-attribute>
 		</node-attributes>
-		<poris-value-formatter-id type="integer" nil="true"/>
-	</poris-value>
-	<poris-value>
+		<value-formatter-id type="integer" nil="true"/>
+	</value>
+	<value>
 		<name>R1000R</name>
 		<id type="integer">542</id>
 		<type>PORISValue</type>
@@ -277,9 +277,9 @@
 				<visibility type="boolean">false</visibility>
 			</node-attribute>
 		</node-attributes>
-		<poris-value-formatter-id type="integer" nil="true"/>
-	</poris-value>
-	<poris-value>
+		<value-formatter-id type="integer" nil="true"/>
+	</value>
+	<value>
 		<name>R2000B</name>
 		<id type="integer">543</id>
 		<type>PORISValue</type>
@@ -320,9 +320,9 @@
 				<visibility type="boolean">false</visibility>
 			</node-attribute>
 		</node-attributes>
-		<poris-value-formatter-id type="integer" nil="true"/>
-	</poris-value>
-	<poris-value>
+		<value-formatter-id type="integer" nil="true"/>
+	</value>
+	<value>
 		<name>R2500U</name>
 		<id type="integer">544</id>
 		<type>PORISValue</type>
@@ -363,9 +363,9 @@
 				<visibility type="boolean">false</visibility>
 			</node-attribute>
 		</node-attributes>
-		<poris-value-formatter-id type="integer" nil="true"/>
-	</poris-value>
-	<poris-value>
+		<value-formatter-id type="integer" nil="true"/>
+	</value>
+	<value>
 		<name>R2500V</name>
 		<id type="integer">545</id>
 		<type>PORISValue</type>
@@ -406,9 +406,9 @@
 				<visibility type="boolean">false</visibility>
 			</node-attribute>
 		</node-attributes>
-		<poris-value-formatter-id type="integer" nil="true"/>
-	</poris-value>
-	<poris-value>
+		<value-formatter-id type="integer" nil="true"/>
+	</value>
+	<value>
 		<name>R2500R</name>
 		<id type="integer">546</id>
 		<type>PORISValue</type>
@@ -449,9 +449,9 @@
 				<visibility type="boolean">false</visibility>
 			</node-attribute>
 		</node-attributes>
-		<poris-value-formatter-id type="integer" nil="true"/>
-	</poris-value>
-	<poris-value>
+		<value-formatter-id type="integer" nil="true"/>
+	</value>
+	<value>
 		<name>R2500I</name>
 		<id type="integer">547</id>
 		<type>PORISValue</type>
@@ -492,9 +492,9 @@
 				<visibility type="boolean">false</visibility>
 			</node-attribute>
 		</node-attributes>
-		<poris-value-formatter-id type="integer" nil="true"/>
-	</poris-value>
-	<poris-value>
+		<value-formatter-id type="integer" nil="true"/>
+	</value>
+	<value>
 		<name>Grism_NotRotated</name>
 		<id type="integer">551</id>
 		<type>PORISValue</type>
@@ -517,9 +517,9 @@
 		</labels>
 		<destinations type="array"/>
 		<node-attributes type="array"/>
-		<poris-value-formatter-id type="integer" nil="true"/>
-	</poris-value>
-	<poris-value>
+		<value-formatter-id type="integer" nil="true"/>
+	</value>
+	<value>
 		<name>1x1</name>
 		<id type="integer">563</id>
 		<type>PORISValue</type>
@@ -540,9 +540,9 @@
 				<visibility type="boolean">true</visibility>
 			</node-attribute>
 		</node-attributes>
-		<poris-value-formatter-id type="integer" nil="true"/>
-	</poris-value>
-	<poris-value>
+		<value-formatter-id type="integer" nil="true"/>
+	</value>
+	<value>
 		<name>2x1</name>
 		<id type="integer">564</id>
 		<type>PORISValue</type>
@@ -576,9 +576,9 @@
 				<visibility type="boolean">true</visibility>
 			</node-attribute>
 		</node-attributes>
-		<poris-value-formatter-id type="integer" nil="true"/>
-	</poris-value>
-	<poris-value>
+		<value-formatter-id type="integer" nil="true"/>
+	</value>
+	<value>
 		<name>1x2</name>
 		<id type="integer">565</id>
 		<type>PORISValue</type>
@@ -612,9 +612,9 @@
 				<visibility type="boolean">true</visibility>
 			</node-attribute>
 		</node-attributes>
-		<poris-value-formatter-id type="integer" nil="true"/>
-	</poris-value>
-	<poris-value>
+		<value-formatter-id type="integer" nil="true"/>
+	</value>
+	<value>
 		<name>2x2</name>
 		<id type="integer">566</id>
 		<type>PORISValue</type>
@@ -635,9 +635,9 @@
 				<visibility type="boolean">true</visibility>
 			</node-attribute>
 		</node-attributes>
-		<poris-value-formatter-id type="integer" nil="true"/>
-	</poris-value>
-	<poris-mode>
+		<value-formatter-id type="integer" nil="true"/>
+	</value>
+	<mode>
 		<name>Filter_NoFilter</name>
 		<id type="integer">594</id>
 		<type>PORISMode</type>
@@ -662,8 +662,8 @@
 		<node-attributes type="array"/>
 		<default-mode-id type="integer" nil="true"/>
 		<default-value-id type="integer" nil="true"/>
-	</poris-mode>
-	<poris-value>
+	</mode>
+	<value>
 		<name>Sloan_u'</name>
 		<id type="integer">578</id>
 		<type>PORISValue</type>
@@ -684,9 +684,9 @@
 				<visibility type="boolean">true</visibility>
 			</node-attribute>
 		</node-attributes>
-		<poris-value-formatter-id type="integer" nil="true"/>
-	</poris-value>
-	<poris-value>
+		<value-formatter-id type="integer" nil="true"/>
+	</value>
+	<value>
 		<name>Sloan_g'</name>
 		<id type="integer">579</id>
 		<type>PORISValue</type>
@@ -707,9 +707,9 @@
 				<visibility type="boolean">true</visibility>
 			</node-attribute>
 		</node-attributes>
-		<poris-value-formatter-id type="integer" nil="true"/>
-	</poris-value>
-	<poris-value>
+		<value-formatter-id type="integer" nil="true"/>
+	</value>
+	<value>
 		<name>Sloan_r'</name>
 		<id type="integer">580</id>
 		<type>PORISValue</type>
@@ -730,9 +730,9 @@
 				<visibility type="boolean">true</visibility>
 			</node-attribute>
 		</node-attributes>
-		<poris-value-formatter-id type="integer" nil="true"/>
-	</poris-value>
-	<poris-value>
+		<value-formatter-id type="integer" nil="true"/>
+	</value>
+	<value>
 		<name>Sloan_i'</name>
 		<id type="integer">581</id>
 		<type>PORISValue</type>
@@ -753,9 +753,9 @@
 				<visibility type="boolean">true</visibility>
 			</node-attribute>
 		</node-attributes>
-		<poris-value-formatter-id type="integer" nil="true"/>
-	</poris-value>
-	<poris-value>
+		<value-formatter-id type="integer" nil="true"/>
+	</value>
+	<value>
 		<name>Sloan_z'</name>
 		<id type="integer">582</id>
 		<type>PORISValue</type>
@@ -776,9 +776,9 @@
 				<visibility type="boolean">true</visibility>
 			</node-attribute>
 		</node-attributes>
-		<poris-value-formatter-id type="integer" nil="true"/>
-	</poris-value>
-	<poris-value>
+		<value-formatter-id type="integer" nil="true"/>
+	</value>
+	<value>
 		<name>f643/27</name>
 		<id type="integer">584</id>
 		<type>PORISValue</type>
@@ -799,9 +799,9 @@
 				<visibility type="boolean">true</visibility>
 			</node-attribute>
 		</node-attributes>
-		<poris-value-formatter-id type="integer" nil="true"/>
-	</poris-value>
-	<poris-value>
+		<value-formatter-id type="integer" nil="true"/>
+	</value>
+	<value>
 		<name>f648/28</name>
 		<id type="integer">585</id>
 		<type>PORISValue</type>
@@ -822,9 +822,9 @@
 				<visibility type="boolean">true</visibility>
 			</node-attribute>
 		</node-attributes>
-		<poris-value-formatter-id type="integer" nil="true"/>
-	</poris-value>
-	<poris-value>
+		<value-formatter-id type="integer" nil="true"/>
+	</value>
+	<value>
 		<name>f657/35</name>
 		<id type="integer">666</id>
 		<type>PORISValue</type>
@@ -845,9 +845,9 @@
 				<visibility type="boolean">true</visibility>
 			</node-attribute>
 		</node-attributes>
-		<poris-value-formatter-id type="integer" nil="true"/>
-	</poris-value>
-	<poris-value>
+		<value-formatter-id type="integer" nil="true"/>
+	</value>
+	<value>
 		<name>f680/43</name>
 		<id type="integer">667</id>
 		<type>PORISValue</type>
@@ -868,9 +868,9 @@
 				<visibility type="boolean">true</visibility>
 			</node-attribute>
 		</node-attributes>
-		<poris-value-formatter-id type="integer" nil="true"/>
-	</poris-value>
-	<poris-value>
+		<value-formatter-id type="integer" nil="true"/>
+	</value>
+	<value>
 		<name>f694/44</name>
 		<id type="integer">668</id>
 		<type>PORISValue</type>
@@ -891,9 +891,9 @@
 				<visibility type="boolean">true</visibility>
 			</node-attribute>
 		</node-attributes>
-		<poris-value-formatter-id type="integer" nil="true"/>
-	</poris-value>
-	<poris-value>
+		<value-formatter-id type="integer" nil="true"/>
+	</value>
+	<value>
 		<name>f709/45</name>
 		<id type="integer">669</id>
 		<type>PORISValue</type>
@@ -914,9 +914,9 @@
 				<visibility type="boolean">true</visibility>
 			</node-attribute>
 		</node-attributes>
-		<poris-value-formatter-id type="integer" nil="true"/>
-	</poris-value>
-	<poris-value>
+		<value-formatter-id type="integer" nil="true"/>
+	</value>
+	<value>
 		<name>f723/45</name>
 		<id type="integer">670</id>
 		<type>PORISValue</type>
@@ -937,9 +937,9 @@
 				<visibility type="boolean">true</visibility>
 			</node-attribute>
 		</node-attributes>
-		<poris-value-formatter-id type="integer" nil="true"/>
-	</poris-value>
-	<poris-value>
+		<value-formatter-id type="integer" nil="true"/>
+	</value>
+	<value>
 		<name>f738/46</name>
 		<id type="integer">671</id>
 		<type>PORISValue</type>
@@ -960,9 +960,9 @@
 				<visibility type="boolean">true</visibility>
 			</node-attribute>
 		</node-attributes>
-		<poris-value-formatter-id type="integer" nil="true"/>
-	</poris-value>
-	<poris-value>
+		<value-formatter-id type="integer" nil="true"/>
+	</value>
+	<value>
 		<name>f754/50</name>
 		<id type="integer">672</id>
 		<type>PORISValue</type>
@@ -983,9 +983,9 @@
 				<visibility type="boolean">true</visibility>
 			</node-attribute>
 		</node-attributes>
-		<poris-value-formatter-id type="integer" nil="true"/>
-	</poris-value>
-	<poris-value>
+		<value-formatter-id type="integer" nil="true"/>
+	</value>
+	<value>
 		<name>f770/50</name>
 		<id type="integer">673</id>
 		<type>PORISValue</type>
@@ -1006,9 +1006,9 @@
 				<visibility type="boolean">true</visibility>
 			</node-attribute>
 		</node-attributes>
-		<poris-value-formatter-id type="integer" nil="true"/>
-	</poris-value>
-	<poris-value>
+		<value-formatter-id type="integer" nil="true"/>
+	</value>
+	<value>
 		<name>f785/48</name>
 		<id type="integer">674</id>
 		<type>PORISValue</type>
@@ -1029,9 +1029,9 @@
 				<visibility type="boolean">true</visibility>
 			</node-attribute>
 		</node-attributes>
-		<poris-value-formatter-id type="integer" nil="true"/>
-	</poris-value>
-	<poris-value>
+		<value-formatter-id type="integer" nil="true"/>
+	</value>
+	<value>
 		<name>f802/51</name>
 		<id type="integer">675</id>
 		<type>PORISValue</type>
@@ -1052,9 +1052,9 @@
 				<visibility type="boolean">true</visibility>
 			</node-attribute>
 		</node-attributes>
-		<poris-value-formatter-id type="integer" nil="true"/>
-	</poris-value>
-	<poris-value>
+		<value-formatter-id type="integer" nil="true"/>
+	</value>
+	<value>
 		<name>f819/52</name>
 		<id type="integer">676</id>
 		<type>PORISValue</type>
@@ -1075,9 +1075,9 @@
 				<visibility type="boolean">true</visibility>
 			</node-attribute>
 		</node-attributes>
-		<poris-value-formatter-id type="integer" nil="true"/>
-	</poris-value>
-	<poris-value>
+		<value-formatter-id type="integer" nil="true"/>
+	</value>
+	<value>
 		<name>f838/58</name>
 		<id type="integer">677</id>
 		<type>PORISValue</type>
@@ -1098,9 +1098,9 @@
 				<visibility type="boolean">true</visibility>
 			</node-attribute>
 		</node-attributes>
-		<poris-value-formatter-id type="integer" nil="true"/>
-	</poris-value>
-	<poris-value>
+		<value-formatter-id type="integer" nil="true"/>
+	</value>
+	<value>
 		<name>f858/58</name>
 		<id type="integer">678</id>
 		<type>PORISValue</type>
@@ -1121,9 +1121,9 @@
 				<visibility type="boolean">true</visibility>
 			</node-attribute>
 		</node-attributes>
-		<poris-value-formatter-id type="integer" nil="true"/>
-	</poris-value>
-	<poris-value>
+		<value-formatter-id type="integer" nil="true"/>
+	</value>
+	<value>
 		<name>f878/59</name>
 		<id type="integer">679</id>
 		<type>PORISValue</type>
@@ -1144,9 +1144,9 @@
 				<visibility type="boolean">true</visibility>
 			</node-attribute>
 		</node-attributes>
-		<poris-value-formatter-id type="integer" nil="true"/>
-	</poris-value>
-	<poris-value>
+		<value-formatter-id type="integer" nil="true"/>
+	</value>
+	<value>
 		<name>f893/50</name>
 		<id type="integer">680</id>
 		<type>PORISValue</type>
@@ -1167,9 +1167,9 @@
 				<visibility type="boolean">true</visibility>
 			</node-attribute>
 		</node-attributes>
-		<poris-value-formatter-id type="integer" nil="true"/>
-	</poris-value>
-	<poris-value>
+		<value-formatter-id type="integer" nil="true"/>
+	</value>
+	<value>
 		<name>f902/40</name>
 		<id type="integer">681</id>
 		<type>PORISValue</type>
@@ -1190,9 +1190,9 @@
 				<visibility type="boolean">true</visibility>
 			</node-attribute>
 		</node-attributes>
-		<poris-value-formatter-id type="integer" nil="true"/>
-	</poris-value>
-	<poris-value>
+		<value-formatter-id type="integer" nil="true"/>
+	</value>
+	<value>
 		<name>f910/40</name>
 		<id type="integer">682</id>
 		<type>PORISValue</type>
@@ -1213,9 +1213,9 @@
 				<visibility type="boolean">true</visibility>
 			</node-attribute>
 		</node-attributes>
-		<poris-value-formatter-id type="integer" nil="true"/>
-	</poris-value>
-	<poris-value>
+		<value-formatter-id type="integer" nil="true"/>
+	</value>
+	<value>
 		<name>f919/41</name>
 		<id type="integer">683</id>
 		<type>PORISValue</type>
@@ -1236,9 +1236,9 @@
 				<visibility type="boolean">true</visibility>
 			</node-attribute>
 		</node-attributes>
-		<poris-value-formatter-id type="integer" nil="true"/>
-	</poris-value>
-	<poris-value>
+		<value-formatter-id type="integer" nil="true"/>
+	</value>
+	<value>
 		<name>f923/34</name>
 		<id type="integer">684</id>
 		<type>PORISValue</type>
@@ -1259,9 +1259,9 @@
 				<visibility type="boolean">true</visibility>
 			</node-attribute>
 		</node-attributes>
-		<poris-value-formatter-id type="integer" nil="true"/>
-	</poris-value>
-	<poris-value>
+		<value-formatter-id type="integer" nil="true"/>
+	</value>
+	<value>
 		<name>f927/34</name>
 		<id type="integer">685</id>
 		<type>PORISValue</type>
@@ -1282,9 +1282,9 @@
 				<visibility type="boolean">true</visibility>
 			</node-attribute>
 		</node-attributes>
-		<poris-value-formatter-id type="integer" nil="true"/>
-	</poris-value>
-	<poris-value>
+		<value-formatter-id type="integer" nil="true"/>
+	</value>
+	<value>
 		<name>f932/34</name>
 		<id type="integer">686</id>
 		<type>PORISValue</type>
@@ -1305,9 +1305,9 @@
 				<visibility type="boolean">true</visibility>
 			</node-attribute>
 		</node-attributes>
-		<poris-value-formatter-id type="integer" nil="true"/>
-	</poris-value>
-	<poris-value>
+		<value-formatter-id type="integer" nil="true"/>
+	</value>
+	<value>
 		<name>f936/35</name>
 		<id type="integer">687</id>
 		<type>PORISValue</type>
@@ -1328,9 +1328,9 @@
 				<visibility type="boolean">true</visibility>
 			</node-attribute>
 		</node-attributes>
-		<poris-value-formatter-id type="integer" nil="true"/>
-	</poris-value>
-	<poris-value>
+		<value-formatter-id type="integer" nil="true"/>
+	</value>
+	<value>
 		<name>f940/35</name>
 		<id type="integer">688</id>
 		<type>PORISValue</type>
@@ -1351,9 +1351,9 @@
 				<visibility type="boolean">true</visibility>
 			</node-attribute>
 		</node-attributes>
-		<poris-value-formatter-id type="integer" nil="true"/>
-	</poris-value>
-	<poris-value-float>
+		<value-formatter-id type="integer" nil="true"/>
+	</value>
+	<value-double-range>
 		<name>UserFilterLambdaRange</name>
 		<id type="integer">588</id>
 		<type>PORISValueFloat</type>
@@ -1363,12 +1363,12 @@
 		<labels type="array"/>
 		<destinations type="array"/>
 		<node-attributes type="array"/>
-		<poris-value-formatter-id type="integer">1</poris-value-formatter-id>
+		<value-formatter-id type="integer">1</value-formatter-id>
 		<default-float type="float">6563.0</default-float>
 		<rangemin type="float">3500.0</rangemin>
 		<rangemax type="float">10000.0</rangemax>
-	</poris-value-float>
-	<poris-value-float>
+	</value-double-range>
+	<value-double-range>
 		<name>UserFilterFWHMRange</name>
 		<id type="integer">591</id>
 		<type>PORISValueFloat</type>
@@ -1378,12 +1378,12 @@
 		<labels type="array"/>
 		<destinations type="array"/>
 		<node-attributes type="array"/>
-		<poris-value-formatter-id type="integer">1</poris-value-formatter-id>
+		<value-formatter-id type="integer">1</value-formatter-id>
 		<default-float type="float">100.0</default-float>
 		<rangemin type="float">1.0</rangemin>
 		<rangemax type="float">10000.0</rangemax>
-	</poris-value-float>
-	<poris-value-date>
+	</value-double-range>
+	<value-date>
 		<name>Date</name>
 		<id type="integer">613</id>
 		<type>PORISValueDate</type>
@@ -1393,13 +1393,13 @@
 		<labels type="array"/>
 		<destinations type="array"/>
 		<node-attributes type="array"/>
-		<poris-value-formatter-id type="integer">6</poris-value-formatter-id>
+		<value-formatter-id type="integer">6</value-formatter-id>
 		<default-string>2011-04-09 00:00:00 UTC</default-string>
 		<date-min type="timestamp">2006-02-01 00:00:00 UTC</date-min>
 		<date-max type="timestamp">2016-12-31 23:59:00 UTC</date-max>
 		<default-date type="timestamp">2011-04-09 00:00:00 UTC</default-date>
-	</poris-value-date>
-	<poris-value-float>
+	</value-date>
+	<value-double-range>
 		<name>HourAngleRange</name>
 		<id type="integer">616</id>
 		<type>PORISValueFloat</type>
@@ -1409,12 +1409,12 @@
 		<labels type="array"/>
 		<destinations type="array"/>
 		<node-attributes type="array"/>
-		<poris-value-formatter-id type="integer">1</poris-value-formatter-id>
+		<value-formatter-id type="integer">1</value-formatter-id>
 		<default-float type="float">0.0</default-float>
 		<rangemin type="float">0.0</rangemin>
 		<rangemax type="float">360.0</rangemax>
-	</poris-value-float>
-	<poris-value-float>
+	</value-double-range>
+	<value-double-range>
 		<name>offsetRAArcminsRange</name>
 		<id type="integer">652</id>
 		<type>PORISValueFloat</type>
@@ -1424,12 +1424,12 @@
 		<labels type="array"/>
 		<destinations type="array"/>
 		<node-attributes type="array"/>
-		<poris-value-formatter-id type="integer">1</poris-value-formatter-id>
+		<value-formatter-id type="integer">1</value-formatter-id>
 		<default-float type="float">0.0</default-float>
 		<rangemin type="float">-21600.0</rangemin>
 		<rangemax type="float">21600.0</rangemax>
-	</poris-value-float>
-	<poris-value-float>
+	</value-double-range>
+	<value-double-range>
 		<name>offsetRAArcsecsRange</name>
 		<id type="integer">651</id>
 		<type>PORISValueFloat</type>
@@ -1439,12 +1439,12 @@
 		<labels type="array"/>
 		<destinations type="array"/>
 		<node-attributes type="array"/>
-		<poris-value-formatter-id type="integer">1</poris-value-formatter-id>
+		<value-formatter-id type="integer">1</value-formatter-id>
 		<default-float type="float">0.0</default-float>
 		<rangemin type="float">-1296000.0</rangemin>
 		<rangemax type="float">1296000.0</rangemax>
-	</poris-value-float>
-	<poris-value-float>
+	</value-double-range>
+	<value-double-range>
 		<name>offsetDecArcminsRange</name>
 		<id type="integer">656</id>
 		<type>PORISValueFloat</type>
@@ -1454,12 +1454,12 @@
 		<labels type="array"/>
 		<destinations type="array"/>
 		<node-attributes type="array"/>
-		<poris-value-formatter-id type="integer">1</poris-value-formatter-id>
+		<value-formatter-id type="integer">1</value-formatter-id>
 		<default-float type="float">0.0</default-float>
 		<rangemin type="float">-21600.0</rangemin>
 		<rangemax type="float">21600.0</rangemax>
-	</poris-value-float>
-	<poris-value-float>
+	</value-double-range>
+	<value-double-range>
 		<name>offsetDecArcsecsRange</name>
 		<id type="integer">657</id>
 		<type>PORISValueFloat</type>
@@ -1469,12 +1469,12 @@
 		<labels type="array"/>
 		<destinations type="array"/>
 		<node-attributes type="array"/>
-		<poris-value-formatter-id type="integer">1</poris-value-formatter-id>
+		<value-formatter-id type="integer">1</value-formatter-id>
 		<default-float type="float">0.0</default-float>
 		<rangemin type="float">-1296000.0</rangemin>
 		<rangemax type="float">1296000.0</rangemax>
-	</poris-value-float>
-	<poris-value-float>
+	</value-double-range>
+	<value-double-range>
 		<name>raRange</name>
 		<id type="integer">632</id>
 		<type>PORISValueFloat</type>
@@ -1484,12 +1484,12 @@
 		<labels type="array"/>
 		<destinations type="array"/>
 		<node-attributes type="array"/>
-		<poris-value-formatter-id type="integer">1</poris-value-formatter-id>
+		<value-formatter-id type="integer">1</value-formatter-id>
 		<default-float type="float">0.0</default-float>
 		<rangemin type="float">0.0</rangemin>
 		<rangemax type="float">360.0</rangemax>
-	</poris-value-float>
-	<poris-value-float>
+	</value-double-range>
+	<value-double-range>
 		<name>decRange</name>
 		<id type="integer">635</id>
 		<type>PORISValueFloat</type>
@@ -1499,12 +1499,12 @@
 		<labels type="array"/>
 		<destinations type="array"/>
 		<node-attributes type="array"/>
-		<poris-value-formatter-id type="integer">1</poris-value-formatter-id>
+		<value-formatter-id type="integer">1</value-formatter-id>
 		<default-float type="float">0.0</default-float>
 		<rangemin type="float">-90.0</rangemin>
 		<rangemax type="float">90.0</rangemax>
-	</poris-value-float>
-	<poris-value-float>
+	</value-double-range>
+	<value-double-range>
 		<name>IPAUserRange</name>
 		<id type="integer">698</id>
 		<type>PORISValueFloat</type>
@@ -1514,12 +1514,12 @@
 		<labels type="array"/>
 		<destinations type="array"/>
 		<node-attributes type="array"/>
-		<poris-value-formatter-id type="integer">1</poris-value-formatter-id>
+		<value-formatter-id type="integer">1</value-formatter-id>
 		<default-float type="float">0.0</default-float>
 		<rangemin type="float">0.0</rangemin>
 		<rangemax type="float">360.0</rangemax>
-	</poris-value-float>
-	<poris-value>
+	</value-double-range>
+	<value>
 		<name>Grism_Rotated</name>
 		<id type="integer">550</id>
 		<type>PORISValue</type>
@@ -1542,9 +1542,9 @@
 		</labels>
 		<destinations type="array"/>
 		<node-attributes type="array"/>
-		<poris-value-formatter-id type="integer" nil="true"/>
-	</poris-value>
-	<poris-value-float>
+		<value-formatter-id type="integer" nil="true"/>
+	</value>
+	<value-double-range>
 		<name>ShuffleLines_Range</name>
 		<id type="integer">569</id>
 		<type>PORISValueFloat</type>
@@ -1554,12 +1554,12 @@
 		<labels type="array"/>
 		<destinations type="array"/>
 		<node-attributes type="array"/>
-		<poris-value-formatter-id type="integer">1</poris-value-formatter-id>
+		<value-formatter-id type="integer">1</value-formatter-id>
 		<default-float type="float">100.0</default-float>
 		<rangemin type="float">1.0</rangemin>
 		<rangemax type="float">1000.0</rangemax>
-	</poris-value-float>
-	<poris-value-string>
+	</value-double-range>
+	<value-string>
 		<name>FirstNameString</name>
 		<id type="integer">602</id>
 		<type>PORISValueString</type>
@@ -1569,10 +1569,10 @@
 		<labels type="array"/>
 		<destinations type="array"/>
 		<node-attributes type="array"/>
-		<poris-value-formatter-id type="integer" nil="true"/>
+		<value-formatter-id type="integer" nil="true"/>
 		<default-string>First Name</default-string>
-	</poris-value-string>
-	<poris-value-string>
+	</value-string>
+	<value-string>
 		<name>SurNameString</name>
 		<id type="integer">604</id>
 		<type>PORISValueString</type>
@@ -1582,10 +1582,10 @@
 		<labels type="array"/>
 		<destinations type="array"/>
 		<node-attributes type="array"/>
-		<poris-value-formatter-id type="integer" nil="true"/>
+		<value-formatter-id type="integer" nil="true"/>
 		<default-string>Surname</default-string>
-	</poris-value-string>
-	<poris-value-float>
+	</value-string>
+	<value-double-range>
 		<name>MinFiducialCountRange</name>
 		<id type="integer">609</id>
 		<type>PORISValueFloat</type>
@@ -1595,12 +1595,12 @@
 		<labels type="array"/>
 		<destinations type="array"/>
 		<node-attributes type="array"/>
-		<poris-value-formatter-id type="integer">1</poris-value-formatter-id>
+		<value-formatter-id type="integer">1</value-formatter-id>
 		<default-float type="float">3.0</default-float>
 		<rangemin type="float">0.0</rangemin>
 		<rangemax type="float">10.0</rangemax>
-	</poris-value-float>
-	<poris-value>
+	</value-double-range>
+	<value>
 		<name>DontCheckSpectraOverlap</name>
 		<id type="integer">620</id>
 		<type>PORISValue</type>
@@ -1623,9 +1623,9 @@
 		</labels>
 		<destinations type="array"/>
 		<node-attributes type="array"/>
-		<poris-value-formatter-id type="integer" nil="true"/>
-	</poris-value>
-	<poris-value>
+		<value-formatter-id type="integer" nil="true"/>
+	</value>
+	<value>
 		<name>YesCheckSpectraOverlap</name>
 		<id type="integer">621</id>
 		<type>PORISValue</type>
@@ -1648,9 +1648,9 @@
 		</labels>
 		<destinations type="array"/>
 		<node-attributes type="array"/>
-		<poris-value-formatter-id type="integer" nil="true"/>
-	</poris-value>
-	<poris-value-float>
+		<value-formatter-id type="integer" nil="true"/>
+	</value>
+	<value-double-range>
 		<name>MaxMasksRange</name>
 		<id type="integer">624</id>
 		<type>PORISValueFloat</type>
@@ -1660,12 +1660,12 @@
 		<labels type="array"/>
 		<destinations type="array"/>
 		<node-attributes type="array"/>
-		<poris-value-formatter-id type="integer">1</poris-value-formatter-id>
+		<value-formatter-id type="integer">1</value-formatter-id>
 		<default-float type="float">3.0</default-float>
 		<rangemin type="float">1.0</rangemin>
 		<rangemax type="float">15.0</rangemax>
-	</poris-value-float>
-	<poris-value>
+	</value-double-range>
+	<value>
 		<name>IPA240</name>
 		<id type="integer">696</id>
 		<type>PORISValue</type>
@@ -1688,9 +1688,9 @@
 		</labels>
 		<destinations type="array"/>
 		<node-attributes type="array"/>
-		<poris-value-formatter-id type="integer" nil="true"/>
-	</poris-value>
-	<poris-value>
+		<value-formatter-id type="integer" nil="true"/>
+	</value>
+	<value>
 		<name>IPA150</name>
 		<id type="integer">697</id>
 		<type>PORISValue</type>
@@ -1713,9 +1713,9 @@
 		</labels>
 		<destinations type="array"/>
 		<node-attributes type="array"/>
-		<poris-value-formatter-id type="integer" nil="true"/>
-	</poris-value>
-	<poris-value-string>
+		<value-formatter-id type="integer" nil="true"/>
+	</value>
+	<value-string>
 		<name>ObsIDString</name>
 		<id type="integer">647</id>
 		<type>PORISValueString</type>
@@ -1725,10 +1725,10 @@
 		<labels type="array"/>
 		<destinations type="array"/>
 		<node-attributes type="array"/>
-		<poris-value-formatter-id type="integer" nil="true"/>
+		<value-formatter-id type="integer" nil="true"/>
 		<default-string>000000000000</default-string>
-	</poris-value-string>
-	<poris-mode>
+	</value-string>
+	<mode>
 		<name>Grism_Normal</name>
 		<id type="integer">548</id>
 		<type>PORISMode</type>
@@ -1774,8 +1774,8 @@
 		<node-attributes type="array"/>
 		<default-mode-id type="integer" nil="true"/>
 		<default-value-id type="integer">537</default-value-id>
-	</poris-mode>
-	<poris-mode>
+	</mode>
+	<mode>
 		<name>GrismRotated_ForceNotRotated</name>
 		<id type="integer">554</id>
 		<type>PORISMode</type>
@@ -1791,8 +1791,8 @@
 		<node-attributes type="array"/>
 		<default-mode-id type="integer" nil="true"/>
 		<default-value-id type="integer">551</default-value-id>
-	</poris-mode>
-	<poris-mode>
+	</mode>
+	<mode>
 		<name>Binning_Normal</name>
 		<id type="integer">567</id>
 		<type>PORISMode</type>
@@ -1817,8 +1817,8 @@
 		<node-attributes type="array"/>
 		<default-mode-id type="integer" nil="true"/>
 		<default-value-id type="integer">563</default-value-id>
-	</poris-mode>
-	<poris-mode>
+	</mode>
+	<mode>
 		<name>BroadFilter_Normal</name>
 		<id type="integer">583</id>
 		<type>PORISMode</type>
@@ -1846,8 +1846,8 @@
 		<node-attributes type="array"/>
 		<default-mode-id type="integer" nil="true"/>
 		<default-value-id type="integer">578</default-value-id>
-	</poris-mode>
-	<poris-mode>
+	</mode>
+	<mode>
 		<name>OSFilter_Normal</name>
 		<id type="integer">586</id>
 		<type>PORISMode</type>
@@ -1935,8 +1935,8 @@
 		<node-attributes type="array"/>
 		<default-mode-id type="integer" nil="true"/>
 		<default-value-id type="integer">584</default-value-id>
-	</poris-mode>
-	<poris-mode>
+	</mode>
+	<mode>
 		<name>UserFilterLambda_Normal</name>
 		<id type="integer">589</id>
 		<type>PORISMode</type>
@@ -1952,8 +1952,8 @@
 		<node-attributes type="array"/>
 		<default-mode-id type="integer" nil="true"/>
 		<default-value-id type="integer">588</default-value-id>
-	</poris-mode>
-	<poris-mode>
+	</mode>
+	<mode>
 		<name>UserFilterFWHM_Normal</name>
 		<id type="integer">592</id>
 		<type>PORISMode</type>
@@ -1969,8 +1969,8 @@
 		<node-attributes type="array"/>
 		<default-mode-id type="integer" nil="true"/>
 		<default-value-id type="integer">591</default-value-id>
-	</poris-mode>
-	<poris-mode>
+	</mode>
+	<mode>
 		<name>Date_Normal</name>
 		<id type="integer">614</id>
 		<type>PORISMode</type>
@@ -1986,8 +1986,8 @@
 		<node-attributes type="array"/>
 		<default-mode-id type="integer" nil="true"/>
 		<default-value-id type="integer">613</default-value-id>
-	</poris-mode>
-	<poris-mode>
+	</mode>
+	<mode>
 		<name>HourAngle_Normal</name>
 		<id type="integer">617</id>
 		<type>PORISMode</type>
@@ -2003,8 +2003,8 @@
 		<node-attributes type="array"/>
 		<default-mode-id type="integer" nil="true"/>
 		<default-value-id type="integer">616</default-value-id>
-	</poris-mode>
-	<poris-mode>
+	</mode>
+	<mode>
 		<name>PreImagingFile_Normal</name>
 		<id type="integer">629</id>
 		<type>PORISMode</type>
@@ -2020,8 +2020,8 @@
 		<node-attributes type="array"/>
 		<default-mode-id type="integer" nil="true"/>
 		<default-value-id type="integer">628</default-value-id>
-	</poris-mode>
-	<poris-mode>
+	</mode>
+	<mode>
 		<name>OffsetRA_Arcmins</name>
 		<id type="integer">654</id>
 		<type>PORISMode</type>
@@ -2050,8 +2050,8 @@
 		<node-attributes type="array"/>
 		<default-mode-id type="integer" nil="true"/>
 		<default-value-id type="integer">652</default-value-id>
-	</poris-mode>
-	<poris-mode>
+	</mode>
+	<mode>
 		<name>OffsetRA_Arcsecs</name>
 		<id type="integer">653</id>
 		<type>PORISMode</type>
@@ -2080,8 +2080,8 @@
 		<node-attributes type="array"/>
 		<default-mode-id type="integer" nil="true"/>
 		<default-value-id type="integer">651</default-value-id>
-	</poris-mode>
-	<poris-mode>
+	</mode>
+	<mode>
 		<name>OffsetDec_Arcmins</name>
 		<id type="integer">658</id>
 		<type>PORISMode</type>
@@ -2110,8 +2110,8 @@
 		<node-attributes type="array"/>
 		<default-mode-id type="integer" nil="true"/>
 		<default-value-id type="integer">656</default-value-id>
-	</poris-mode>
-	<poris-mode>
+	</mode>
+	<mode>
 		<name>OffsetDec_Arcsecs</name>
 		<id type="integer">659</id>
 		<type>PORISMode</type>
@@ -2140,8 +2140,8 @@
 		<node-attributes type="array"/>
 		<default-mode-id type="integer" nil="true"/>
 		<default-value-id type="integer">657</default-value-id>
-	</poris-mode>
-	<poris-mode>
+	</mode>
+	<mode>
 		<name>RA_Normal</name>
 		<id type="integer">633</id>
 		<type>PORISMode</type>
@@ -2157,8 +2157,8 @@
 		<node-attributes type="array"/>
 		<default-mode-id type="integer" nil="true"/>
 		<default-value-id type="integer">632</default-value-id>
-	</poris-mode>
-	<poris-mode>
+	</mode>
+	<mode>
 		<name>Dec_Normal</name>
 		<id type="integer">636</id>
 		<type>PORISMode</type>
@@ -2174,8 +2174,8 @@
 		<node-attributes type="array"/>
 		<default-mode-id type="integer" nil="true"/>
 		<default-value-id type="integer">635</default-value-id>
-	</poris-mode>
-	<poris-mode>
+	</mode>
+	<mode>
 		<name>IPA_User</name>
 		<id type="integer">699</id>
 		<type>PORISMode</type>
@@ -2191,8 +2191,8 @@
 		<node-attributes type="array"/>
 		<default-mode-id type="integer" nil="true"/>
 		<default-value-id type="integer">698</default-value-id>
-	</poris-mode>
-	<poris-mode>
+	</mode>
+	<mode>
 		<name>GrismRotated_ForceRotate</name>
 		<id type="integer">555</id>
 		<type>PORISMode</type>
@@ -2208,8 +2208,8 @@
 		<node-attributes type="array"/>
 		<default-mode-id type="integer" nil="true"/>
 		<default-value-id type="integer">550</default-value-id>
-	</poris-mode>
-	<poris-mode>
+	</mode>
+	<mode>
 		<name>ShuffleLines_Normal</name>
 		<id type="integer">570</id>
 		<type>PORISMode</type>
@@ -2225,8 +2225,8 @@
 		<node-attributes type="array"/>
 		<default-mode-id type="integer" nil="true"/>
 		<default-value-id type="integer">569</default-value-id>
-	</poris-mode>
-	<poris-mode>
+	</mode>
+	<mode>
 		<name>FirstName_Normal</name>
 		<id type="integer">605</id>
 		<type>PORISMode</type>
@@ -2242,8 +2242,8 @@
 		<node-attributes type="array"/>
 		<default-mode-id type="integer" nil="true"/>
 		<default-value-id type="integer">602</default-value-id>
-	</poris-mode>
-	<poris-mode>
+	</mode>
+	<mode>
 		<name>Surname_Normal</name>
 		<id type="integer">606</id>
 		<type>PORISMode</type>
@@ -2259,8 +2259,8 @@
 		<node-attributes type="array"/>
 		<default-mode-id type="integer" nil="true"/>
 		<default-value-id type="integer">604</default-value-id>
-	</poris-mode>
-	<poris-mode>
+	</mode>
+	<mode>
 		<name>MinFiducialCount_Normal</name>
 		<id type="integer">610</id>
 		<type>PORISMode</type>
@@ -2276,8 +2276,8 @@
 		<node-attributes type="array"/>
 		<default-mode-id type="integer" nil="true"/>
 		<default-value-id type="integer">609</default-value-id>
-	</poris-mode>
-	<poris-mode>
+	</mode>
+	<mode>
 		<name>CheckSpectraOverlap_Normal</name>
 		<id type="integer">622</id>
 		<type>PORISMode</type>
@@ -2296,8 +2296,8 @@
 		<node-attributes type="array"/>
 		<default-mode-id type="integer" nil="true"/>
 		<default-value-id type="integer">620</default-value-id>
-	</poris-mode>
-	<poris-mode>
+	</mode>
+	<mode>
 		<name>MaxMasks_Normal</name>
 		<id type="integer">625</id>
 		<type>PORISMode</type>
@@ -2313,8 +2313,8 @@
 		<node-attributes type="array"/>
 		<default-mode-id type="integer" nil="true"/>
 		<default-value-id type="integer">624</default-value-id>
-	</poris-mode>
-	<poris-mode>
+	</mode>
+	<mode>
 		<name>IPA_240</name>
 		<id type="integer">691</id>
 		<type>PORISMode</type>
@@ -2330,8 +2330,8 @@
 		<node-attributes type="array"/>
 		<default-mode-id type="integer" nil="true"/>
 		<default-value-id type="integer">696</default-value-id>
-	</poris-mode>
-	<poris-mode>
+	</mode>
+	<mode>
 		<name>IPA_150</name>
 		<id type="integer">692</id>
 		<type>PORISMode</type>
@@ -2347,8 +2347,8 @@
 		<node-attributes type="array"/>
 		<default-mode-id type="integer" nil="true"/>
 		<default-value-id type="integer">697</default-value-id>
-	</poris-mode>
-	<poris-mode>
+	</mode>
+	<mode>
 		<name>ObsID_Normal</name>
 		<id type="integer">648</id>
 		<type>PORISMode</type>
@@ -2364,8 +2364,8 @@
 		<node-attributes type="array"/>
 		<default-mode-id type="integer" nil="true"/>
 		<default-value-id type="integer">647</default-value-id>
-	</poris-mode>
-	<poris-mode>
+	</mode>
+	<mode>
 		<name>Dispersion_ForceNotRotate</name>
 		<id type="integer">556</id>
 		<type>PORISMode</type>
@@ -2384,8 +2384,8 @@
 		<node-attributes type="array"/>
 		<default-mode-id type="integer" nil="true"/>
 		<default-value-id type="integer" nil="true"/>
-	</poris-mode>
-	<poris-mode>
+	</mode>
+	<mode>
 		<name>DAS_Normal</name>
 		<id type="integer">571</id>
 		<type>PORISMode</type>
@@ -2401,8 +2401,8 @@
 		<node-attributes type="array"/>
 		<default-mode-id type="integer" nil="true"/>
 		<default-value-id type="integer" nil="true"/>
-	</poris-mode>
-	<poris-mode>
+	</mode>
+	<mode>
 		<name>Filter_Broad</name>
 		<id type="integer">595</id>
 		<type>PORISMode</type>
@@ -2431,8 +2431,8 @@
 		<node-attributes type="array"/>
 		<default-mode-id type="integer" nil="true"/>
 		<default-value-id type="integer" nil="true"/>
-	</poris-mode>
-	<poris-mode>
+	</mode>
+	<mode>
 		<name>Filter_OS</name>
 		<id type="integer">596</id>
 		<type>PORISMode</type>
@@ -2461,8 +2461,8 @@
 		<node-attributes type="array"/>
 		<default-mode-id type="integer" nil="true"/>
 		<default-value-id type="integer" nil="true"/>
-	</poris-mode>
-	<poris-mode>
+	</mode>
+	<mode>
 		<name>UserFilter_Normal</name>
 		<id type="integer">593</id>
 		<type>PORISMode</type>
@@ -2481,8 +2481,8 @@
 		<node-attributes type="array"/>
 		<default-mode-id type="integer" nil="true"/>
 		<default-value-id type="integer" nil="true"/>
-	</poris-mode>
-	<poris-mode>
+	</mode>
+	<mode>
 		<name>DateSystem_Normal</name>
 		<id type="integer">618</id>
 		<type>PORISMode</type>
@@ -2501,8 +2501,8 @@
 		<node-attributes type="array"/>
 		<default-mode-id type="integer" nil="true"/>
 		<default-value-id type="integer" nil="true"/>
-	</poris-mode>
-	<poris-mode>
+	</mode>
+	<mode>
 		<name>UsePreImaging_Use</name>
 		<id type="integer">645</id>
 		<type>PORISMode</type>
@@ -2531,8 +2531,8 @@
 		<node-attributes type="array"/>
 		<default-mode-id type="integer" nil="true"/>
 		<default-value-id type="integer" nil="true"/>
-	</poris-mode>
-	<poris-mode>
+	</mode>
+	<mode>
 		<name>OffsetPointing_Normal</name>
 		<id type="integer">660</id>
 		<type>PORISMode</type>
@@ -2557,8 +2557,8 @@
 		<node-attributes type="array"/>
 		<default-mode-id type="integer" nil="true"/>
 		<default-value-id type="integer" nil="true"/>
-	</poris-mode>
-	<poris-mode>
+	</mode>
+	<mode>
 		<name>Pointing_Normal</name>
 		<id type="integer">643</id>
 		<type>PORISMode</type>
@@ -2580,8 +2580,8 @@
 		<node-attributes type="array"/>
 		<default-mode-id type="integer" nil="true"/>
 		<default-value-id type="integer" nil="true"/>
-	</poris-mode>
-	<poris-mode>
+	</mode>
+	<mode>
 		<name>Dispersion_ForceRotate</name>
 		<id type="integer">557</id>
 		<type>PORISMode</type>
@@ -2600,8 +2600,8 @@
 		<node-attributes type="array"/>
 		<default-mode-id type="integer" nil="true"/>
 		<default-value-id type="integer" nil="true"/>
-	</poris-mode>
-	<poris-mode>
+	</mode>
+	<mode>
 		<name>DAS_Microshuffle</name>
 		<id type="integer">572</id>
 		<type>PORISMode</type>
@@ -2620,8 +2620,8 @@
 		<node-attributes type="array"/>
 		<default-mode-id type="integer" nil="true"/>
 		<default-value-id type="integer" nil="true"/>
-	</poris-mode>
-	<poris-node>
+	</mode>
+	<sub-system>
 		<name>BroadFilter</name>
 		<id type="integer">575</id>
 		<type>PORISNode</type>
@@ -2652,8 +2652,8 @@
 		<node-attributes type="array"/>
 		<default-mode-id type="integer">583</default-mode-id>
 		<default-value-id type="integer" nil="true"/>
-	</poris-node>
-	<poris-node>
+	</sub-system>
+	<sub-system>
 		<name>OSFilter</name>
 		<id type="integer">576</id>
 		<type>PORISNode</type>
@@ -2744,8 +2744,8 @@
 		<node-attributes type="array"/>
 		<default-mode-id type="integer">586</default-mode-id>
 		<default-value-id type="integer" nil="true"/>
-	</poris-node>
-	<poris-node>
+	</sub-system>
+	<sub-system>
 		<name>UserFilterLambda</name>
 		<id type="integer">587</id>
 		<type>PORISNode</type>
@@ -2777,8 +2777,8 @@
 		<node-attributes type="array"/>
 		<default-mode-id type="integer">589</default-mode-id>
 		<default-value-id type="integer" nil="true"/>
-	</poris-node>
-	<poris-node>
+	</sub-system>
+	<sub-system>
 		<name>UserFilterFWHM</name>
 		<id type="integer">590</id>
 		<type>PORISNode</type>
@@ -2810,8 +2810,8 @@
 		<node-attributes type="array"/>
 		<default-mode-id type="integer">592</default-mode-id>
 		<default-value-id type="integer" nil="true"/>
-	</poris-node>
-	<poris-node>
+	</sub-system>
+	<sub-system>
 		<name>Grism</name>
 		<id type="integer">536</id>
 		<type>PORISNode</type>
@@ -2860,8 +2860,8 @@
 		<node-attributes type="array"/>
 		<default-mode-id type="integer">548</default-mode-id>
 		<default-value-id type="integer" nil="true"/>
-	</poris-node>
-	<poris-node>
+	</sub-system>
+	<sub-system>
 		<name>Grism_Rotated</name>
 		<id type="integer">549</id>
 		<type>PORISNode</type>
@@ -2899,8 +2899,8 @@
 		<node-attributes type="array"/>
 		<default-mode-id type="integer">554</default-mode-id>
 		<default-value-id type="integer" nil="true"/>
-	</poris-node>
-	<poris-node>
+	</sub-system>
+	<sub-system>
 		<name>Binning</name>
 		<id type="integer">562</id>
 		<type>PORISNode</type>
@@ -2928,8 +2928,8 @@
 		<node-attributes type="array"/>
 		<default-mode-id type="integer">567</default-mode-id>
 		<default-value-id type="integer" nil="true"/>
-	</poris-node>
-	<poris-node>
+	</sub-system>
+	<sub-system>
 		<name>ShuffleLines</name>
 		<id type="integer">568</id>
 		<type>PORISNode</type>
@@ -2961,8 +2961,8 @@
 		<node-attributes type="array"/>
 		<default-mode-id type="integer">570</default-mode-id>
 		<default-value-id type="integer" nil="true"/>
-	</poris-node>
-	<poris-node>
+	</sub-system>
+	<sub-system>
 		<name>FirstName</name>
 		<id type="integer">601</id>
 		<type>PORISNode</type>
@@ -2994,8 +2994,8 @@
 		<node-attributes type="array"/>
 		<default-mode-id type="integer">605</default-mode-id>
 		<default-value-id type="integer" nil="true"/>
-	</poris-node>
-	<poris-node>
+	</sub-system>
+	<sub-system>
 		<name>SurName</name>
 		<id type="integer">603</id>
 		<type>PORISNode</type>
@@ -3027,8 +3027,8 @@
 		<node-attributes type="array"/>
 		<default-mode-id type="integer">606</default-mode-id>
 		<default-value-id type="integer" nil="true"/>
-	</poris-node>
-	<poris-mode>
+	</sub-system>
+	<mode>
 		<name>IP_Normal</name>
 		<id type="integer">607</id>
 		<type>PORISMode</type>
@@ -3047,8 +3047,8 @@
 		<node-attributes type="array"/>
 		<default-mode-id type="integer" nil="true"/>
 		<default-value-id type="integer" nil="true"/>
-	</poris-mode>
-	<poris-node>
+	</mode>
+	<sub-system>
 		<name>MinFiducialCount</name>
 		<id type="integer">608</id>
 		<type>PORISNode</type>
@@ -3080,8 +3080,8 @@
 		<node-attributes type="array"/>
 		<default-mode-id type="integer">610</default-mode-id>
 		<default-value-id type="integer" nil="true"/>
-	</poris-node>
-	<poris-node>
+	</sub-system>
+	<sub-system>
 		<name>Date</name>
 		<id type="integer">612</id>
 		<type>PORISNode</type>
@@ -3100,8 +3100,8 @@
 		<node-attributes type="array"/>
 		<default-mode-id type="integer">614</default-mode-id>
 		<default-value-id type="integer" nil="true"/>
-	</poris-node>
-	<poris-node>
+	</sub-system>
+	<sub-system>
 		<name>HourAngle</name>
 		<id type="integer">615</id>
 		<type>PORISNode</type>
@@ -3133,8 +3133,8 @@
 		<node-attributes type="array"/>
 		<default-mode-id type="integer">617</default-mode-id>
 		<default-value-id type="integer" nil="true"/>
-	</poris-node>
-	<poris-node>
+	</sub-system>
+	<sub-system>
 		<name>CheckSpectraOverlap</name>
 		<id type="integer">619</id>
 		<type>PORISNode</type>
@@ -3169,8 +3169,8 @@
 		<node-attributes type="array"/>
 		<default-mode-id type="integer">622</default-mode-id>
 		<default-value-id type="integer" nil="true"/>
-	</poris-node>
-	<poris-node>
+	</sub-system>
+	<sub-system>
 		<name>MaxMasks</name>
 		<id type="integer">623</id>
 		<type>PORISNode</type>
@@ -3202,8 +3202,8 @@
 		<node-attributes type="array"/>
 		<default-mode-id type="integer">625</default-mode-id>
 		<default-value-id type="integer" nil="true"/>
-	</poris-node>
-	<poris-node>
+	</sub-system>
+	<sub-system>
 		<name>PreImagingFile</name>
 		<id type="integer">627</id>
 		<type>PORISNode</type>
@@ -3235,8 +3235,8 @@
 		<node-attributes type="array"/>
 		<default-mode-id type="integer">629</default-mode-id>
 		<default-value-id type="integer" nil="true"/>
-	</poris-node>
-	<poris-node>
+	</sub-system>
+	<sub-system>
 		<name>RA</name>
 		<id type="integer">631</id>
 		<type>PORISNode</type>
@@ -3255,8 +3255,8 @@
 		<node-attributes type="array"/>
 		<default-mode-id type="integer">633</default-mode-id>
 		<default-value-id type="integer" nil="true"/>
-	</poris-node>
-	<poris-node>
+	</sub-system>
+	<sub-system>
 		<name>Dec</name>
 		<id type="integer">634</id>
 		<type>PORISNode</type>
@@ -3275,8 +3275,8 @@
 		<node-attributes type="array"/>
 		<default-mode-id type="integer">636</default-mode-id>
 		<default-value-id type="integer" nil="true"/>
-	</poris-node>
-	<poris-node>
+	</sub-system>
+	<sub-system>
 		<name>IPA</name>
 		<id type="integer">637</id>
 		<type>PORISNode</type>
@@ -3320,8 +3320,8 @@
 		<node-attributes type="array"/>
 		<default-mode-id type="integer">699</default-mode-id>
 		<default-value-id type="integer" nil="true"/>
-	</poris-node>
-	<poris-mode>
+	</sub-system>
+	<mode>
 		<name>Pointing_240</name>
 		<id type="integer">693</id>
 		<type>PORISMode</type>
@@ -3356,8 +3356,8 @@
 		<node-attributes type="array"/>
 		<default-mode-id type="integer" nil="true"/>
 		<default-value-id type="integer" nil="true"/>
-	</poris-mode>
-	<poris-mode>
+	</mode>
+	<mode>
 		<name>Pointing_150</name>
 		<id type="integer">694</id>
 		<type>PORISMode</type>
@@ -3392,8 +3392,8 @@
 		<node-attributes type="array"/>
 		<default-mode-id type="integer" nil="true"/>
 		<default-value-id type="integer" nil="true"/>
-	</poris-mode>
-	<poris-node>
+	</mode>
+	<sub-system>
 		<name>ObsID</name>
 		<id type="integer">646</id>
 		<type>PORISNode</type>
@@ -3425,8 +3425,8 @@
 		<node-attributes type="array"/>
 		<default-mode-id type="integer">648</default-mode-id>
 		<default-value-id type="integer" nil="true"/>
-	</poris-node>
-	<poris-node>
+	</sub-system>
+	<sub-system>
 		<name>OffsetRA</name>
 		<id type="integer">650</id>
 		<type>PORISNode</type>
@@ -3464,8 +3464,8 @@
 		<node-attributes type="array"/>
 		<default-mode-id type="integer">653</default-mode-id>
 		<default-value-id type="integer" nil="true"/>
-	</poris-node>
-	<poris-node>
+	</sub-system>
+	<sub-system>
 		<name>OffsetDec</name>
 		<id type="integer">655</id>
 		<type>PORISNode</type>
@@ -3503,8 +3503,8 @@
 		<node-attributes type="array"/>
 		<default-mode-id type="integer">658</default-mode-id>
 		<default-value-id type="integer" nil="true"/>
-	</poris-node>
-	<poris-mode>
+	</sub-system>
+	<mode>
 		<name>Filter_User</name>
 		<id type="integer">597</id>
 		<type>PORISMode</type>
@@ -3533,8 +3533,8 @@
 		<node-attributes type="array"/>
 		<default-mode-id type="integer" nil="true"/>
 		<default-value-id type="integer" nil="true"/>
-	</poris-mode>
-	<poris-mode>
+	</mode>
+	<mode>
 		<name>UsePreImaging_Dont</name>
 		<id type="integer">700</id>
 		<type>PORISMode</type>
@@ -3563,8 +3563,8 @@
 		<node-attributes type="array"/>
 		<default-mode-id type="integer" nil="true"/>
 		<default-value-id type="integer" nil="true"/>
-	</poris-mode>
-	<poris-node>
+	</mode>
+	<sub-system>
 		<name>UserFilter</name>
 		<id type="integer">577</id>
 		<type>PORISNode</type>
@@ -3585,8 +3585,8 @@
 		</destinations>
 		<node-attributes type="array"/>
 		<default-mode-id type="integer">593</default-mode-id>
-	</poris-node>
-	<poris-node>
+	</sub-system>
+	<sub-system>
 		<name>Dispersion</name>
 		<id type="integer">535</id>
 		<type>PORISNode</type>
@@ -3610,8 +3610,8 @@
 		</destinations>
 		<node-attributes type="array"/>
 		<default-mode-id type="integer">556</default-mode-id>
-	</poris-node>
-	<poris-node>
+	</sub-system>
+	<sub-system>
 		<name>DAS</name>
 		<id type="integer">561</id>
 		<type>PORISNode</type>
@@ -3635,8 +3635,8 @@
 		</destinations>
 		<node-attributes type="array"/>
 		<default-mode-id type="integer">571</default-mode-id>
-	</poris-node>
-	<poris-node>
+	</sub-system>
+	<sub-system>
 		<name>IP</name>
 		<id type="integer">600</id>
 		<type>PORISNode</type>
@@ -3670,8 +3670,8 @@
 		</destinations>
 		<node-attributes type="array"/>
 		<default-mode-id type="integer">607</default-mode-id>
-	</poris-node>
-	<poris-node>
+	</sub-system>
+	<sub-system>
 		<name>DateSystem</name>
 		<id type="integer">611</id>
 		<type>PORISNode</type>
@@ -3705,8 +3705,8 @@
 		</destinations>
 		<node-attributes type="array"/>
 		<default-mode-id type="integer">618</default-mode-id>
-	</poris-node>
-	<poris-node>
+	</sub-system>
+	<sub-system>
 		<name>Pointing</name>
 		<id type="integer">630</id>
 		<type>PORISNode</type>
@@ -3736,8 +3736,8 @@
 		</destinations>
 		<node-attributes type="array"/>
 		<default-mode-id type="integer">643</default-mode-id>
-	</poris-node>
-	<poris-mode>
+	</sub-system>
+	<mode>
 		<name>UsePreImaging_Dont240</name>
 		<id type="integer">644</id>
 		<type>PORISMode</type>
@@ -3766,8 +3766,8 @@
 		<node-attributes type="array"/>
 		<default-mode-id type="integer" nil="true"/>
 		<default-value-id type="integer" nil="true"/>
-	</poris-mode>
-	<poris-mode>
+	</mode>
+	<mode>
 		<name>UsePreImaging_Dont150</name>
 		<id type="integer">695</id>
 		<type>PORISMode</type>
@@ -3796,8 +3796,8 @@
 		<node-attributes type="array"/>
 		<default-mode-id type="integer" nil="true"/>
 		<default-value-id type="integer" nil="true"/>
-	</poris-mode>
-	<poris-node>
+	</mode>
+	<sub-system>
 		<name>OffsetPointing</name>
 		<id type="integer">649</id>
 		<type>PORISNode</type>
@@ -3831,8 +3831,8 @@
 		</destinations>
 		<node-attributes type="array"/>
 		<default-mode-id type="integer">660</default-mode-id>
-	</poris-node>
-	<poris-mode>
+	</sub-system>
+	<mode>
 		<name>Observation_Preferences</name>
 		<id type="integer">661</id>
 		<type>PORISMode</type>
@@ -3860,8 +3860,8 @@
 		<node-attributes type="array"/>
 		<default-mode-id type="integer" nil="true"/>
 		<default-value-id type="integer" nil="true"/>
-	</poris-mode>
-	<poris-mode>
+	</mode>
+	<mode>
 		<name>Filters_Normal</name>
 		<id type="integer">598</id>
 		<type>PORISMode</type>
@@ -3886,8 +3886,8 @@
 		<node-attributes type="array"/>
 		<default-mode-id type="integer" nil="true"/>
 		<default-value-id type="integer" nil="true"/>
-	</poris-mode>
-	<poris-mode>
+	</mode>
+	<mode>
 		<name>Observation_Offset</name>
 		<id type="integer">663</id>
 		<type>PORISMode</type>
@@ -3912,8 +3912,8 @@
 		<node-attributes type="array"/>
 		<default-mode-id type="integer" nil="true"/>
 		<default-value-id type="integer" nil="true"/>
-	</poris-mode>
-	<poris-node>
+	</mode>
+	<sub-system>
 		<name>Filter</name>
 		<id type="integer">574</id>
 		<type>PORISNode</type>
@@ -3946,8 +3946,8 @@
 		</destinations>
 		<node-attributes type="array"/>
 		<default-mode-id type="integer">594</default-mode-id>
-	</poris-node>
-	<poris-node>
+	</sub-system>
+	<sub-system>
 		<name>UsePreImaging</name>
 		<id type="integer">626</id>
 		<type>PORISNode</type>
@@ -3990,8 +3990,8 @@
 		</destinations>
 		<node-attributes type="array"/>
 		<default-mode-id type="integer">644</default-mode-id>
-	</poris-node>
-	<poris-mode>
+	</sub-system>
+	<mode>
 		<name>Observation_Normal</name>
 		<id type="integer">662</id>
 		<type>PORISMode</type>
@@ -4013,8 +4013,8 @@
 		<node-attributes type="array"/>
 		<default-mode-id type="integer" nil="true"/>
 		<default-value-id type="integer" nil="true"/>
-	</poris-mode>
-	<poris-mode>
+	</mode>
+	<mode>
 		<name>SMOS</name>
 		<id type="integer">558</id>
 		<type>PORISMode</type>
@@ -4052,8 +4052,8 @@
 		<node-attributes type="array"/>
 		<default-mode-id type="integer" nil="true"/>
 		<default-value-id type="integer" nil="true"/>
-	</poris-mode>
-	<poris-mode>
+	</mode>
+	<mode>
 		<name>SMNS</name>
 		<id type="integer">559</id>
 		<type>PORISMode</type>
@@ -4091,8 +4091,8 @@
 		<node-attributes type="array"/>
 		<default-mode-id type="integer" nil="true"/>
 		<default-value-id type="integer" nil="true"/>
-	</poris-mode>
-	<poris-mode>
+	</mode>
+	<mode>
 		<name>SMSH</name>
 		<id type="integer">560</id>
 		<type>PORISMode</type>
@@ -4130,8 +4130,8 @@
 		<node-attributes type="array"/>
 		<default-mode-id type="integer" nil="true"/>
 		<default-value-id type="integer" nil="true"/>
-	</poris-mode>
-	<poris-node>
+	</mode>
+	<sub-system>
 		<name>Filters</name>
 		<id type="integer">573</id>
 		<type>PORISNode</type>
@@ -4162,8 +4162,8 @@
 		</destinations>
 		<node-attributes type="array"/>
 		<default-mode-id type="integer">598</default-mode-id>
-	</poris-node>
-	<poris-node>
+	</sub-system>
+	<sub-system>
 		<name>Observation</name>
 		<id type="integer">599</id>
 		<type>PORISNode</type>
@@ -4221,8 +4221,8 @@
 		</destinations>
 		<node-attributes type="array"/>
 		<default-mode-id type="integer">661</default-mode-id>
-	</poris-node>
-	<poris-node>
+	</sub-system>
+	<sub-system>
 		<name>OsirisMD</name>
 		<id type="integer">534</id>
 		<type>PORISNode</type>
@@ -4268,6 +4268,6 @@
 		</destinations>
 		<node-attributes type="array"/>
 		<default-mode-id type="integer">558</default-mode-id>
-	</poris-node>
+	</sub-system>
 </poris>
 
