@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<styles>
+  <style name="PORIS" scope="node" selectionOnly="false">
+    <mapping>
+      <source name="csID" origin="customProperty" type="string"/>
+      <target name="labelText" type="string">
+        <hints>
+          <hint type="int">0</hint>
+          <hint type="boolean">true</hint>
+        </hints>
+      </target>
+      <conversion type="asIs"/>
+    </mapping>
+    <mapping>
+      <source name="subject" origin="customProperty" type="string"/>
+      <target name="labelText" type="string">
+        <hints>
+          <hint type="int">1</hint>
+        </hints>
+      </target>
+      <conversion type="asIs"/>
+    </mapping>
+    <mapping>
+      <source name="URL" origin="customProperty" type="string"/>
+      <target name="url" type="string">
+        <hints/>
+      </target>
+      <conversion type="asIs"/>
+    </mapping>
+  </style>
+  <style name="PORISexternal" scope="node" selectionOnly="false">
+    <mapping>
+      <source name="external" origin="customProperty" type="boolean"/>
+      <target name="labelTextColor" type="color">
+        <hints>
+          <hint type="int">0</hint>
+        </hints>
+      </target>
+      <conversion type="discrete">
+        <discrete>
+          <value>true</value>
+          <result>#0000ff</result>
+        </discrete>
+        <discrete>
+          <value>false</value>
+          <result>#000000</result>
+        </discrete>
+      </conversion>
+    </mapping>
+    <mapping>
+      <source name="external" origin="customProperty" type="boolean"/>
+      <target name="labelBorderColor" type="color">
+        <hints>
+          <hint type="int">0</hint>
+        </hints>
+      </target>
+      <conversion type="discrete">
+        <discrete>
+          <value>true</value>
+          <result>#3366ff</result>
+        </discrete>
+      </conversion>
+    </mapping>
+  </style>
+</styles>
