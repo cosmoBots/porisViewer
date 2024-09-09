@@ -37,7 +37,7 @@
   </div>
 </template>
 <script setup>
-import { computed, watch } from 'vue'
+import { ref, computed, watch } from 'vue'
 import VueDatePicker from '@vuepic/vue-datepicker'
 import '@vuepic/vue-datepicker/dist/main.css'
 
@@ -66,7 +66,9 @@ function changeModel(newVal) {
   model.value = newVal
 }
 
-const values = computed(() => props.mode.valuesNodes)
+const mode = ref(props.mode)
+
+const values = computed(() => mode.value.valuesNodes)
 
 const isValueString = () => values.value.length && values.value[0].type === VALUE_STRING_TYPE
 
@@ -88,8 +90,16 @@ console.log(
 console.log(`ValueSelector model.value (${typeof model.value}):`, model.value)
 */
 
+watch(
+  () => props.mode,
+  (newMode) => {
+    console.log('watch.mode', newMode)
+    mode.value = newMode
+  }
+)
+
 watch(values, (newVal, oldVal) => {
-  console.log(`values mode: ${props.mode.id}, changed/oldVal:`, newVal, oldVal)
+  console.log(`values mode: ${mode.value.id}, changed/oldVal:`, newVal, oldVal)
 })
 
 //watch(selected, async (newVal) => {

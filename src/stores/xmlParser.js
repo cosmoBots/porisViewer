@@ -216,6 +216,8 @@ function dereferenceNodeDestinations(JSONmodel, nodes) {
         return JSONmodel.findNode(dest.type, dest.id)
       })
 
+      //console.log('DER', node)
+
       node.valuesNodes = derDestinations.filter(
         (dest) => dest.type != MODE_TYPE && dest.type != SUBSYSTEM_TYPE
       )

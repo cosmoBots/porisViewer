@@ -37,25 +37,22 @@ const props = defineProps({
   }
 })
 
+const currentMode = ref(props.mode)
+
 const value = defineModel()
 
-const currentMode = computed({
-  get() {
-    return props.mode
-  },
-  set(newMode) {
-    //console.log(`currentMode.set() mode:`, newMode)
-    //mode.value = newMode
-    value.value = store.getModelValue(props.subsystem, newMode)
-    //console.log(`currentMode.set() value:`, value.value)
-  }
-})
-
-currentMode.value = props.mode
+value.value = store.getModelValue(props.subsystem, currentMode.value)
 
 watch(value, async (newValue) => {
   //console.log(`setValue() model: ${props.subsystem.ident}, value: ${newValue}`)
   store.setModelValue(props.mode, newValue)
+})
+
+watch(currentMode, (newMode) => {
+  console.log(`currentMode.set() mode:`, newMode)
+  //mode.value = newMode
+  value.value = store.getModelValue(props.subsystem, newMode)
+  console.log(`currentMode.set() value:`, value.value)
 })
 
 watch(
