@@ -19,7 +19,7 @@ const XMLTypeToPorisType = {
   PORISValueDate: VALUE_DATE_RANGE_TYPE,
   PORISValueFilePath: VALUE_FILE_PATH_TYPE,
   PORISMode: MODE_TYPE,
-  PORISSys: SUBSYSTEM_TYPE
+  PORISNode: SUBSYSTEM_TYPE
 }
 
 // Foloowing XML tag names used for selecting the elements 
@@ -33,7 +33,7 @@ const XMLValueTagNames = [
 
 const XMLModeTagName = 'poris-mode'
 
-const XMLSystemTagName = 'poris-sys'
+const XMLSystemTagName = 'poris-node'
 
 /**
  * Returns the value of text XML, converted to the type defined on the 
