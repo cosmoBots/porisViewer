@@ -7,6 +7,7 @@ import {
   VALUE_FILE_PATH_TYPE,
   MODE_TYPE,
   SUBSYSTEM_TYPE,
+  PARAM_TYPE,
   ValueTypes
 } from './porisNode'
 
@@ -19,7 +20,8 @@ const XMLTypeToPorisType = {
   PORISValueDate: VALUE_DATE_RANGE_TYPE,
   PORISValueFilePath: VALUE_FILE_PATH_TYPE,
   PORISMode: MODE_TYPE,
-  PORISSys: SUBSYSTEM_TYPE
+  PORISSys: SUBSYSTEM_TYPE,
+  PorisParam: PARAM_TYPE
 }
 
 // Foloowing XML tag names used for selecting the elements 
@@ -31,9 +33,12 @@ const XMLValueTagNames = [
   'poris-value-file-path'
 ]
 
+const XMLParamTagName = 'poris-param'
+
 const XMLModeTagName = 'poris-mode'
 
 const XMLSystemTagName = 'poris-sys'
+
 
 /**
  * Returns the value of text XML, converted to the type defined on the 
@@ -62,12 +67,11 @@ function getFEText(elm, tagName) {
 
 function parseDestinations(elm, referemcedSusbystems) {
   /*
-  <destinations type="array">
-              <destination type="Value">
-                  <id type="integer">2000000005</id>
-                  <ident>n0::n0::n0::n0::n4</ident>
-              </destination>
-          </destinations>
+    <destinations type="array">
+      <destination type="PORISMode">
+				<id type="integer">557</id>
+			</destination>
+    </destinations>
   */
   const destsArray = elm.getElementsByTagName('destinations')
 
@@ -108,18 +112,13 @@ function parseDestinations(elm, referemcedSusbystems) {
 
 function parseNodeAttributes(elm) {
   /*
-      <node-attributes type="array">
-        <node-attribute>
-          <content>680.0</content>
-          <name>lambda(&#197;)</name>
-          <visibility type="boolean">true</visibility>
-        </node-attribute>
-        <node-attribute>
-          <content>43.0</content>
-          <name>fwhm(&#197;)</name>
-          <visibility type="boolean">true</visibility>
-        </node-attribute>
-      </node-attributes>
+    <node-attributes type="array">
+			<node-attribute>
+				<content>370.0</content>
+				<name>rangeMin(Å)</name>
+				<visibility type="boolean">true</visibility>
+			</node-attribute>
+		</node-attributes>
   */
   const destsArray = elm.getElementsByTagName('node-attributes')
 
@@ -216,12 +215,11 @@ function dereferenceNodeDestinations(JSONmodel, nodes) {
         return JSONmodel.findNode(dest.type, dest.id)
       })
 
-console.log("DDDD node.id " + node.id, derDestinations)
-
       node.valuesNodes = derDestinations.filter(
         (dest) => dest.type != MODE_TYPE && dest.type != SUBSYSTEM_TYPE
       )
       node.modesNodes = derDestinations.filter((dest) => dest.type === MODE_TYPE)
+      node.paramNodes = derDestinations.filter((dest) => dest.type === PARAM_TYPE)
       node.subsystemsNodes = derDestinations.filter((dest) => dest.type === SUBSYSTEM_TYPE)
     }
   })
@@ -246,12 +244,15 @@ export function parseToPorisModel(store, xmlText) {
   const JSONmodel = {
     values: [],
     modes: [],
+    params: [],
     subsystems: [],
 
     findNode: function (type, id) {
       let source = null
       if (type == MODE_TYPE) {
         source = this.modes
+      } else if (type == PARAM_TYPE) {
+        source = this.params
       } else if (type == SUBSYSTEM_TYPE) {
         source = this.subsystems
       } else {
@@ -393,29 +394,72 @@ export function parseToPorisModel(store, xmlText) {
   }
 
   /*
-   <mode>
-          <default-mode-id type="integer" nil="true"/>
-          <default-value-id type="integer" nil="true"/>
-          <id type="integer">2000000007</id>
-          <ident>n0::n0::n0::n0::n6</ident>
-          <name>Slicer</name>
-          <node-type-id type="integer">6</node-type-id>
-          <project-id type="integer">13</project-id>
-          <type>Mode</type>
-          <destinations type="array">
-              <destination type="Value">
-                  <id type="integer">2000000008</id>
-                  <ident>n0::n0::n0::n0::n7</ident>
-              </destination>
-              <destination type="Mode">
-                  <id type="integer">2000000029</id>
-                  <ident>n0::n0::n0::n4</ident>
-              </destination>
-          </destinations>
-          <node-attributes type="array"/>
-          <labels type="array"/>
-      </mode>
-      */
+  <poris-param>
+		<name>BroadFilter</name>
+		<id type="integer">575</id>
+		<type>PORISParam</type>
+		<node-type-id type="integer">4</node-type-id>
+		<ident>id_575</ident>
+		<project-id type="integer">0</project-id>
+		<labels type="array"/>
+		<destinations type="array">
+			<destination type="PORISMode">
+				<id type="integer">583</id>
+			</destination>
+		</destinations>
+		<node-attributes type="array"/>
+		<default-mode-id type="integer">583</default-mode-id>
+		<default-value-id type="integer" nil="true"/>
+	</poris-param>
+  */
+
+  const paramsElements = xmlDoc.getElementsByTagName(XMLParamTagName)
+
+  for (const paramElm of paramsElements) {
+    const basicObj = parseBasicObject(paramElm, referemcedSusbystems)
+
+    let defaultModeId = getFEText(paramElm, 'default-mode-id')
+    let defaultValueId = getFEText(paramElm, 'default-value-id')
+
+    basicObj['defaultModeId'] = defaultModeId
+    basicObj['defaultValueId'] = defaultValueId
+
+    JSONmodel.params.push(new PorisNode(basicObj))
+  }
+
+
+  /*
+    <poris-mode>
+      <name>UsePreImaging_Dont150</name>
+      <id type="integer">695</id>
+      <type>PORISMode</type>
+      <node-type-id type="integer">6</node-type-id>
+      <ident>id_695</ident>
+      <project-id type="integer">0</project-id>
+      <labels type="array">
+        <label>
+          <name>Don't use it (catalog)</name>
+          <scope-kind>
+            <name>CfgPanel</name>
+          </scope-kind>
+        </label>
+        <label>
+          <name>CfgPanel</name>
+          <scope-kind>
+            <name>Don't use it (catalog)</name>
+          </scope-kind>
+        </label>
+      </labels>
+      <destinations type="array">
+        <destination type="PORISMode">
+          <id type="integer">694</id>
+        </destination>
+      </destinations>
+      <node-attributes type="array"/>
+      <default-mode-id type="integer" nil="true"/>
+      <default-value-id type="integer" nil="true"/>
+    </poris-mode>                 
+  */
 
   const modeElements = xmlDoc.getElementsByTagName(XMLModeTagName)
 
@@ -431,38 +475,37 @@ export function parseToPorisModel(store, xmlText) {
     JSONmodel.modes.push(new PorisNode(basicObj))
   }
 
-  /**
-     
-      <sub-system>
-          <default-mode-id type="integer" nil="true"/>
-          <id type="integer">2000000054</id>
-          <ident>n0::n0</ident>
-          <name>Operator</name>
-          <node-type-id type="integer">4</node-type-id>
-          <project-id type="integer">13</project-id>
-          <type>SubSystem</type>
-          <destinations type="array">
-              <destination type="Mode">
-                  <id type="integer">2000000050</id>
-                  <ident>n0::n0::n1</ident>
-              </destination>
-              <destination type="Mode">
-                  <id type="integer">2000000051</id>
-                  <ident>n0::n0::n2</ident>
-              </destination>
-              <destination type="SubSystem">
-                  <id type="integer">2000000055</id>
-                  <ident>n0::n0::n0</ident>
-              </destination>
-              <destination type="Mode">
-                  <id type="integer">-3</id>
-                  <ident>ENG-3</ident>
-              </destination>
-          </destinations>
-          <node-attributes type="array"/>
-          <labels type="array"/>
-      </sub-system>
-     */
+  /*
+    <poris-sys>
+      <name>OsirisMD</name>
+      <id type="integer">534</id>
+      <type>PORISSys</type>
+      <node-type-id type="integer">4</node-type-id>
+      <ident>id_534</ident>
+      <project-id type="integer">0</project-id>
+      <labels type="array">
+        <label>
+          <name>Osiris Mask Designer</name>
+          <scope-kind>
+            <name>CfgPanel</name>
+          </scope-kind>
+        </label>
+        <label>
+          <name>CfgPanel</name>
+          <scope-kind>
+            <name>Osiris Mask Designer</name>
+          </scope-kind>
+        </label>
+      </labels>
+      <destinations type="array">
+        <destination type="PORISMode">
+          <id type="integer">558</id>
+        </destination>
+      </destinations>
+      <node-attributes type="array"/>
+      <default-mode-id type="integer">558</default-mode-id>
+    </poris-sys>
+   */
 
   const subsystemsElements = xmlDoc.getElementsByTagName(XMLSystemTagName)
 
@@ -484,6 +527,7 @@ export function parseToPorisModel(store, xmlText) {
 
   //dereferenceNodeDestinations(JSONmodel, JSONmodel.values)
   dereferenceNodeDestinations(JSONmodel, JSONmodel.modes)
+  dereferenceNodeDestinations(JSONmodel, JSONmodel.params)
   dereferenceNodeDestinations(JSONmodel, JSONmodel.subsystems)
 
   dereferenceDefaultMode(JSONmodel.modes)

@@ -10,6 +10,7 @@ export const VALUE_DATE_RANGE_TYPE = 'ValueDate'
 export const VALUE_FILE_PATH_TYPE = 'ValueFilePath'
 export const MODE_TYPE = 'Mode'
 export const SUBSYSTEM_TYPE = 'SubSystem'
+export const PARAM_TYPE = 'Param'
 
 export const ValueTypes = [
     VALUE_TYPE,
@@ -44,7 +45,7 @@ export class PorisNode {
 
     getValues() {
         if (this.hasValues) {
-            return this.getDestinations(valueTypes)
+            return this.getDestinations(ValueTypes)
         } else {
             return []
         }
