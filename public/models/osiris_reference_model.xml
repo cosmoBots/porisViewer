@@ -16,7 +16,7 @@
 				<visibility type="boolean">true</visibility>
 			</node-attribute>
 		</node-attributes>
-		<value-formatter-id type="integer" nil="true"/>
+		<poris-value-formatter-id type="integer" nil="true"/>
 		<default-string>mypreimagingfile.fits</default-string>
 		<file-extension>fits</file-extension>
 		<file-description>FITS file</file-description>
@@ -62,7 +62,7 @@
 				<visibility type="boolean">false</visibility>
 			</node-attribute>
 		</node-attributes>
-		<value-formatter-id type="integer" nil="true"/>
+		<poris-value-formatter-id type="integer" nil="true"/>
 	</poris-value>
 	<poris-value>
 		<name>R300R</name>
@@ -105,7 +105,7 @@
 				<visibility type="boolean">false</visibility>
 			</node-attribute>
 		</node-attributes>
-		<value-formatter-id type="integer" nil="true"/>
+		<poris-value-formatter-id type="integer" nil="true"/>
 	</poris-value>
 	<poris-value>
 		<name>R500B</name>
@@ -148,7 +148,7 @@
 				<visibility type="boolean">false</visibility>
 			</node-attribute>
 		</node-attributes>
-		<value-formatter-id type="integer" nil="true"/>
+		<poris-value-formatter-id type="integer" nil="true"/>
 	</poris-value>
 	<poris-value>
 		<name>R500R</name>
@@ -191,7 +191,7 @@
 				<visibility type="boolean">false</visibility>
 			</node-attribute>
 		</node-attributes>
-		<value-formatter-id type="integer" nil="true"/>
+		<poris-value-formatter-id type="integer" nil="true"/>
 	</poris-value>
 	<poris-value>
 		<name>R1000B</name>
@@ -234,7 +234,7 @@
 				<visibility type="boolean">false</visibility>
 			</node-attribute>
 		</node-attributes>
-		<value-formatter-id type="integer" nil="true"/>
+		<poris-value-formatter-id type="integer" nil="true"/>
 	</poris-value>
 	<poris-value>
 		<name>R1000R</name>
@@ -277,7 +277,7 @@
 				<visibility type="boolean">false</visibility>
 			</node-attribute>
 		</node-attributes>
-		<value-formatter-id type="integer" nil="true"/>
+		<poris-value-formatter-id type="integer" nil="true"/>
 	</poris-value>
 	<poris-value>
 		<name>R2000B</name>
@@ -320,7 +320,7 @@
 				<visibility type="boolean">false</visibility>
 			</node-attribute>
 		</node-attributes>
-		<value-formatter-id type="integer" nil="true"/>
+		<poris-value-formatter-id type="integer" nil="true"/>
 	</poris-value>
 	<poris-value>
 		<name>R2500U</name>
@@ -363,7 +363,7 @@
 				<visibility type="boolean">false</visibility>
 			</node-attribute>
 		</node-attributes>
-		<value-formatter-id type="integer" nil="true"/>
+		<poris-value-formatter-id type="integer" nil="true"/>
 	</poris-value>
 	<poris-value>
 		<name>R2500V</name>
@@ -406,7 +406,7 @@
 				<visibility type="boolean">false</visibility>
 			</node-attribute>
 		</node-attributes>
-		<value-formatter-id type="integer" nil="true"/>
+		<poris-value-formatter-id type="integer" nil="true"/>
 	</poris-value>
 	<poris-value>
 		<name>R2500R</name>
@@ -449,7 +449,7 @@
 				<visibility type="boolean">false</visibility>
 			</node-attribute>
 		</node-attributes>
-		<value-formatter-id type="integer" nil="true"/>
+		<poris-value-formatter-id type="integer" nil="true"/>
 	</poris-value>
 	<poris-value>
 		<name>R2500I</name>
@@ -492,7 +492,7 @@
 				<visibility type="boolean">false</visibility>
 			</node-attribute>
 		</node-attributes>
-		<value-formatter-id type="integer" nil="true"/>
+		<poris-value-formatter-id type="integer" nil="true"/>
 	</poris-value>
 	<poris-value>
 		<name>Grism_NotRotated</name>
@@ -517,7 +517,7 @@
 		</labels>
 		<destinations type="array"/>
 		<node-attributes type="array"/>
-		<value-formatter-id type="integer" nil="true"/>
+		<poris-value-formatter-id type="integer" nil="true"/>
 	</poris-value>
 	<poris-value>
 		<name>1x1</name>
@@ -540,7 +540,7 @@
 				<visibility type="boolean">true</visibility>
 			</node-attribute>
 		</node-attributes>
-		<value-formatter-id type="integer" nil="true"/>
+		<poris-value-formatter-id type="integer" nil="true"/>
 	</poris-value>
 	<poris-value>
 		<name>2x1</name>
@@ -576,7 +576,7 @@
 				<visibility type="boolean">true</visibility>
 			</node-attribute>
 		</node-attributes>
-		<value-formatter-id type="integer" nil="true"/>
+		<poris-value-formatter-id type="integer" nil="true"/>
 	</poris-value>
 	<poris-value>
 		<name>1x2</name>
@@ -612,7 +612,7 @@
 				<visibility type="boolean">true</visibility>
 			</node-attribute>
 		</node-attributes>
-		<value-formatter-id type="integer" nil="true"/>
+		<poris-value-formatter-id type="integer" nil="true"/>
 	</poris-value>
 	<poris-value>
 		<name>2x2</name>
@@ -635,7 +635,7 @@
 				<visibility type="boolean">true</visibility>
 			</node-attribute>
 		</node-attributes>
-		<value-formatter-id type="integer" nil="true"/>
+		<poris-value-formatter-id type="integer" nil="true"/>
 	</poris-value>
 	<poris-mode>
 		<name>Filter_NoFilter</name>
@@ -684,7 +684,7 @@
 				<visibility type="boolean">true</visibility>
 			</node-attribute>
 		</node-attributes>
-		<value-formatter-id type="integer" nil="true"/>
+		<poris-value-formatter-id type="integer" nil="true"/>
 	</poris-value>
 	<poris-value>
 		<name>Sloan_g'</name>
@@ -707,7 +707,7 @@
 				<visibility type="boolean">true</visibility>
 			</node-attribute>
 		</node-attributes>
-		<value-formatter-id type="integer" nil="true"/>
+		<poris-value-formatter-id type="integer" nil="true"/>
 	</poris-value>
 	<poris-value>
 		<name>Sloan_r'</name>
@@ -730,7 +730,7 @@
 				<visibility type="boolean">true</visibility>
 			</node-attribute>
 		</node-attributes>
-		<value-formatter-id type="integer" nil="true"/>
+		<poris-value-formatter-id type="integer" nil="true"/>
 	</poris-value>
 	<poris-value>
 		<name>Sloan_i'</name>
@@ -753,7 +753,7 @@
 				<visibility type="boolean">true</visibility>
 			</node-attribute>
 		</node-attributes>
-		<value-formatter-id type="integer" nil="true"/>
+		<poris-value-formatter-id type="integer" nil="true"/>
 	</poris-value>
 	<poris-value>
 		<name>Sloan_z'</name>
@@ -776,7 +776,7 @@
 				<visibility type="boolean">true</visibility>
 			</node-attribute>
 		</node-attributes>
-		<value-formatter-id type="integer" nil="true"/>
+		<poris-value-formatter-id type="integer" nil="true"/>
 	</poris-value>
 	<poris-value>
 		<name>f643/27</name>
@@ -799,7 +799,7 @@
 				<visibility type="boolean">true</visibility>
 			</node-attribute>
 		</node-attributes>
-		<value-formatter-id type="integer" nil="true"/>
+		<poris-value-formatter-id type="integer" nil="true"/>
 	</poris-value>
 	<poris-value>
 		<name>f648/28</name>
@@ -822,7 +822,7 @@
 				<visibility type="boolean">true</visibility>
 			</node-attribute>
 		</node-attributes>
-		<value-formatter-id type="integer" nil="true"/>
+		<poris-value-formatter-id type="integer" nil="true"/>
 	</poris-value>
 	<poris-value>
 		<name>f657/35</name>
@@ -845,7 +845,7 @@
 				<visibility type="boolean">true</visibility>
 			</node-attribute>
 		</node-attributes>
-		<value-formatter-id type="integer" nil="true"/>
+		<poris-value-formatter-id type="integer" nil="true"/>
 	</poris-value>
 	<poris-value>
 		<name>f680/43</name>
@@ -868,7 +868,7 @@
 				<visibility type="boolean">true</visibility>
 			</node-attribute>
 		</node-attributes>
-		<value-formatter-id type="integer" nil="true"/>
+		<poris-value-formatter-id type="integer" nil="true"/>
 	</poris-value>
 	<poris-value>
 		<name>f694/44</name>
@@ -891,7 +891,7 @@
 				<visibility type="boolean">true</visibility>
 			</node-attribute>
 		</node-attributes>
-		<value-formatter-id type="integer" nil="true"/>
+		<poris-value-formatter-id type="integer" nil="true"/>
 	</poris-value>
 	<poris-value>
 		<name>f709/45</name>
@@ -914,7 +914,7 @@
 				<visibility type="boolean">true</visibility>
 			</node-attribute>
 		</node-attributes>
-		<value-formatter-id type="integer" nil="true"/>
+		<poris-value-formatter-id type="integer" nil="true"/>
 	</poris-value>
 	<poris-value>
 		<name>f723/45</name>
@@ -937,7 +937,7 @@
 				<visibility type="boolean">true</visibility>
 			</node-attribute>
 		</node-attributes>
-		<value-formatter-id type="integer" nil="true"/>
+		<poris-value-formatter-id type="integer" nil="true"/>
 	</poris-value>
 	<poris-value>
 		<name>f738/46</name>
@@ -960,7 +960,7 @@
 				<visibility type="boolean">true</visibility>
 			</node-attribute>
 		</node-attributes>
-		<value-formatter-id type="integer" nil="true"/>
+		<poris-value-formatter-id type="integer" nil="true"/>
 	</poris-value>
 	<poris-value>
 		<name>f754/50</name>
@@ -983,7 +983,7 @@
 				<visibility type="boolean">true</visibility>
 			</node-attribute>
 		</node-attributes>
-		<value-formatter-id type="integer" nil="true"/>
+		<poris-value-formatter-id type="integer" nil="true"/>
 	</poris-value>
 	<poris-value>
 		<name>f770/50</name>
@@ -1006,7 +1006,7 @@
 				<visibility type="boolean">true</visibility>
 			</node-attribute>
 		</node-attributes>
-		<value-formatter-id type="integer" nil="true"/>
+		<poris-value-formatter-id type="integer" nil="true"/>
 	</poris-value>
 	<poris-value>
 		<name>f785/48</name>
@@ -1029,7 +1029,7 @@
 				<visibility type="boolean">true</visibility>
 			</node-attribute>
 		</node-attributes>
-		<value-formatter-id type="integer" nil="true"/>
+		<poris-value-formatter-id type="integer" nil="true"/>
 	</poris-value>
 	<poris-value>
 		<name>f802/51</name>
@@ -1052,7 +1052,7 @@
 				<visibility type="boolean">true</visibility>
 			</node-attribute>
 		</node-attributes>
-		<value-formatter-id type="integer" nil="true"/>
+		<poris-value-formatter-id type="integer" nil="true"/>
 	</poris-value>
 	<poris-value>
 		<name>f819/52</name>
@@ -1075,7 +1075,7 @@
 				<visibility type="boolean">true</visibility>
 			</node-attribute>
 		</node-attributes>
-		<value-formatter-id type="integer" nil="true"/>
+		<poris-value-formatter-id type="integer" nil="true"/>
 	</poris-value>
 	<poris-value>
 		<name>f838/58</name>
@@ -1098,7 +1098,7 @@
 				<visibility type="boolean">true</visibility>
 			</node-attribute>
 		</node-attributes>
-		<value-formatter-id type="integer" nil="true"/>
+		<poris-value-formatter-id type="integer" nil="true"/>
 	</poris-value>
 	<poris-value>
 		<name>f858/58</name>
@@ -1121,7 +1121,7 @@
 				<visibility type="boolean">true</visibility>
 			</node-attribute>
 		</node-attributes>
-		<value-formatter-id type="integer" nil="true"/>
+		<poris-value-formatter-id type="integer" nil="true"/>
 	</poris-value>
 	<poris-value>
 		<name>f878/59</name>
@@ -1144,7 +1144,7 @@
 				<visibility type="boolean">true</visibility>
 			</node-attribute>
 		</node-attributes>
-		<value-formatter-id type="integer" nil="true"/>
+		<poris-value-formatter-id type="integer" nil="true"/>
 	</poris-value>
 	<poris-value>
 		<name>f893/50</name>
@@ -1167,7 +1167,7 @@
 				<visibility type="boolean">true</visibility>
 			</node-attribute>
 		</node-attributes>
-		<value-formatter-id type="integer" nil="true"/>
+		<poris-value-formatter-id type="integer" nil="true"/>
 	</poris-value>
 	<poris-value>
 		<name>f902/40</name>
@@ -1190,7 +1190,7 @@
 				<visibility type="boolean">true</visibility>
 			</node-attribute>
 		</node-attributes>
-		<value-formatter-id type="integer" nil="true"/>
+		<poris-value-formatter-id type="integer" nil="true"/>
 	</poris-value>
 	<poris-value>
 		<name>f910/40</name>
@@ -1213,7 +1213,7 @@
 				<visibility type="boolean">true</visibility>
 			</node-attribute>
 		</node-attributes>
-		<value-formatter-id type="integer" nil="true"/>
+		<poris-value-formatter-id type="integer" nil="true"/>
 	</poris-value>
 	<poris-value>
 		<name>f919/41</name>
@@ -1236,7 +1236,7 @@
 				<visibility type="boolean">true</visibility>
 			</node-attribute>
 		</node-attributes>
-		<value-formatter-id type="integer" nil="true"/>
+		<poris-value-formatter-id type="integer" nil="true"/>
 	</poris-value>
 	<poris-value>
 		<name>f923/34</name>
@@ -1259,7 +1259,7 @@
 				<visibility type="boolean">true</visibility>
 			</node-attribute>
 		</node-attributes>
-		<value-formatter-id type="integer" nil="true"/>
+		<poris-value-formatter-id type="integer" nil="true"/>
 	</poris-value>
 	<poris-value>
 		<name>f927/34</name>
@@ -1282,7 +1282,7 @@
 				<visibility type="boolean">true</visibility>
 			</node-attribute>
 		</node-attributes>
-		<value-formatter-id type="integer" nil="true"/>
+		<poris-value-formatter-id type="integer" nil="true"/>
 	</poris-value>
 	<poris-value>
 		<name>f932/34</name>
@@ -1305,7 +1305,7 @@
 				<visibility type="boolean">true</visibility>
 			</node-attribute>
 		</node-attributes>
-		<value-formatter-id type="integer" nil="true"/>
+		<poris-value-formatter-id type="integer" nil="true"/>
 	</poris-value>
 	<poris-value>
 		<name>f936/35</name>
@@ -1328,7 +1328,7 @@
 				<visibility type="boolean">true</visibility>
 			</node-attribute>
 		</node-attributes>
-		<value-formatter-id type="integer" nil="true"/>
+		<poris-value-formatter-id type="integer" nil="true"/>
 	</poris-value>
 	<poris-value>
 		<name>f940/35</name>
@@ -1351,7 +1351,7 @@
 				<visibility type="boolean">true</visibility>
 			</node-attribute>
 		</node-attributes>
-		<value-formatter-id type="integer" nil="true"/>
+		<poris-value-formatter-id type="integer" nil="true"/>
 	</poris-value>
 	<poris-value-float>
 		<name>UserFilterLambdaRange</name>
@@ -1363,7 +1363,7 @@
 		<labels type="array"/>
 		<destinations type="array"/>
 		<node-attributes type="array"/>
-		<value-formatter-id type="integer">1</value-formatter-id>
+		<poris-value-formatter-id type="integer">1</poris-value-formatter-id>
 		<default-float type="float">6563.0</default-float>
 		<rangemin type="float">3500.0</rangemin>
 		<rangemax type="float">10000.0</rangemax>
@@ -1378,7 +1378,7 @@
 		<labels type="array"/>
 		<destinations type="array"/>
 		<node-attributes type="array"/>
-		<value-formatter-id type="integer">1</value-formatter-id>
+		<poris-value-formatter-id type="integer">1</poris-value-formatter-id>
 		<default-float type="float">100.0</default-float>
 		<rangemin type="float">1.0</rangemin>
 		<rangemax type="float">10000.0</rangemax>
@@ -1393,7 +1393,7 @@
 		<labels type="array"/>
 		<destinations type="array"/>
 		<node-attributes type="array"/>
-		<value-formatter-id type="integer">6</value-formatter-id>
+		<poris-value-formatter-id type="integer">6</poris-value-formatter-id>
 		<default-string>2011-04-09 00:00:00 UTC</default-string>
 		<date-min type="timestamp">2006-02-01 00:00:00 UTC</date-min>
 		<date-max type="timestamp">2016-12-31 23:59:00 UTC</date-max>
@@ -1409,7 +1409,7 @@
 		<labels type="array"/>
 		<destinations type="array"/>
 		<node-attributes type="array"/>
-		<value-formatter-id type="integer">1</value-formatter-id>
+		<poris-value-formatter-id type="integer">1</poris-value-formatter-id>
 		<default-float type="float">0.0</default-float>
 		<rangemin type="float">0.0</rangemin>
 		<rangemax type="float">360.0</rangemax>
@@ -1424,7 +1424,7 @@
 		<labels type="array"/>
 		<destinations type="array"/>
 		<node-attributes type="array"/>
-		<value-formatter-id type="integer">1</value-formatter-id>
+		<poris-value-formatter-id type="integer">1</poris-value-formatter-id>
 		<default-float type="float">0.0</default-float>
 		<rangemin type="float">-21600.0</rangemin>
 		<rangemax type="float">21600.0</rangemax>
@@ -1439,7 +1439,7 @@
 		<labels type="array"/>
 		<destinations type="array"/>
 		<node-attributes type="array"/>
-		<value-formatter-id type="integer">1</value-formatter-id>
+		<poris-value-formatter-id type="integer">1</poris-value-formatter-id>
 		<default-float type="float">0.0</default-float>
 		<rangemin type="float">-1296000.0</rangemin>
 		<rangemax type="float">1296000.0</rangemax>
@@ -1454,7 +1454,7 @@
 		<labels type="array"/>
 		<destinations type="array"/>
 		<node-attributes type="array"/>
-		<value-formatter-id type="integer">1</value-formatter-id>
+		<poris-value-formatter-id type="integer">1</poris-value-formatter-id>
 		<default-float type="float">0.0</default-float>
 		<rangemin type="float">-21600.0</rangemin>
 		<rangemax type="float">21600.0</rangemax>
@@ -1469,7 +1469,7 @@
 		<labels type="array"/>
 		<destinations type="array"/>
 		<node-attributes type="array"/>
-		<value-formatter-id type="integer">1</value-formatter-id>
+		<poris-value-formatter-id type="integer">1</poris-value-formatter-id>
 		<default-float type="float">0.0</default-float>
 		<rangemin type="float">-1296000.0</rangemin>
 		<rangemax type="float">1296000.0</rangemax>
@@ -1484,7 +1484,7 @@
 		<labels type="array"/>
 		<destinations type="array"/>
 		<node-attributes type="array"/>
-		<value-formatter-id type="integer">1</value-formatter-id>
+		<poris-value-formatter-id type="integer">1</poris-value-formatter-id>
 		<default-float type="float">0.0</default-float>
 		<rangemin type="float">0.0</rangemin>
 		<rangemax type="float">360.0</rangemax>
@@ -1499,7 +1499,7 @@
 		<labels type="array"/>
 		<destinations type="array"/>
 		<node-attributes type="array"/>
-		<value-formatter-id type="integer">1</value-formatter-id>
+		<poris-value-formatter-id type="integer">1</poris-value-formatter-id>
 		<default-float type="float">0.0</default-float>
 		<rangemin type="float">-90.0</rangemin>
 		<rangemax type="float">90.0</rangemax>
@@ -1514,7 +1514,7 @@
 		<labels type="array"/>
 		<destinations type="array"/>
 		<node-attributes type="array"/>
-		<value-formatter-id type="integer">1</value-formatter-id>
+		<poris-value-formatter-id type="integer">1</poris-value-formatter-id>
 		<default-float type="float">0.0</default-float>
 		<rangemin type="float">0.0</rangemin>
 		<rangemax type="float">360.0</rangemax>
@@ -1542,7 +1542,7 @@
 		</labels>
 		<destinations type="array"/>
 		<node-attributes type="array"/>
-		<value-formatter-id type="integer" nil="true"/>
+		<poris-value-formatter-id type="integer" nil="true"/>
 	</poris-value>
 	<poris-value-float>
 		<name>ShuffleLines_Range</name>
@@ -1554,7 +1554,7 @@
 		<labels type="array"/>
 		<destinations type="array"/>
 		<node-attributes type="array"/>
-		<value-formatter-id type="integer">1</value-formatter-id>
+		<poris-value-formatter-id type="integer">1</poris-value-formatter-id>
 		<default-float type="float">100.0</default-float>
 		<rangemin type="float">1.0</rangemin>
 		<rangemax type="float">1000.0</rangemax>
@@ -1569,7 +1569,7 @@
 		<labels type="array"/>
 		<destinations type="array"/>
 		<node-attributes type="array"/>
-		<value-formatter-id type="integer" nil="true"/>
+		<poris-value-formatter-id type="integer" nil="true"/>
 		<default-string>First Name</default-string>
 	</poris-value-string>
 	<poris-value-string>
@@ -1582,7 +1582,7 @@
 		<labels type="array"/>
 		<destinations type="array"/>
 		<node-attributes type="array"/>
-		<value-formatter-id type="integer" nil="true"/>
+		<poris-value-formatter-id type="integer" nil="true"/>
 		<default-string>Surname</default-string>
 	</poris-value-string>
 	<poris-value-float>
@@ -1595,7 +1595,7 @@
 		<labels type="array"/>
 		<destinations type="array"/>
 		<node-attributes type="array"/>
-		<value-formatter-id type="integer">1</value-formatter-id>
+		<poris-value-formatter-id type="integer">1</poris-value-formatter-id>
 		<default-float type="float">3.0</default-float>
 		<rangemin type="float">0.0</rangemin>
 		<rangemax type="float">10.0</rangemax>
@@ -1623,7 +1623,7 @@
 		</labels>
 		<destinations type="array"/>
 		<node-attributes type="array"/>
-		<value-formatter-id type="integer" nil="true"/>
+		<poris-value-formatter-id type="integer" nil="true"/>
 	</poris-value>
 	<poris-value>
 		<name>YesCheckSpectraOverlap</name>
@@ -1648,7 +1648,7 @@
 		</labels>
 		<destinations type="array"/>
 		<node-attributes type="array"/>
-		<value-formatter-id type="integer" nil="true"/>
+		<poris-value-formatter-id type="integer" nil="true"/>
 	</poris-value>
 	<poris-value-float>
 		<name>MaxMasksRange</name>
@@ -1660,7 +1660,7 @@
 		<labels type="array"/>
 		<destinations type="array"/>
 		<node-attributes type="array"/>
-		<value-formatter-id type="integer">1</value-formatter-id>
+		<poris-value-formatter-id type="integer">1</poris-value-formatter-id>
 		<default-float type="float">3.0</default-float>
 		<rangemin type="float">1.0</rangemin>
 		<rangemax type="float">15.0</rangemax>
@@ -1688,7 +1688,7 @@
 		</labels>
 		<destinations type="array"/>
 		<node-attributes type="array"/>
-		<value-formatter-id type="integer" nil="true"/>
+		<poris-value-formatter-id type="integer" nil="true"/>
 	</poris-value>
 	<poris-value>
 		<name>IPA150</name>
@@ -1713,7 +1713,7 @@
 		</labels>
 		<destinations type="array"/>
 		<node-attributes type="array"/>
-		<value-formatter-id type="integer" nil="true"/>
+		<poris-value-formatter-id type="integer" nil="true"/>
 	</poris-value>
 	<poris-value-string>
 		<name>ObsIDString</name>
@@ -1725,7 +1725,7 @@
 		<labels type="array"/>
 		<destinations type="array"/>
 		<node-attributes type="array"/>
-		<value-formatter-id type="integer" nil="true"/>
+		<poris-value-formatter-id type="integer" nil="true"/>
 		<default-string>000000000000</default-string>
 	</poris-value-string>
 	<poris-mode>
