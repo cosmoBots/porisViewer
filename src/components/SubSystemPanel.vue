@@ -111,7 +111,7 @@ if (modes.value.length) {
   }
 }
 
-console.log(`sub ${subsystem.value.id}, initial mode: ${mode.value.id}`)
+console.log(`sub ${subsystem.value?.id}, initial mode: ${mode.value?.id}`)
 </script>
 <style lang="scss" scoped>
 .panel {

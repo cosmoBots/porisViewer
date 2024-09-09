@@ -68,7 +68,13 @@ function changeModel(newVal) {
 
 const mode = ref(props.mode)
 
-const values = computed(() => mode.value.valuesNodes)
+const values = computed(() => {
+  if (mode.value.hasValues) {
+    return mode.value.valuesNodes
+  } else {
+    return []
+  }
+})
 
 const isValueString = () => values.value.length && values.value[0].type === VALUE_STRING_TYPE
 

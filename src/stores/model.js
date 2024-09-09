@@ -244,12 +244,12 @@ export const useModelStore = defineStore('model', () => {
       value
     )
 
-    let valueOptions = mode.valuesNodes
-
-    if (valueOptions.length == 0) {
+    if (!mode.hasValues) {
       //console.log(`getModelValue() no value!!`)
       return null
     }
+
+    let valueOptions = mode.valuesNodes
 
     console.log(`getModelValue() valueOptions[0].type: ${valueOptions[0].type}`)
 

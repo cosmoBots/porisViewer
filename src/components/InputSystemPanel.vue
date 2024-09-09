@@ -15,7 +15,7 @@
   </div>
 </template>
 <script setup>
-import { ref, computed, watch } from 'vue'
+import { ref, watch } from 'vue'
 import { useModelStore } from '@/stores/model'
 import ModeSelector from './ModeSelector.vue'
 import ValueSelector from './ValueSelector.vue'
