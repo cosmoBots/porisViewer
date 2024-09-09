@@ -1,14 +1,13 @@
 <template>
-  <div class="panel">
+  <div class="subsystem-panel">
     <h3 class="title" v-if="subsystem.label != '-'">
       {{ subsystem.label || subsystem.name }} / {{ subsystem.id }}
     </h3>
+    <span v-else>{{ subsystem.id }}</span>
 
-    <ModeSelector
-      v-if="modes.length > 1 && subsystem.hasSubsystems"
-      v-model="mode"
-      :modes="modes"
-    />
+    <div class="mode-selector" v-if="(true || modes.length > 1) && subsystem.hasSubsystems">
+      <ModeSelector v-model="mode" :modes="modes" />
+    </div>
 
     <InputSystemPanel
       v-if="mode && !subsystem.hasSubsystems"
@@ -20,7 +19,7 @@
     <template v-for="sub in subSubsystems" :key="sub.id">
       <SubSystemPanel v-if="sub.hasSubsystems" :subsystems="[...props.subsystems, sub]" />
       <InputSystemPanel
-        v-if="sub.modesNodes.length > 0"
+        v-if="sub.hasModes && sub.hasValues"
         :subsystem="sub"
         :modes="sub.modesNodes"
         :mode="sub.modesNodes[0]"
@@ -29,6 +28,7 @@
   </div>
 </template>
 <script setup>
+import { intersection as _intersection } from 'lodash-es'
 import { ref, computed, watch } from 'vue'
 import { useModelStore } from '@/stores/model'
 import ModeSelector from './ModeSelector.vue'
@@ -48,8 +48,6 @@ const props = defineProps({
   }
 })
 
-console.log('props.subsystems', props.subsystems)
-
 const mode = ref()
 
 const subsystem = computed(() => {
@@ -58,7 +56,14 @@ const subsystem = computed(() => {
 
 // subsystemas dentro del modo actual que tienen este modo como opción
 const subSubsystems = computed(() => {
-  return subsystem.value.subsystemsNodes.filter((sub) => store.hasValidObjModes(sub))
+  if (mode.value != null && mode.value.hasModes && subsystem.value.hasSubsystems) {
+    return subsystem.value.subsystemsNodes.filter((sub) => {
+      return sub.hasModes && _intersection(sub.modesNodes, mode.value.modesNodes).length > 0
+    })
+  } else {
+    console.log(`SubSub mode.id: ${mode.value?.id} [VACIO]`)
+    return []
+  }
 })
 
 //console.log(`SubSystem name: ${subsystem.value.name}, ident: ${subsystem.value.ident} props.isRoot: ${props.isRoot}`)
@@ -114,7 +119,7 @@ if (modes.value.length) {
 console.log(`sub ${subsystem.value?.id}, initial mode: ${mode.value?.id}`)
 </script>
 <style lang="scss" scoped>
-.panel {
+.subsystem-panel {
   background-color: rgba(204, 204, 204, 0.5);
   border: 1px solid #ccc;
   border-radius: 4px;

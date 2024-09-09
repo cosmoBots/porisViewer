@@ -1,11 +1,11 @@
 <template>
-  <div class="input-panel">
+  <div class="inputsystem-panel">
     <div class="input-mode-panel">
       <span class="title">{{ subsystem.label || subsystem.name }} / {{ subsystem.id }}</span>
       <span class="value-selector">
         <ModeSelector
           class="mode-selector"
-          v-if="modes.length > 1"
+          v-if="true || modes.length > 1"
           v-model="currentMode"
           :modes="modes"
         />
@@ -41,17 +41,17 @@ const currentMode = ref(props.mode)
 
 const value = defineModel()
 
-value.value = store.getModelValue(props.subsystem, currentMode.value)
+value.value = store.getSystemValue(props.subsystem, currentMode.value)
 
 watch(value, async (newValue) => {
   //console.log(`setValue() model: ${props.subsystem.ident}, value: ${newValue}`)
-  store.setModelValue(props.mode, newValue)
+  store.setSystemValue(props.subsystem, newValue)
 })
 
 watch(currentMode, (newMode) => {
   console.log(`currentMode.set() mode:`, newMode)
   //mode.value = newMode
-  value.value = store.getModelValue(props.subsystem, newMode)
+  value.value = store.getSystemValue(props.subsystem, newMode)
   console.log(`currentMode.set() value:`, value.value)
 })
 
@@ -64,7 +64,7 @@ watch(
 )
 </script>
 <style lang="scss" scoped>
-.input-panel {
+.inputsystem-panel {
   position: relative;
   background-color: rgba(235, 117, 117, 0.5);
   border: 1px solid #ccc;

@@ -8,7 +8,7 @@
         <RouterLink :to="{ name: 'xml' }">Model Source XML</RouterLink>
       </nav>
 
-      <div>
+      <!--div>
         <h3>Valid Modes</h3>
         <ul class="parametersModes">
           <li v-for="param in validModes" :key="param.id">{{ param.name }} / {{ param.id }}</li>
@@ -23,9 +23,9 @@
       <div>
         <h3>Model Values</h3>
         <ul class="parametersModes">
-          <li v-for="(value, name) of modelValues" :key="name">{{ name }} = {{ value }}</li>
+          <li v-for="(value, name) of systemValues" :key="name">{{ name }} = {{ value }}</li>
         </ul>
-      </div>
+      </div -->
     </div>
   </header>
 
@@ -41,7 +41,7 @@ const store = useModelStore()
 
 const validModes = computed(() => store.validModes)
 const currentModes = computed(() => store.currentModes)
-const modelValues = computed(() => store.modelValues)
+const systemValues = computed(() => store.systemValues)
 </script>
 
 <style scoped>

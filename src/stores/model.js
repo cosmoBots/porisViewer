@@ -22,7 +22,7 @@ export const useModelStore = defineStore('model', () => {
   const validModes = ref([])
   const currentModes = ref([])
 
-  const modelValues = ref({})
+  const systemValues = ref({})
 
   function loadModel(modelName) {
     xmlModelLoader(modelName).then((model) => {
@@ -38,7 +38,7 @@ export const useModelStore = defineStore('model', () => {
       validModes.value = []
       currentModes.value = []
 
-      modelValues.value = {}
+      systemValues.value = {}
 
       setValidMode(JSONmodel.rootSubsystem)
     })
@@ -230,26 +230,35 @@ export const useModelStore = defineStore('model', () => {
     return getValidObjModes(obj).length > 0
   }
 
-  function setModelValue(model, value) {
-    //console.log(`setModelValue() model: ${model.id}, value:`, value)
-    modelValues.value[`${model.id}`] = value
+  function setSystemValue(system, value) {
+    console.log(`setSystemValue() system: ${system.id}, value:`, value)
+    systemValues.value[`${system.id}`] = value
   }
 
-  function getModelValue(model, mode) {
-    let value = modelValues.value[`${model.id}`]
+  function getSystemValue(system, mode) {
+    let value = systemValues.value[`${system.id}`]
 
     console.log(
-      `getModelValue() model: ${model.id}, _isUndefined(value): ${_isUndefined(value)}, mode / value`,
+      `getSystemValue() system: ${system.id}, _isUndefined(value): ${_isUndefined(value)}, mode / value`,
       mode,
       value
     )
 
     if (!mode.hasValues) {
-      //console.log(`getModelValue() no value!!`)
+      //console.log(`getSystemValue() no value!!`)
       return null
     }
 
     let valueOptions = mode.valuesNodes
+
+    if (
+      !_isUndefined(value) &&
+      valueOptions.find((val) => {
+        val.id === value.id
+      }) === null
+    ) {
+      value = undefined
+    }
 
     console.log(`getModelValue() valueOptions[0].type: ${valueOptions[0].type}`)
 
@@ -276,7 +285,7 @@ export const useModelStore = defineStore('model', () => {
       }
     }
 
-    setModelValue(mode, value)
+    setSystemValue(system, value)
 
     return value
   }
@@ -292,7 +301,7 @@ export const useModelStore = defineStore('model', () => {
     rootSubsystem,
     validModes,
     currentModes,
-    modelValues,
+    systemValues,
     loadModel,
     getValue,
     getMode,
@@ -302,7 +311,7 @@ export const useModelStore = defineStore('model', () => {
     addValidMode,
     getValidObjModes,
     hasValidObjModes,
-    getModelValue,
-    setModelValue
+    getSystemValue,
+    setSystemValue
   }
 })

@@ -487,5 +487,7 @@ export function parseToPorisModel(store, xmlText) {
   dereferenceDefaultMode(JSONmodel.modes)
   dereferenceDefaultMode(JSONmodel.subsystems)
 
+  console.log('Loaded model', JSONmodel)
+
   return JSONmodel
 }
