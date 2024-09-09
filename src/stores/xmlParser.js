@@ -20,8 +20,8 @@ const XMLTypeToPorisType = {
   PORISValueDate: VALUE_DATE_RANGE_TYPE,
   PORISValueFilePath: VALUE_FILE_PATH_TYPE,
   PORISMode: MODE_TYPE,
+  PORISParam: PARAM_TYPE,
   PORISSys: SUBSYSTEM_TYPE,
-  PorisParam: PARAM_TYPE
 }
 
 // Foloowing XML tag names used for selecting the elements 
@@ -215,8 +215,10 @@ function dereferenceNodeDestinations(JSONmodel, nodes) {
         return JSONmodel.findNode(dest.type, dest.id)
       })
 
+      console.log("NODE.id " + node.id, node, derDestinations)
+
       node.valuesNodes = derDestinations.filter(
-        (dest) => dest.type != MODE_TYPE && dest.type != SUBSYSTEM_TYPE
+        (dest) => dest.type != MODE_TYPE && dest.type != PARAM_TYPE && dest.type != SUBSYSTEM_TYPE
       )
       node.modesNodes = derDestinations.filter((dest) => dest.type === MODE_TYPE)
       node.paramNodes = derDestinations.filter((dest) => dest.type === PARAM_TYPE)
