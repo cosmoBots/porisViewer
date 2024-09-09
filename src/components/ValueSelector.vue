@@ -26,7 +26,7 @@
     <select
       v-else-if="isValue()"
       v-model="model"
-      :disabled2="values.length < 2"
+      :disabled="values.length < 2"
       @update:modelValue="changeModel"
     >
       <option v-for="v in values" :key="v.id" :value="v">{{ v.name }}</option>

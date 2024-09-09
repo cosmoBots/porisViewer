@@ -13,7 +13,7 @@ import { useModelStore } from '@/stores/model'
 
 const store = useModelStore()
 
-const modelName = ref('a')
+const modelName = ref('b')
 
 const updateModel = () => {
   store.loadModel(modelName.value)
