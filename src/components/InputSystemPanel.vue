@@ -3,12 +3,12 @@
     <div class="input-mode-panel">
       <span class="title">{{ subsystem.label || subsystem.name }} / {{ subsystem.id }}</span>
       <span class="value-selector">
-        <ModeSelector
+        <!-- ModeSelector
           class="mode-selector"
           v-if="modes.length > 1"
           v-model="currentMode"
           :modes="modes"
-        />
+        / -->
         <ValueSelector :mode="currentMode" v-model="value" />
       </span>
     </div>
@@ -47,16 +47,20 @@ const currentMode = computed({
   }
 })
 
-const modes = computed(() => {
-  return props.subsystem.modesNodes
-})
-
 currentMode.value = props.mode
 
 watch(value, async (newValue) => {
   console.log(`setValue() model: ${props.subsystem.ident}, value: ${newValue}`)
   store.setModelValue(props.subsystem, newValue)
 })
+
+watch(
+  () => props.mode,
+  (newValue) => {
+    console.log(`new props.mode:`, newValue)
+    currentMode.value = newValue
+  }
+)
 </script>
 <style lang="scss" scoped>
 .input-panel {

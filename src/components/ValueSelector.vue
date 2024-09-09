@@ -23,7 +23,12 @@
 
     <input v-else-if="isValueFilePath()" type="file" :accept="values[0].fileExtension" />
 
-    <select v-else-if="isValue()" v-model="model" :disabled2="values.length < 2">
+    <select
+      v-else-if="isValue()"
+      v-model="model"
+      :disabled="values.length < 2"
+      @update:modelValue="changeModel"
+    >
       <option v-for="v in values" :key="v.id" :value="v">{{ v.name }}</option>
     </select>
 
@@ -56,6 +61,11 @@ const props = defineProps({
 
 const model = defineModel()
 
+function changeModel(newVal) {
+  console.log(`changeModel() newVal`, newVal)
+  model.value = newVal
+}
+
 const values = computed(() => props.mode.valuesNodes)
 
 const isValueString = () => values.value.length && values.value[0].type === VALUE_STRING_TYPE
@@ -79,7 +89,7 @@ console.log(`ValueSelector model.value (${typeof model.value}):`, model.value)
 */
 
 watch(values, (newVal, oldVal) => {
-  console.log(`values mode: ${props.mode.id}, changed: ${newVal}, oldVal: ${oldVal}`)
+  console.log(`values mode: ${props.mode.id}, changed/oldVal:`, newVal, oldVal)
 })
 
 //watch(selected, async (newVal) => {
