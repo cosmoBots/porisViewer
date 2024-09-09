@@ -4,16 +4,26 @@
       {{ subsystem.label || subsystem.name }} / {{ subsystem.id }}
     </h3>
 
-    <ModeSelector v-if="modes.length > 1" v-model="mode" :modes="modes" />
+    <ModeSelector
+      v-if="modes.length > 1 && subsystem.hasSubsystems"
+      v-model="mode"
+      :modes="modes"
+    />
 
-    <InputSystemPanel v-if="mode" :subsystem="subsystem" :mode="mode" />
+    <InputSystemPanel
+      v-if="mode && !subsystem.hasSubsystems"
+      :subsystem="subsystem"
+      :modes="modes"
+      :mode="mode"
+    />
 
     <template v-for="sub in subSubsystems" :key="sub.id">
-      <sub-system-panel v-if="sub.hasSubsystems" :subsystems="[...props.subsystems, sub]" />
+      <SubSystemPanel v-if="sub.hasSubsystems" :subsystems="[...props.subsystems, sub]" />
       <InputSystemPanel
-        v-else-if="mode"
-        :subsystems="[...props.subsystems, sub]"
-        :modes="store.getValidObjModes(mode)"
+        v-if="sub.modesNodes.length > 0"
+        :subsystem="sub"
+        :modes="sub.modesNodes"
+        :mode="sub.modesNodes[0]"
       />
     </template>
   </div>
@@ -38,12 +48,15 @@ const props = defineProps({
   }
 })
 
+console.log('props.subsystems', props.subsystems)
+
 const mode = ref()
 
 const subsystem = computed(() => {
   return props.subsystems[props.subsystems.length - 1]
 })
 
+// subsystemas dentro del modo actual que tienen este modo como opción
 const subSubsystems = computed(() => {
   return subsystem.value.subsystemsNodes.filter((sub) => store.hasValidObjModes(sub))
 })

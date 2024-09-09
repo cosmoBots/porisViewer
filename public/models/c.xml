@@ -164,11 +164,11 @@
         <project-id type="integer">13</project-id>
         <type>PORISMode</type>
         <destinations type="array">
-            <destination type="Mode">
+            <destination type="PORISMode">
                 <id type="integer">2000000006</id>
                 <ident>n0::n2::n3</ident>
             </destination>
-            <destination type="Mode">
+            <destination type="PORISMode">
                 <id type="integer">2000000010</id>
                 <ident>n0::n3::n3</ident>
             </destination>
@@ -186,11 +186,11 @@
         <project-id type="integer">13</project-id>
         <type>PORISMode</type>
         <destinations type="array">
-            <destination type="Mode">
+            <destination type="PORISMode">
                 <id type="integer">2000000006</id>
                 <ident>n0::n2::n3</ident>
             </destination>
-            <destination type="Mode">
+            <destination type="PORISMode">
                 <id type="integer">2000000010</id>
                 <ident>n0::n3::n3</ident>
             </destination>

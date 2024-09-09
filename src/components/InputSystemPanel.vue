@@ -3,12 +3,12 @@
     <div class="input-mode-panel">
       <span class="title">{{ subsystem.label || subsystem.name }} / {{ subsystem.id }}</span>
       <span class="value-selector">
-        <!-- ModeSelector
+        <ModeSelector
           class="mode-selector"
           v-if="modes.length > 1"
           v-model="currentMode"
           :modes="modes"
-        / -->
+        />
         <ValueSelector :mode="currentMode" v-model="value" />
       </span>
     </div>
@@ -27,6 +27,10 @@ const props = defineProps({
     type: Object,
     required: true
   },
+  modes: {
+    type: Array,
+    required: true
+  },
   mode: {
     type: Object,
     required: true
@@ -40,18 +44,18 @@ const currentMode = computed({
     return props.mode
   },
   set(newMode) {
-    console.log(`currentMode.set() mode:`, newMode)
+    //console.log(`currentMode.set() mode:`, newMode)
     //mode.value = newMode
     value.value = store.getModelValue(props.subsystem, newMode)
-    console.log(`currentMode.set() value:`, value.value)
+    //console.log(`currentMode.set() value:`, value.value)
   }
 })
 
 currentMode.value = props.mode
 
 watch(value, async (newValue) => {
-  console.log(`setValue() model: ${props.subsystem.ident}, value: ${newValue}`)
-  store.setModelValue(props.subsystem, newValue)
+  //console.log(`setValue() model: ${props.subsystem.ident}, value: ${newValue}`)
+  store.setModelValue(props.mode, newValue)
 })
 
 watch(

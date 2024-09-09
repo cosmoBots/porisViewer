@@ -62,7 +62,7 @@ const props = defineProps({
 const model = defineModel()
 
 function changeModel(newVal) {
-  console.log(`changeModel() newVal`, newVal)
+  //console.log(`changeModel() newVal`, newVal)
   model.value = newVal
 }
 
