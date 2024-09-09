@@ -1,27 +1,23 @@
-
-
 <template>
   <div class="greetings">
     <h1 class="green">Model</h1>
-    
+
     <input v-model="modelName" />
     <button @click="updateModel">Update Model</button>
   </div>
 </template>
 
 <script setup>
-import {ref} from 'vue'
-import { useModelStore } from '@/stores/model';  
-
+import { ref } from 'vue'
+import { useModelStore } from '@/stores/model'
 
 const store = useModelStore()
 
-const modelName = ref('osiris_reference_model')
+const modelName = ref('a')
 
 const updateModel = () => {
   store.loadModel(modelName.value)
 }
-
 </script>
 
 <style scoped>

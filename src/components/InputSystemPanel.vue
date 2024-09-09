@@ -3,9 +3,14 @@
     <div class="input-mode-panel">
       <span class="title">{{ subsystem.label || subsystem.name }} / {{ subsystem.id }}</span>
       <span class="value-selector">
-      <ModeSelector class="mode-selector" v-if="modes.length > 1" v-model="currentMode" :modes="modes" />
-      <ValueSelector v-if="currentMode" :mode="currentMode" v-model="value" />
-    </span>
+        <ModeSelector
+          class="mode-selector"
+          v-if="modes.length > 1"
+          v-model="currentMode"
+          :modes="modes"
+        />
+        <ValueSelector :mode="currentMode" v-model="value" />
+      </span>
     </div>
   </div>
 </template>
@@ -18,46 +23,39 @@ import ValueSelector from './ValueSelector.vue'
 const store = useModelStore()
 
 const props = defineProps({
-  subsystems: {
-    type: Array,
+  subsystem: {
+    type: Object,
     required: true
   },
-  modes: {
-    type: Array,
+  mode: {
+    type: Object,
     required: true
   }
 })
 
 const value = defineModel()
 
-const subsystem = computed(() => {
-  return props.subsystems[props.subsystems.length -1]
-})
-
-//console.log(`SubSystem name: ${props.subsystem.name}, ident: ${props.subsystem.ident}, modes:`,modes.value )
-
-const mode = ref()
-
 const currentMode = computed({
   get() {
-    return mode.value
+    return props.mode
   },
   set(newMode) {
     console.log(`currentMode.set() mode:`, newMode)
-    mode.value = newMode
-    value.value = store.getModelValue(subsystem.value, newMode)
+    //mode.value = newMode
+    value.value = store.getModelValue(props.subsystem, newMode)
     console.log(`currentMode.set() value:`, value.value)
-
   }
 })
 
-if (props.modes.length) {
-  currentMode.value = props.modes[0]
-}
+const modes = computed(() => {
+  return props.subsystem.modesNodes
+})
+
+currentMode.value = props.mode
 
 watch(value, async (newValue) => {
-  //console.log(`setValue() model: ${props.subsystem.ident}, value: ${newValue}`)
-  store.setModelValue(currentMode.value, newValue)
+  console.log(`setValue() model: ${props.subsystem.ident}, value: ${newValue}`)
+  store.setModelValue(props.subsystem, newValue)
 })
 </script>
 <style lang="scss" scoped>

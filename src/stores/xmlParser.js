@@ -22,7 +22,7 @@ const XMLTypeToPorisType = {
   PORISNode: SUBSYSTEM_TYPE
 }
 
-// Foloowing XML tag names used for selecting the elements 
+// Foloowing XML tag names used for selecting the elements
 const XMLValueTagNames = [
   'value',
   'value-string',
@@ -36,11 +36,11 @@ const XMLModeTagName = 'mode'
 const XMLSystemTagName = 'sub-system'
 
 /**
- * Returns the value of text XML, converted to the type defined on the 
+ * Returns the value of text XML, converted to the type defined on the
  * type attribute, or the text it selfif no recognized type is found.
- * @param {*} elm 
- * @param {*} tagName 
- * @returns 
+ * @param {*} elm
+ * @param {*} tagName
+ * @returns
  */
 function getFEText(elm, tagName) {
   const elmArray = elm.getElementsByTagName(tagName)
@@ -89,7 +89,7 @@ function parseDestinations(elm, referemcedSusbystems) {
             referemcedSusbystems.push(id)
           }
         }
-      /*
+        /*
           if (type == 'Value') {
   
           } else if (type == 'Mode') {
@@ -215,8 +215,6 @@ function dereferenceNodeDestinations(JSONmodel, nodes) {
       let derDestinations = node.destinations.map((dest) => {
         return JSONmodel.findNode(dest.type, dest.id)
       })
-
-console.log("DDDD node.id " + node.id, derDestinations)
 
       node.valuesNodes = derDestinations.filter(
         (dest) => dest.type != MODE_TYPE && dest.type != SUBSYSTEM_TYPE
@@ -475,8 +473,6 @@ export function parseToPorisModel(store, xmlText) {
 
     JSONmodel.subsystems.push(new PorisNode(basicObj))
   }
-
-  console.log(JSONmodel)
 
   JSONmodel.rootSubsystem = JSONmodel.subsystems.find((subsys) => {
     return !referemcedSusbystems.includes(subsys.id)

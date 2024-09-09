@@ -29,7 +29,6 @@ export const useModelStore = defineStore('model', () => {
       xmlModel.value = model
 
       let JSONmodel = parseToPorisModel(this, model)
-      console.log('JSONModel', JSONmodel)
 
       values.value = JSONmodel.values
       modes.value = JSONmodel.modes
@@ -61,26 +60,30 @@ export const useModelStore = defineStore('model', () => {
 
   /**
    * Resets the whole tree of valid modes
-   * @param {*} subsystem 
+   * @param {*} subsystem
    * @param {*} mode
    */
   function setValidMode(subsystem, mode) {
     // console.log(`setValidMode() subsystem:`, subsystem, mode)
     // console.log(`   setValidMode validModes`, validModes.value)
 
-    const newValidModes = mode? [mode] : [...subsystem.modesNodes]
-    _addValidModeRecursive(subsystem, mode? mode : subsystem.defaultMode, newValidModes, true, true)
+    const newValidModes = mode ? [mode] : [...subsystem.modesNodes]
+    _addValidModeRecursive(
+      subsystem,
+      mode ? mode : subsystem.defaultMode,
+      newValidModes,
+      true,
+      true
+    )
 
     validModes.value = newValidModes
 
-
     // console.log(`   setValidMode setting current modes`)
-    const currentMode = mode? mode : subsystem.defaultMode
+    const currentMode = mode ? mode : subsystem.defaultMode
     const newCurrentModes = [currentMode]
     _addValidModeRecursive(subsystem, currentMode, newCurrentModes, true, false)
 
     currentModes.value = newCurrentModes
-
 
     //console.log(`setValidMode newValidMopdes`, validModes.value)
   }
@@ -103,7 +106,6 @@ export const useModelStore = defineStore('model', () => {
       if (children.length > 0) {
         if (isRoot || addSibblingModes) {
           for (const child of children) {
-
             // if (DEBUG) {
             //   console.log(`_addValidModeRecursive mode.id: ${mode.id}, child.id: ${child.id}`, child)
             // }
@@ -116,10 +118,10 @@ export const useModelStore = defineStore('model', () => {
           }
           //console.log(`addValidMode newValidModes`, newValidModes)
         }
-        
+
         if (!isRoot) {
           var childToFollow = null
-          
+
           if (children.length === 0) {
             childToFollow = mode.defaultMode
           } else {
@@ -137,16 +139,15 @@ export const useModelStore = defineStore('model', () => {
           _addValidModeRecursive(mode, childToFollow, newValidModes, false, addSibblingModes)
         }
       }
-    /*
+      /*
       let defaultMode = mode.defaultMode()
       if (defaultMode) {
         newValidModes.push(defaultMode)
         _addValidModeRecursive(defaultMode, newValidModes, true)
       }
-*/      
+*/
     }
   }
-
 
   /**
    * Replaces the oldMode valid modes tree with the new one
@@ -159,12 +160,12 @@ export const useModelStore = defineStore('model', () => {
     // console.log(`    addValidMode oldMode`, oldMode)
     //console.log(`addValidMode paramModes`, validModes.value)
 
-// /*
-//     if (validModes.value.includes(newMode)) {
-//       console.log(`addValidMode newMode ${newMode.id} already on the list!`)
-//       return
-//     }
-// */
+    // /*
+    //     if (validModes.value.includes(newMode)) {
+    //       console.log(`addValidMode newMode ${newMode.id} already on the list!`)
+    //       return
+    //     }
+    // */
     let strippedValidModes
 
     if (oldMode) {
@@ -185,7 +186,9 @@ export const useModelStore = defineStore('model', () => {
 
     const newValidUniqueModels = [...new Set(newValidModes)]
 
-    if (_intersection(validModes.value, newValidUniqueModels).length == newValidUniqueModels.length) {
+    if (
+      _intersection(validModes.value, newValidUniqueModels).length == newValidUniqueModels.length
+    ) {
       console.log(`addValidMode no changes!`)
       return
     }
@@ -213,10 +216,10 @@ export const useModelStore = defineStore('model', () => {
 
   function getValidObjModes(obj) {
     // if (obj.id === 534) {
-      // console.log(`getValidObjModes() obj.id: ${obj.id}`, obj)
-      //console.log(`getValidObjModes() getObjModes`, getObjModes(obj))
-      // console.log(`getValidObjModes() validModes`, validModes.value)
-      // console.log(`getValidObjModes() _intersection`,  _intersection(obj.modesNodes, validModes.value))
+    // console.log(`getValidObjModes() obj.id: ${obj.id}`, obj)
+    //console.log(`getValidObjModes() getObjModes`, getObjModes(obj))
+    // console.log(`getValidObjModes() validModes`, validModes.value)
+    // console.log(`getValidObjModes() _intersection`,  _intersection(obj.modesNodes, validModes.value))
     // }
 
     return _intersection(obj.modesNodes, validModes.value)
@@ -234,8 +237,12 @@ export const useModelStore = defineStore('model', () => {
 
   function getModelValue(model, mode) {
     let value = modelValues.value[`${model.id}`]
-    
-    console.log(`getModelValue() model: ${model.id}, _isUndefined(value): ${_isUndefined(value)}, mode / value`, mode, value)
+
+    console.log(
+      `getModelValue() model: ${model.id}, _isUndefined(value): ${_isUndefined(value)}, mode / value`,
+      mode,
+      value
+    )
 
     let valueOptions = mode.valuesNodes
 
@@ -259,7 +266,7 @@ export const useModelStore = defineStore('model', () => {
         value = valueOptions[0].defaultFloat
       }
     } else if (valueOptions[0].type == VALUE_FILE_PATH_TYPE) {
-      console.log("FILE")
+      console.log('FILE')
       if (_isUndefined(value)) {
         value = valueOptions[0].defaultString
       }

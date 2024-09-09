@@ -1,12 +1,20 @@
 <template>
   <div class="panel">
-    <h3 class="title" v-if="subsystem.label != '-'">{{ subsystem.label || subsystem.name }} / {{ subsystem.id }}</h3>
+    <h3 class="title" v-if="subsystem.label != '-'">
+      {{ subsystem.label || subsystem.name }} / {{ subsystem.id }}
+    </h3>
 
     <ModeSelector v-if="modes.length > 1" v-model="mode" :modes="modes" />
 
+    <InputSystemPanel v-if="mode" :subsystem="subsystem" :mode="mode" />
+
     <template v-for="sub in subSubsystems" :key="sub.id">
       <sub-system-panel v-if="sub.hasSubsystems" :subsystems="[...props.subsystems, sub]" />
-      <InputSystemPanel v-else-if="mode" :subsystems="[...props.subsystems, sub]" :modes="store.getValidObjModes(mode)"/>
+      <InputSystemPanel
+        v-else-if="mode"
+        :subsystems="[...props.subsystems, sub]"
+        :modes="store.getValidObjModes(mode)"
+      />
     </template>
   </div>
 </template>
@@ -33,7 +41,7 @@ const props = defineProps({
 const mode = ref()
 
 const subsystem = computed(() => {
-  return props.subsystems[props.subsystems.length -1]
+  return props.subsystems[props.subsystems.length - 1]
 })
 
 const subSubsystems = computed(() => {
@@ -52,7 +60,6 @@ const modes = computed(() => {
 })
 
 //console.log(`mode: ${mode.value?.ident}, modes :`, modes)
-
 
 function updateMode(newMode, oldMode) {
   //console.log(`updateMode: isRoot: ${props.isRoot}, newMode: ${newMode?.id}, oldMode: ${oldMode?.id}`)
@@ -85,11 +92,13 @@ watch(props.subsystem, (newSubSystem) => {
 // default initial value
 if (modes.value.length) {
   if (subsystem.value.defaultModeId) {
-    mode.value = modes.value.find((m) => m.id === subsystem.value.defaultModeId);
+    mode.value = modes.value.find((m) => m.id === subsystem.value.defaultModeId)
   } else {
     mode.value = modes.value[0]
   }
 }
+
+console.log(`sub ${subsystem.value.id}, initial mode: ${mode.value.id}`)
 </script>
 <style lang="scss" scoped>
 .panel {
