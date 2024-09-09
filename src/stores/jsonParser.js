@@ -151,10 +151,10 @@ export function parseToPorisModel(store, jsonText) {
 
   const poris = json.poris
 
-  for (const item of _compact(_concat(poris.value, poris['poris-value-double-range']))) {
+  for (const item of _compact(_concat(poris.value, poris['value-double-range']))) {
     const basicObj = parseBasicObject(item, referemcedSusbystems)
 
-    let valueFormatterId = item['poris-value-formatter-id']
+    let valueFormatterId = item['value-formatter-id']
     basicObj[valueFormatterId] = valueFormatterId
 
     if (basicObj.type == VALUE_DOUBLE_RANGE_TYPE) {
