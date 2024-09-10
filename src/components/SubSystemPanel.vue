@@ -19,6 +19,7 @@
     <template v-for="sub in subSubsystems" :key="sub.id">
       {{ subsystem.id }}
       {{ sub.id }}
+      {{ mode.name }}
       <SubSystemPanel v-if="sub.hasSubsystems" :subsystems="[...props.subsystems, sub]" />
       <InputSystemPanel
         v-if="sub.hasModes && sub.hasValues && validMode(sub,mode) != null"
@@ -47,10 +48,19 @@ const props = defineProps({
   isRoot: {
     type: Boolean,
     default: false
-  }
+  },
+  mode: {
+    type: Object,
+    required: false
+  }  
 })
 
-const mode = ref()
+if (props.mode)
+{
+  console.log("props.mode is ",props.mode.name)
+}
+
+const mode = ref(props.mode)
 
 const subsystem = computed(() => {
   return props.subsystems[props.subsystems.length - 1]
@@ -128,8 +138,13 @@ function validMode(s, parentMode) {
 function updateMode(newMode, oldMode) {
   //console.log(`updateMode: isRoot: ${props.isRoot}, newMode: ${newMode?.id}, oldMode: ${oldMode?.id}`)
   if (props.isRoot) {
+    console.log("setValidMode inside updateNode")
     store.setValidMode(subsystem.value, newMode)
-  } else {
+  } 
+  else 
+  {
+    console.log(`subsystem is ${subsystem.value.name}`)
+    console.log(`try to set ${newMode.name} to replace oldMode ${oldMode}`)
     store.addValidMode(subsystem.value, newMode, oldMode)
   }
 }
@@ -138,15 +153,23 @@ watch(modes, (newModes) => {
   //console.log(`watch.modes. mode ${mode.value?.id}, newModes.includes(mode.value): ${newModes.includes(mode.value)}, newModes :`, newModes)
   const oldMode = mode.value
   if (!oldMode || !newModes.includes(oldMode)) {
-    mode.value = subsystem.value.defaultMode
+    if (newModes.includes(subsystem.value.defaultMode))
+    {
+      mode.value = subsystem.value.defaultMode
+    }
+    else
+    {
+      mode.value = newModes[0]
+    }
   } else {
     if (!props.isRoot) {
+      console.log(`here ${props}`)
       updateMode(mode.value, oldMode)
     }
   }
 })
 
-watch(mode, updateMode)
+//watch(mode, updateMode)
 /*
 watch(props.subsystem, (newSubSystem) => {
   console.log(`watch.props.subsystem ${newSubSystem.id}`)

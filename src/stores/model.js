@@ -35,11 +35,13 @@ export const useModelStore = defineStore('model', () => {
       subsystems.value = JSONmodel.subsystems
       rootSubsystem.value = JSONmodel.rootSubsystem
 
+      console.log('LIMPIANDO valores por defecto')
       validModes.value = []
       currentModes.value = []
 
       systemValues.value = {}
 
+      console.log("Initial setValidMode")
       setValidMode(JSONmodel.rootSubsystem)
     })
   }
@@ -64,13 +66,38 @@ export const useModelStore = defineStore('model', () => {
    * @param {*} mode
    */
   function setValidMode(subsystem, mode) {
-    // console.log(`setValidMode() subsystem:`, subsystem, mode)
-    // console.log(`   setValidMode validModes`, validModes.value)
+    console.log(`setValidMode() subsystem:`, subsystem, mode)
+    console.log(`   setValidMode validModes`, validModes.value)
+
+    let candidate = null
+    if (validModes.value.length > 1)
+    {
+      if (validModes.value.includes(mode)) 
+      {
+        candidate = mode
+      } 
+      else
+      {
+        if (validModes.value.includes(subsystem.defaultMode))
+        {
+          candidate = subsystem.defaultMode
+        }
+        else
+        {
+          candidate = validModes.value[0]
+        }
+      }
+    }
+    else 
+    {
+      candidate = subsystem.defaultMode
+    }
+    
 
     const newValidModes = mode ? [mode] : [...subsystem.modesNodes]
     _addValidModeRecursive(
       subsystem,
-      mode ? mode : subsystem.defaultMode,
+      candidate,
       newValidModes,
       true,
       true
@@ -79,7 +106,7 @@ export const useModelStore = defineStore('model', () => {
     validModes.value = newValidModes
 
     // console.log(`   setValidMode setting current modes`)
-    const currentMode = mode ? mode : subsystem.defaultMode
+    const currentMode = candidate
     const newCurrentModes = [currentMode]
     _addValidModeRecursive(subsystem, currentMode, newCurrentModes, true, false)
 
@@ -169,6 +196,7 @@ export const useModelStore = defineStore('model', () => {
     let strippedValidModes
 
     if (oldMode) {
+      console.log(`addValidMode ${newMode.name} with oldMode: ${oldMode.name}`)
       const oldModes = [oldMode]
       _addValidModeRecursive(subsystem, oldMode, oldModes, true)
 
