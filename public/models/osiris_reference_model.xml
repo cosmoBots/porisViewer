@@ -2650,7 +2650,7 @@
 			</destination>
 		</destinations>
 		<node-attributes type="array"/>
-		<default-mode-id type="integer">583</default-mode-id>
+		<default-mode-id type="integer" nil="true"/>
 		<default-value-id type="integer" nil="true"/>
 	</sub-system>
 	<sub-system>
@@ -2742,7 +2742,7 @@
 			</destination>
 		</destinations>
 		<node-attributes type="array"/>
-		<default-mode-id type="integer">586</default-mode-id>
+		<default-mode-id type="integer" nil="true"/>
 		<default-value-id type="integer" nil="true"/>
 	</sub-system>
 	<sub-system>
@@ -2775,7 +2775,7 @@
 			</destination>
 		</destinations>
 		<node-attributes type="array"/>
-		<default-mode-id type="integer">589</default-mode-id>
+		<default-mode-id type="integer" nil="true"/>
 		<default-value-id type="integer" nil="true"/>
 	</sub-system>
 	<sub-system>
@@ -2808,7 +2808,7 @@
 			</destination>
 		</destinations>
 		<node-attributes type="array"/>
-		<default-mode-id type="integer">592</default-mode-id>
+		<default-mode-id type="integer" nil="true"/>
 		<default-value-id type="integer" nil="true"/>
 	</sub-system>
 	<sub-system>
@@ -2858,7 +2858,7 @@
 			</destination>
 		</destinations>
 		<node-attributes type="array"/>
-		<default-mode-id type="integer">548</default-mode-id>
+		<default-mode-id type="integer" nil="true"/>
 		<default-value-id type="integer" nil="true"/>
 	</sub-system>
 	<sub-system>
@@ -2897,7 +2897,7 @@
 			</destination>
 		</destinations>
 		<node-attributes type="array"/>
-		<default-mode-id type="integer">554</default-mode-id>
+		<default-mode-id type="integer" nil="true"/>
 		<default-value-id type="integer" nil="true"/>
 	</sub-system>
 	<sub-system>
@@ -2926,7 +2926,7 @@
 			</destination>
 		</destinations>
 		<node-attributes type="array"/>
-		<default-mode-id type="integer">567</default-mode-id>
+		<default-mode-id type="integer" nil="true"/>
 		<default-value-id type="integer" nil="true"/>
 	</sub-system>
 	<sub-system>
@@ -2959,7 +2959,7 @@
 			</destination>
 		</destinations>
 		<node-attributes type="array"/>
-		<default-mode-id type="integer">570</default-mode-id>
+		<default-mode-id type="integer" nil="true"/>
 		<default-value-id type="integer" nil="true"/>
 	</sub-system>
 	<sub-system>
@@ -2992,7 +2992,7 @@
 			</destination>
 		</destinations>
 		<node-attributes type="array"/>
-		<default-mode-id type="integer">605</default-mode-id>
+		<default-mode-id type="integer" nil="true"/>
 		<default-value-id type="integer" nil="true"/>
 	</sub-system>
 	<sub-system>
@@ -3025,7 +3025,7 @@
 			</destination>
 		</destinations>
 		<node-attributes type="array"/>
-		<default-mode-id type="integer">606</default-mode-id>
+		<default-mode-id type="integer" nil="true"/>
 		<default-value-id type="integer" nil="true"/>
 	</sub-system>
 	<mode>
@@ -3078,7 +3078,7 @@
 			</destination>
 		</destinations>
 		<node-attributes type="array"/>
-		<default-mode-id type="integer">610</default-mode-id>
+		<default-mode-id type="integer" nil="true"/>
 		<default-value-id type="integer" nil="true"/>
 	</sub-system>
 	<sub-system>
@@ -3098,7 +3098,7 @@
 			</destination>
 		</destinations>
 		<node-attributes type="array"/>
-		<default-mode-id type="integer">614</default-mode-id>
+		<default-mode-id type="integer" nil="true"/>
 		<default-value-id type="integer" nil="true"/>
 	</sub-system>
 	<sub-system>
@@ -3131,7 +3131,7 @@
 			</destination>
 		</destinations>
 		<node-attributes type="array"/>
-		<default-mode-id type="integer">617</default-mode-id>
+		<default-mode-id type="integer" nil="true"/>
 		<default-value-id type="integer" nil="true"/>
 	</sub-system>
 	<sub-system>
@@ -3167,7 +3167,7 @@
 			</destination>
 		</destinations>
 		<node-attributes type="array"/>
-		<default-mode-id type="integer">622</default-mode-id>
+		<default-mode-id type="integer" nil="true"/>
 		<default-value-id type="integer" nil="true"/>
 	</sub-system>
 	<sub-system>
@@ -3200,7 +3200,7 @@
 			</destination>
 		</destinations>
 		<node-attributes type="array"/>
-		<default-mode-id type="integer">625</default-mode-id>
+		<default-mode-id type="integer" nil="true"/>
 		<default-value-id type="integer" nil="true"/>
 	</sub-system>
 	<sub-system>
@@ -3233,7 +3233,7 @@
 			</destination>
 		</destinations>
 		<node-attributes type="array"/>
-		<default-mode-id type="integer">629</default-mode-id>
+		<default-mode-id type="integer" nil="true"/>
 		<default-value-id type="integer" nil="true"/>
 	</sub-system>
 	<sub-system>
@@ -3253,7 +3253,7 @@
 			</destination>
 		</destinations>
 		<node-attributes type="array"/>
-		<default-mode-id type="integer">633</default-mode-id>
+		<default-mode-id type="integer" nil="true"/>
 		<default-value-id type="integer" nil="true"/>
 	</sub-system>
 	<sub-system>
@@ -3273,7 +3273,7 @@
 			</destination>
 		</destinations>
 		<node-attributes type="array"/>
-		<default-mode-id type="integer">636</default-mode-id>
+		<default-mode-id type="integer" nil="true"/>
 		<default-value-id type="integer" nil="true"/>
 	</sub-system>
 	<sub-system>
@@ -3318,7 +3318,7 @@
 			</destination>
 		</destinations>
 		<node-attributes type="array"/>
-		<default-mode-id type="integer">699</default-mode-id>
+		<default-mode-id type="integer" nil="true"/>
 		<default-value-id type="integer" nil="true"/>
 	</sub-system>
 	<mode>
@@ -3423,7 +3423,7 @@
 			</destination>
 		</destinations>
 		<node-attributes type="array"/>
-		<default-mode-id type="integer">648</default-mode-id>
+		<default-mode-id type="integer" nil="true"/>
 		<default-value-id type="integer" nil="true"/>
 	</sub-system>
 	<sub-system>
@@ -3462,7 +3462,7 @@
 			</destination>
 		</destinations>
 		<node-attributes type="array"/>
-		<default-mode-id type="integer">653</default-mode-id>
+		<default-mode-id type="integer" nil="true"/>
 		<default-value-id type="integer" nil="true"/>
 	</sub-system>
 	<sub-system>
@@ -3501,7 +3501,7 @@
 			</destination>
 		</destinations>
 		<node-attributes type="array"/>
-		<default-mode-id type="integer">658</default-mode-id>
+		<default-mode-id type="integer" nil="true"/>
 		<default-value-id type="integer" nil="true"/>
 	</sub-system>
 	<mode>
@@ -3584,7 +3584,7 @@
 			</destination>
 		</destinations>
 		<node-attributes type="array"/>
-		<default-mode-id type="integer">593</default-mode-id>
+		<default-mode-id type="integer" nil="true"/>
 	</sub-system>
 	<sub-system>
 		<name>Dispersion</name>
@@ -3609,7 +3609,7 @@
 			</destination>
 		</destinations>
 		<node-attributes type="array"/>
-		<default-mode-id type="integer">556</default-mode-id>
+		<default-mode-id type="integer" nil="true"/>
 	</sub-system>
 	<sub-system>
 		<name>DAS</name>
@@ -3634,7 +3634,7 @@
 			</destination>
 		</destinations>
 		<node-attributes type="array"/>
-		<default-mode-id type="integer">571</default-mode-id>
+		<default-mode-id type="integer" nil="true"/>
 	</sub-system>
 	<sub-system>
 		<name>IP</name>
@@ -3669,7 +3669,7 @@
 			</destination>
 		</destinations>
 		<node-attributes type="array"/>
-		<default-mode-id type="integer">607</default-mode-id>
+		<default-mode-id type="integer" nil="true"/>
 	</sub-system>
 	<sub-system>
 		<name>DateSystem</name>
@@ -3704,7 +3704,7 @@
 			</destination>
 		</destinations>
 		<node-attributes type="array"/>
-		<default-mode-id type="integer">618</default-mode-id>
+		<default-mode-id type="integer" nil="true"/>
 	</sub-system>
 	<sub-system>
 		<name>Pointing</name>
@@ -3735,7 +3735,7 @@
 			</destination>
 		</destinations>
 		<node-attributes type="array"/>
-		<default-mode-id type="integer">643</default-mode-id>
+		<default-mode-id type="integer" nil="true"/>
 	</sub-system>
 	<mode>
 		<name>UsePreImaging_Dont240</name>
@@ -3830,7 +3830,7 @@
 			</destination>
 		</destinations>
 		<node-attributes type="array"/>
-		<default-mode-id type="integer">660</default-mode-id>
+		<default-mode-id type="integer" nil="true"/>
 	</sub-system>
 	<mode>
 		<name>Observation_Preferences</name>
@@ -3945,7 +3945,7 @@
 			</destination>
 		</destinations>
 		<node-attributes type="array"/>
-		<default-mode-id type="integer">594</default-mode-id>
+		<default-mode-id type="integer" nil="true"/>
 	</sub-system>
 	<sub-system>
 		<name>UsePreImaging</name>
@@ -3989,7 +3989,7 @@
 			</destination>
 		</destinations>
 		<node-attributes type="array"/>
-		<default-mode-id type="integer">644</default-mode-id>
+		<default-mode-id type="integer" nil="true"/>
 	</sub-system>
 	<mode>
 		<name>Observation_Normal</name>
@@ -4161,7 +4161,7 @@
 			</destination>
 		</destinations>
 		<node-attributes type="array"/>
-		<default-mode-id type="integer">598</default-mode-id>
+		<default-mode-id type="integer" nil="true"/>
 	</sub-system>
 	<sub-system>
 		<name>Observation</name>
@@ -4220,7 +4220,7 @@
 			</destination>
 		</destinations>
 		<node-attributes type="array"/>
-		<default-mode-id type="integer">661</default-mode-id>
+		<default-mode-id type="integer" nil="true"/>
 	</sub-system>
 	<sub-system>
 		<name>OsirisMD</name>
@@ -4245,13 +4245,13 @@
 		</labels>
 		<destinations type="array">
 			<destination type="PORISMode">
+				<id type="integer">560</id>
+			</destination>
+			<destination type="PORISMode">
 				<id type="integer">558</id>
 			</destination>
 			<destination type="PORISMode">
 				<id type="integer">559</id>
-			</destination>
-			<destination type="PORISMode">
-				<id type="integer">560</id>
 			</destination>
 			<destination type="PORISNode">
 				<id type="integer">573</id>
@@ -4267,7 +4267,7 @@
 			</destination>
 		</destinations>
 		<node-attributes type="array"/>
-		<default-mode-id type="integer">558</default-mode-id>
+		<default-mode-id type="integer" nil="true"/>
 	</sub-system>
 </poris>
 
