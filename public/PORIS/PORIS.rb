@@ -704,7 +704,7 @@ class PORISValueString < PORISValueData
 
     defaultstringnode = REXML::Element.new("default-string")
     valueText = REXML::Text.new(getDefaultData)
-    defaultstringnode.add_element(valueText)
+    defaultstringnode.push(valueText)
     n_node.add_element(defaultstringnode)
 
     n_node
@@ -760,12 +760,12 @@ class PORISValueFilePath < PORISValueString
 
     extnode = REXML::Element.new("file-extension")
     valueText = REXML::Text.new(@file_ext)
-    extnode.add_element(valueText)
+    extnode.push(valueText)
     n_node.add_element(extnode)
 
     descnode = REXML::Element.new("file-description")
     valueText = REXML::Text.new(@file_desc)
-    descnode.add_element(valueText)
+    descnode.push(valueText)
     n_node.add_element(descnode)
 
     n_node
@@ -843,19 +843,19 @@ class PORISValueDate < PORISValueString
     minnode = REXML::Element.new("date-min")
     minnode.add_attribute("type", "timestamp")
     valueText = REXML::Text.new(@min_date)
-    minnode.add_element(valueText)
+    minnode.push(valueText)
     n_node.add_element(minnode)
 
     maxnode = REXML::Element.new("date-max")
     maxnode.add_attribute("type", "timestamp")
     valueText = REXML::Text.new(@max_date)
-    maxnode.add_element(valueText)
+    maxnode.push(valueText)
     n_node.add_element(maxnode)
 
     defaultstringnode = REXML::Element.new("default-date")
     defaultstringnode.add_attribute("type", "timestamp")
     valueText = REXML::Text.new(getDefaultData)
-    defaultstringnode.add_element(valueText)
+    defaultstringnode.push(valueText)
     n_node.add_element(defaultstringnode)
 
     n_node
@@ -961,20 +961,22 @@ class PORISValueFloat < PORISValueData
 
     defaultfloatnode = REXML::Element.new("default-float")
     defaultfloatnode.add_attribute("type", "float")
+    puts("This is a float!!!!", getDefaultData)
     valueText = REXML::Text.new(getDefaultData.to_s)
-    defaultfloatnode.add_element(valueText)
+    puts("This is a float!!!!", valueText)
+    defaultfloatnode.push(valueText)
     n_node.add_element(defaultfloatnode)
 
     rangeminnode = REXML::Element.new("rangemin")
     rangeminnode.add_attribute("type", "float")
     valueText = REXML::Text.new(getMin.to_s)
-    rangeminnode.add_element(valueText)
+    rangeminnode.push(valueText)
     n_node.add_element(rangeminnode)
 
     rangemaxnode = REXML::Element.new("rangemax")
     rangemaxnode.add_attribute("type", "float")
     valueText = REXML::Text.new(getMax.to_s)
-    rangemaxnode.add_element(valueText)
+    rangemaxnode.push(valueText)
     n_node.add_element(rangemaxnode)
 
     n_node
