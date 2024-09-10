@@ -1,7 +1,7 @@
 <template>
   <div class="subsystem-panel">
-    <h3 class="title" v-if="subsystem.label != '-'">
-      {{ subsystem.label || subsystem.name }} / {{ subsystem.id }}
+    <h3 class="title" v-if="true">
+      {{ subsystem.name }} / {{ subsystem.id }}
     </h3>
     <span v-else>{{ subsystem.id }}</span>
 
@@ -17,12 +17,14 @@
     />
 
     <template v-for="sub in subSubsystems" :key="sub.id">
+      {{ subsystem.id }}
+      {{ sub.id }}
       <SubSystemPanel v-if="sub.hasSubsystems" :subsystems="[...props.subsystems, sub]" />
       <InputSystemPanel
-        v-if="sub.hasModes && sub.hasValues"
+        v-if="sub.hasModes && sub.hasValues && validMode(sub,mode) != null"
         :subsystem="sub"
         :modes="sub.modesNodes"
-        :mode="sub.modesNodes[0]"
+        :mode="validMode(sub,mode)"
       />
     </template>
   </div>
@@ -57,9 +59,32 @@ const subsystem = computed(() => {
 // subsystemas dentro del modo actual que tienen este modo como opción
 const subSubsystems = computed(() => {
   if (mode.value != null && mode.value.hasModes && subsystem.value.hasSubsystems) {
-    return subsystem.value.subsystemsNodes.filter((sub) => {
-      return sub.hasModes && _intersection(sub.modesNodes, mode.value.modesNodes).length > 0
+    let listOfSubsystems = subsystem.value.subsystemsNodes.filter((sub) => { 
+      let ret = sub.hasModes
+      console.log(`\n\nChecking for subsystem: ${sub.name} of system: ${subsystem.value.name}?`)
+      if (ret)
+      {
+        ret = false
+        mode.value.modesNodes.forEach(m => 
+        { 
+            console.log(`active submode: ${m.name} of mode ${mode.value.name}?`)
+            sub.modesNodes.forEach(sm => 
+            {
+              console.log(`check against mode of subsystem: ${sm.name} ?`)
+              ret = ret || (m == sm)
+              console.log(`this found ${ret}`)
+            })
+            console.log(`found ${ret}`)
+        });
+        //ret = ret && _intersection(sub.modesNodes, mode.value.modesNodes).length > 0
+      }
+      console.log(`return will be ${ret}`)
+      return ret
     })
+    listOfSubsystems.forEach( ss => {
+      console.log(`activeSubSubsystem: ${ss.name}`)
+    })
+    return listOfSubsystems
   } else {
     console.log(`SubSub mode.id: ${mode.value?.id} [VACIO]`)
     return []
@@ -76,6 +101,27 @@ const modes = computed(() => {
     return store.getValidObjModes(subsystem.value)
   }
 })
+
+function validMode(s, parentMode) {
+  let ret = null
+  console.log(`validModes for parantMode ${parentMode.name} and subsystem ${s.name}`)
+  parentMode.modesNodes.forEach(m => {
+    console.log(`checking parentMode submode ${m.name}`)
+    s.modesNodes.forEach(sm => {
+      console.log(`checking subsystem submode ${sm.name}`)
+      if (m == sm)
+      {
+        console.log("AAAAAAAAAAAAAAAAAA")
+        ret = sm
+      }
+    })
+  })
+  if (ret == null)
+  {
+    console.log("OOOOOOOOOOOOOOOOO")
+  }
+  return ret
+}
 
 //console.log(`mode: ${mode.value?.ident}, modes :`, modes)
 
