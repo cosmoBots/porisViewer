@@ -1820,7 +1820,7 @@ class PORISParam(PORISNode):
 
     # Function to obtain the tag name for the current item
     def getXMLNodeName(self) -> str:
-        return "poris-param"
+        return "poris-node"
 
 
     # Dump XML from this item.  Appends default value
@@ -2063,7 +2063,7 @@ class PORISSys(PORISNode):
 
     # Function to obtain the tag name for the current item
     def getXMLNodeName(self) -> str:
-        return "poris-sys"
+        return "poris-node"
 
     # Creates the object instance from an XML node
     def fromXML(n_node: minidom.Node, pdoc: PORISDoc) -> PORISSys:
