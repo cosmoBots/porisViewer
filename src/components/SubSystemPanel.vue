@@ -72,7 +72,7 @@ const subSubsystems = computed(() => {
             {
               console.log(`check against mode of subsystem: ${sm.name} ?`)
               ret = ret || (m == sm)
-              console.log(`this found ${ret}`)
+              console.log(`this found ${(m == sm)}`)
             })
             console.log(`found ${ret}`)
         });
