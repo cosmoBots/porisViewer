@@ -93,6 +93,7 @@ export const useModelStore = defineStore('model', () => {
       candidate = subsystem.defaultMode
     }
     
+    console.log(`setValidMode() candidate:`, candidate)
 
     const newValidModes = mode ? [mode] : [...subsystem.modesNodes]
     _addValidModeRecursive(
@@ -250,6 +251,20 @@ export const useModelStore = defineStore('model', () => {
     // console.log(`getValidObjModes() _intersection`,  _intersection(obj.modesNodes, validModes.value))
     // }
 
+    console.log(`obj: ${obj.name}`)
+    console.log(`validModes: ${validModes.value}`)
+    validModes.value.forEach( 
+      m => {
+        console.log(m.name)
+      }
+    )
+
+    console.log(`objModes: ${obj.modesNodes}`)
+    obj.modesNodes.forEach( 
+      m => {
+        console.log(m.name)
+      }
+    )
     return _intersection(obj.modesNodes, validModes.value)
   }
 

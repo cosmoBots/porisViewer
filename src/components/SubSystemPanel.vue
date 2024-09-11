@@ -104,10 +104,11 @@ const subSubsystems = computed(() => {
 //console.log(`SubSystem name: ${subsystem.value.name}, ident: ${subsystem.value.ident} props.isRoot: ${props.isRoot}`)
 
 const modes = computed(() => {
-  //console.log(`modes for props.subsystem.id: ${subsystem.value.id}, isRoot: ${props.isRoot}`)
+  console.log(`modes for props.subsystem.id: ${subsystem.value.id}, isRoot: ${props.isRoot}`)
   if (props.isRoot) {
     return subsystem.value.modesNodes
   } else {
+    console.log(`calculating valid Modes`)
     return store.getValidObjModes(subsystem.value)
   }
 })
@@ -150,7 +151,7 @@ function updateMode(newMode, oldMode) {
 }
 
 watch(modes, (newModes) => {
-  //console.log(`watch.modes. mode ${mode.value?.id}, newModes.includes(mode.value): ${newModes.includes(mode.value)}, newModes :`, newModes)
+  console.log(`watch.modes. mode ${mode.value?.id}, newModes.includes(mode.value): ${newModes.includes(mode.value)}, newModes :`, newModes)
   const oldMode = mode.value
   if (!oldMode || !newModes.includes(oldMode)) {
     if (newModes.includes(subsystem.value.defaultMode))
@@ -177,6 +178,8 @@ watch(props.subsystem, (newSubSystem) => {
 */
 
 // default initial value
+console.log(`sub ${subsystem.value}`)
+console.log(`modes: ${modes.value}`)
 if (modes.value.length) {
   if (subsystem.value.defaultModeId) {
     mode.value = modes.value.find((m) => m.id === subsystem.value.defaultModeId)
@@ -185,7 +188,7 @@ if (modes.value.length) {
   }
 }
 
-console.log(`sub ${subsystem.value?.id}, initial mode: ${mode.value?.id}`)
+console.log(`sub ${subsystem.value.name}, initial mode: ${mode.value?.id}`)
 </script>
 <style lang="scss" scoped>
 .subsystem-panel {
