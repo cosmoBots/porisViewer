@@ -16,18 +16,18 @@ const store = useModelStore()
 const modelName = ref('osiris_reference_model')
 
 const updateModel = () => {
-store.loadModel(modelName.value)
+  store.loadModel(modelName.value)
 }
 
-try { 
-  thiskey; 
+try {
+  thiskey;
   store.loadModelURL(thiskey)
 }
-    catch (e) {
-      if (e.name == "ReferenceError") {
-        /* Do nothing */
-      }
-    }
+catch (e) {
+  if (e.name == "ReferenceError") {
+    /* Do nothing */
+  }
+}
 </script>
 
 <style scoped>
@@ -48,6 +48,7 @@ h3 {
 }
 
 @media (min-width: 1024px) {
+
   .greetings h1,
   .greetings h3 {
     text-align: left;
