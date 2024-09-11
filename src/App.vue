@@ -32,16 +32,9 @@
   <RouterView />
 </template>
 <script setup>
-import { computed } from 'vue'
 import { RouterLink, RouterView } from 'vue-router'
-import { useModelStore } from '@/stores/model'
 import modelSelector from './components/ModelSelector.vue'
 
-const store = useModelStore()
-
-const validModes = computed(() => store.validModes)
-const currentModes = computed(() => store.currentModes)
-const systemValues = computed(() => store.systemValues)
 </script>
 
 <style scoped>

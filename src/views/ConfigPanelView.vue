@@ -3,7 +3,7 @@
     <div v-if="rootSubsystem" class="panel">
       <h2 class="title">{{ rootSubsystem.name }} Panel</h2>
 
-      <SubSystemPanel :subsystems="[rootSubsystem]" :isRoot="true" />
+      <SubSystemPanel :system="rootSubsystem" :isRoot="true" />
     </div>
   </main>
 </template>

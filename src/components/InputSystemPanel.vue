@@ -51,7 +51,7 @@ watch(value, async (newValue) => {
 watch(currentMode, (newMode) => {
   console.log(`currentMode.set() mode:`, newMode)
   //mode.value = newMode
-  value.value = store.getSystemValue(props.subsystem, newMode)
+  //value.value = store.getSystemValue(props.subsystem, newMode)
   console.log(`currentMode.set() value:`, value.value)
 })
 

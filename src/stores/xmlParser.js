@@ -223,6 +223,14 @@ function dereferenceNodeDestinations(JSONmodel, nodes) {
       )
       node.modesNodes = derDestinations.filter((dest) => dest.type === MODE_TYPE)
       node.subsystemsNodes = derDestinations.filter((dest) => dest.type === SUBSYSTEM_TYPE)
+      node.modesNodes.forEach((m) => {
+        console.log(`setting ${node.name} as parent of mode ${m.name}`)
+        m.parent = node
+      })
+      node.subsystemsNodes.forEach((m) => {
+        console.log(`setting ${node.name} as parent of subsystem ${m.name}`)
+        m.parent = node
+      })      
     }
   })
 }
@@ -353,6 +361,7 @@ export function parseToPorisModel(store, xmlText) {
     for (const valueElm of valueElements) {
       const basicObj = parseBasicObject(valueElm, referemcedSusbystems)
 
+      basicObj['parent'] = null
       let valueFormatterId = getFEText(valueElm, 'value-formatter-id')
       basicObj[valueFormatterId] = valueFormatterId
 
@@ -470,6 +479,7 @@ export function parseToPorisModel(store, xmlText) {
     const basicObj = parseBasicObject(subsElm, referemcedSusbystems)
 
     let defaultModeId = getFEText(subsElm, 'default-mode-id')
+
 
     basicObj['defaultModeId'] = defaultModeId
 

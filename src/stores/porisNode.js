@@ -62,4 +62,27 @@ export class PorisNode {
     getSubsystems() {
         return this.getDestinations(SUBSYSTEM_TYPE)
     }
+
+    getValidModes() {
+        if (this.validModes == null)
+        {
+            this.validModes = []
+        }
+        return this.validModes
+    }
+
+    getActiveSubsystems()
+    {
+        let ret = []
+        let ss = this.subsystemsNodes
+        console.log(`ss has subsystems ${ss.length}`)
+        ss.forEach((s) => {
+            console.log(`s is ${typeof s} ${s.name}`)
+            if (s.getValidModes().length > 0) {
+                console.log(`**** adding ${s.name}`)
+                ret.push(s)
+            }
+        });
+        return ret
+    }
 }

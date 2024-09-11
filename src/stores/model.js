@@ -19,7 +19,6 @@ export const useModelStore = defineStore('model', () => {
   const subsystems = ref([])
   const rootSubsystem = ref()
 
-  const validModes = ref([])
   const currentModes = ref([])
 
   const systemValues = ref({})
@@ -36,12 +35,11 @@ export const useModelStore = defineStore('model', () => {
       rootSubsystem.value = JSONmodel.rootSubsystem
 
       console.log('LIMPIANDO valores por defecto')
-      validModes.value = []
       currentModes.value = []
 
       systemValues.value = {}
 
-      console.log("Initial setValidMode")
+      console.log('Initial setValidMode')
       setValidMode(JSONmodel.rootSubsystem)
     })
   }
@@ -60,171 +58,74 @@ export const useModelStore = defineStore('model', () => {
 
   var DEBUG = false
 
+  function setValidModeFrom(subsystem, mode, validModes) {
+    subsystem.validModes = validModes
+    if (validModes.length > 0) {
+      let prevMode = subsystem.currentMode
+      let candidate = null
+      if (validModes.length > 0) {
+        if (mode != null && validModes.includes(mode)) {
+          console.log(`setValidMode_ candidate mode`)
+          candidate = mode
+        } else {
+          if (validModes.includes(subsystem.defaultMode)) {
+            candidate = subsystem.defaultMode
+            console.log(`setValidMode_ candidate default`)
+          } else {
+            candidate = validModes[0]
+            console.log(`setValidMode_ candidate firstvalid`)
+          }
+        }
+      } else {
+        console.log(`setValidMode_ candidate default without parent`)
+        candidate = subsystem.defaultMode
+      }
+
+      if (prevMode != candidate) {
+        console.log(`setValidMode_() subsystem:`, subsystem.name, candidate.name)
+        subsystem.currentMode = candidate
+        currentModes.value[`${subsystem.id}`] = candidate
+        console.log(`setValidMode Value set`, subsystem.currentMode)
+        if (subsystem.hasValues) {
+          getSystemValue(subsystem, subsystem.currentMode)
+        }
+        if (subsystem.hasSubsystems) {
+          subsystem.subsystemsNodes.forEach((ss) => {
+            setValidSubMode(ss, ss.currentMode, subsystem.currentMode)
+          })
+        }
+      }
+      return candidate
+    } else {
+      subsystem.currentMode = null
+      return null
+    }
+  }
+
   /**
    * Resets the whole tree of valid modes
    * @param {*} subsystem
    * @param {*} mode
    */
   function setValidMode(subsystem, mode) {
+    let validModes = getValidObjModes(subsystem)
+    console.log(`setValidMode_ NOT using supermode len ${validModes.length}`)
     console.log(`setValidMode() subsystem:`, subsystem, mode)
-    console.log(`   setValidMode validModes`, validModes.value)
+    console.log(`   setValidMode validModes`, validModes)
 
-    let candidate = null
-    if (validModes.value.length > 1)
-    {
-      if (validModes.value.includes(mode)) 
-      {
-        candidate = mode
-      } 
-      else
-      {
-        if (validModes.value.includes(subsystem.defaultMode))
-        {
-          candidate = subsystem.defaultMode
-        }
-        else
-        {
-          candidate = validModes.value[0]
-        }
-      }
-    }
-    else 
-    {
-      candidate = subsystem.defaultMode
-    }
-    
-    console.log(`setValidMode() candidate:`, candidate)
-
-    const newValidModes = mode ? [mode] : [...subsystem.modesNodes]
-    _addValidModeRecursive(
-      subsystem,
-      candidate,
-      newValidModes,
-      true,
-      true
-    )
-
-    validModes.value = newValidModes
-
-    // console.log(`   setValidMode setting current modes`)
-    const currentMode = candidate
-    const newCurrentModes = [currentMode]
-    _addValidModeRecursive(subsystem, currentMode, newCurrentModes, true, false)
-
-    currentModes.value = newCurrentModes
-
-    //console.log(`setValidMode newValidMopdes`, validModes.value)
+    return setValidModeFrom(subsystem, mode, validModes)
   }
 
-  function _addValidModeRecursive(parent, mode, newValidModes, isRoot, addSibblingModes) {
-    // Lets dig into it's children modes ...
+  function setValidSubMode(subsystem, mode, supermode) {
+    let validModes = _intersection(subsystem.modesNodes, supermode.modesNodes)
+    console.log(`setValidMode_ using supermode len ${validModes.length}`)
+    validModes.forEach((m) => {
+      console.log(`setValidMode_ valid: ${m}`)
+    })
+    console.log(`setValidMode() subsystem:`, subsystem, mode)
+    console.log(`   setValidMode validModes`, validModes)
 
-    // DEBUG = true
-
-    // if (DEBUG) {
-    //   console.log(`_addValidModeRecursive mode.id: ${mode?.id}, isRoot: ${isRoot}, addSibblingModes: ${addSibblingModes}`, mode, newValidModes)
-    // }
-
-    if (mode.hasModes) {
-      const children = mode.modesNodes
-      // if (DEBUG) {
-      //   console.log(`_addValidModeRecursive mode.id: ${mode.id}, children`, children)
-      // }
-
-      if (children.length > 0) {
-        if (isRoot || addSibblingModes) {
-          for (const child of children) {
-            // if (DEBUG) {
-            //   console.log(`_addValidModeRecursive mode.id: ${mode.id}, child.id: ${child.id}`, child)
-            // }
-
-            newValidModes.push(child)
-
-            if (isRoot) {
-              _addValidModeRecursive(mode, child, newValidModes, false, addSibblingModes)
-            }
-          }
-          //console.log(`addValidMode newValidModes`, newValidModes)
-        }
-
-        if (!isRoot) {
-          var childToFollow = null
-
-          if (children.length === 0) {
-            childToFollow = mode.defaultMode
-          } else {
-            childToFollow = children[0]
-          }
-
-          if (!addSibblingModes) {
-            newValidModes.push(childToFollow)
-          }
-
-          // if (DEBUG) {
-          //   console.log(`_addValidModeRecursive mode.id: ${mode.id}, childToFollow.id: ${childToFollow.id}`)
-          // }
-
-          _addValidModeRecursive(mode, childToFollow, newValidModes, false, addSibblingModes)
-        }
-      }
-      /*
-      let defaultMode = mode.defaultMode()
-      if (defaultMode) {
-        newValidModes.push(defaultMode)
-        _addValidModeRecursive(defaultMode, newValidModes, true)
-      }
-*/
-    }
-  }
-
-  /**
-   * Replaces the oldMode valid modes tree with the new one
-   * @param {*} newMode
-   */
-  function addValidMode(subsystem, newMode, oldMode) {
-    // DEBUG = false
-
-    // console.log(`addValidMode newMode`, newMode)
-    // console.log(`    addValidMode oldMode`, oldMode)
-    //console.log(`addValidMode paramModes`, validModes.value)
-
-    // /*
-    //     if (validModes.value.includes(newMode)) {
-    //       console.log(`addValidMode newMode ${newMode.id} already on the list!`)
-    //       return
-    //     }
-    // */
-    let strippedValidModes
-
-    if (oldMode) {
-      console.log(`addValidMode ${newMode.name} with oldMode: ${oldMode.name}`)
-      const oldModes = [oldMode]
-      _addValidModeRecursive(subsystem, oldMode, oldModes, true)
-
-      //console.log(`addValidMode oldModes`, oldModes)
-      //console.log(`addValidMode strippedValidModes`, strippedValidModes)
-      //console.log(`addValidMode strippedValidModes AFTER`, _difference(strippedValidModes, oldModes))
-
-      strippedValidModes = _difference(strippedValidModes, oldModes)
-    } else {
-      strippedValidModes = validModes.value
-    }
-
-    const newValidModes = _concat(strippedValidModes, newMode)
-    _addValidModeRecursive(subsystem, newMode, newValidModes, true)
-
-    const newValidUniqueModels = [...new Set(newValidModes)]
-
-    if (
-      _intersection(validModes.value, newValidUniqueModels).length == newValidUniqueModels.length
-    ) {
-      console.log(`addValidMode no changes!`)
-      return
-    }
-
-    validModes.value = newValidUniqueModels
-
-    //console.log(`addValidMode newValidMopdes`, validModes.value)
+    return setValidModeFrom(subsystem, mode, validModes)
   }
 
   function getCurrentMode(modeOptions) {
@@ -252,20 +153,24 @@ export const useModelStore = defineStore('model', () => {
     // }
 
     console.log(`obj: ${obj.name}`)
-    console.log(`validModes: ${validModes.value}`)
-    validModes.value.forEach( 
-      m => {
-        console.log(m.name)
-      }
-    )
-
     console.log(`objModes: ${obj.modesNodes}`)
-    obj.modesNodes.forEach( 
-      m => {
-        console.log(m.name)
-      }
-    )
-    return _intersection(obj.modesNodes, validModes.value)
+    obj.modesNodes.forEach((m) => {
+      console.log(m.name)
+    })
+    if (obj.parent != null) {
+      console.log(`parent: ${obj.parent.name}`)
+      console.log(`parent mode: ${obj.parent.currentMode}`)
+      console.log(`obj.modesNodes: ${obj.modesNodes}`)
+      console.log(`obj.modesNodes[0]: ${obj.modesNodes[0]}`)
+      console.log(`obj.modesNodes[0].name: ${obj.modesNodes[0].name}`)
+      let ret = _intersection(obj.modesNodes, obj.parent.currentMode.modes)
+      console.log('modesNodes ret')
+      console.log(`modesNodes ret[0]: ${obj.modesNodes[0]}`)
+      console.log(`modesNodes ret[0].name: ${obj.modesNodes[0].name}`)
+      return ret
+    } else {
+      return obj.modesNodes
+    }
   }
 
   function hasValidObjModes(obj) {
@@ -342,7 +247,6 @@ export const useModelStore = defineStore('model', () => {
   return {
     xmlModel,
     rootSubsystem,
-    validModes,
     currentModes,
     systemValues,
     loadModel,
@@ -351,7 +255,6 @@ export const useModelStore = defineStore('model', () => {
     getSubsystem,
     getCurrentMode,
     setValidMode,
-    addValidMode,
     getValidObjModes,
     hasValidObjModes,
     getSystemValue,
