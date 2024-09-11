@@ -19,10 +19,13 @@ const updateModel = () => {
 store.loadModel(modelName.value)
 }
 
-try { thiskey; }
+try { 
+  thiskey; 
+  store.loadModelURL(thiskey)
+}
     catch (e) {
       if (e.name == "ReferenceError") {
-        store.loadModelURL(thiskey)
+        
       }
     }
 </script>
