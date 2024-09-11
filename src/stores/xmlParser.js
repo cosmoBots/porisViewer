@@ -7,7 +7,6 @@ import {
   VALUE_FILE_PATH_TYPE,
   MODE_TYPE,
   SUBSYSTEM_TYPE,
-  PARAM_TYPE,
   ValueTypes
 } from './porisNode'
 
@@ -20,32 +19,30 @@ const XMLTypeToPorisType = {
   PORISValueDate: VALUE_DATE_RANGE_TYPE,
   PORISValueFilePath: VALUE_FILE_PATH_TYPE,
   PORISMode: MODE_TYPE,
-  PORISParam: PARAM_TYPE,
-  PORISSys: SUBSYSTEM_TYPE,
+  PORISNode: SUBSYSTEM_TYPE,
+  PORISCmd: COMMAND_TYPE
 }
 
-// Foloowing XML tag names used for selecting the elements 
+// Foloowing XML tag names used for selecting the elements
 const XMLValueTagNames = [
-  'poris-value',
-  'poris-value-string',
-  'poris-value-float',
-  'poris-value-date',
-  'poris-value-file-path'
+  'value',
+  'value-string',
+  'value-double-range',
+  'value-date',
+  'value-file-path'
 ]
 
-const XMLParamTagName = 'poris-param'
 
-const XMLModeTagName = 'poris-mode'
+const XMLModeTagName = 'mode'
 
-const XMLSystemTagName = 'poris-sys'
-
+const XMLSystemTagName = 'sub-system'
 
 /**
- * Returns the value of text XML, converted to the type defined on the 
+ * Returns the value of text XML, converted to the type defined on the
  * type attribute, or the text it selfif no recognized type is found.
- * @param {*} elm 
- * @param {*} tagName 
- * @returns 
+ * @param {*} elm
+ * @param {*} tagName
+ * @returns
  */
 function getFEText(elm, tagName) {
   const elmArray = elm.getElementsByTagName(tagName)
@@ -84,16 +81,19 @@ function parseDestinations(elm, referemcedSusbystems) {
         const type = XMLTypeToPorisType[destElm.getAttribute('type')]
         const id = getFEText(destElm, 'id')
 
-        if (type == SUBSYSTEM_TYPE) {
-          if (
-            !referemcedSusbystems.find((elm) => {
-              elm == 1
-            })
-          ) {
-            referemcedSusbystems.push(id)
+        if (type != COMMAND_TYPE)
+        {
+          /* We ignore the PorisCmd type for now */
+          if (type == SUBSYSTEM_TYPE) {
+            if (
+              !referemcedSusbystems.find((elm) => {
+                elm == 1
+              })
+            ) {
+              referemcedSusbystems.push(id)
+            }
           }
-        }
-      /*
+        /*
           if (type == 'Value') {
   
           } else if (type == 'Mode') {
@@ -101,9 +101,10 @@ function parseDestinations(elm, referemcedSusbystems) {
           } else if (type == 'SubSystem') {
   
           }
-  */
+        */
         destinations.push({ type, id })
       }
+    }
     }
   }
 
@@ -211,18 +212,35 @@ function parseBasicObject(elm, referemcedSusbystems) {
 function dereferenceNodeDestinations(JSONmodel, nodes) {
   nodes.forEach((node) => {
     if (node.destinations) {
+
+      // node.destinations.forEach((d) => {
+      //   console.log(`${node.id}:${node.name} -> `,d)
+      // })
+
       let derDestinations = node.destinations.map((dest) => {
         return JSONmodel.findNode(dest.type, dest.id)
       })
 
-      console.log("NODE.id " + node.id, node, derDestinations)
+      console.log('DER', node)
 
       node.valuesNodes = derDestinations.filter(
-        (dest) => dest.type != MODE_TYPE && dest.type != PARAM_TYPE && dest.type != SUBSYSTEM_TYPE
+        (dest) => 
+          {
+            //console.log("dest:", dest)
+            return dest.type != MODE_TYPE && dest.type != SUBSYSTEM_TYPE
+          }
       )
       node.modesNodes = derDestinations.filter((dest) => dest.type === MODE_TYPE)
       node.paramNodes = derDestinations.filter((dest) => dest.type === PARAM_TYPE)
       node.subsystemsNodes = derDestinations.filter((dest) => dest.type === SUBSYSTEM_TYPE)
+      node.modesNodes.forEach((m) => {
+        console.log(`setting ${node.name} as parent of mode ${m.name}`)
+        m.parent = node
+      })
+      node.subsystemsNodes.forEach((m) => {
+        console.log(`setting ${node.name} as parent of subsystem ${m.name}`)
+        m.parent = node
+      })      
     }
   })
 }
@@ -318,7 +336,7 @@ export function parseToPorisModel(store, xmlText) {
       </value-string>
   
   
-      <value-date-range>
+      <value-date>
         <date-max type="timestamp">2040-12-31 23:59:00 UTC</date-max>
         <date-min type="timestamp">2006-02-01 00:00:00 UTC</date-min>
         <default-date type="timestamp">2011-04-09 00:00:00 UTC</default-date>
@@ -331,7 +349,7 @@ export function parseToPorisModel(store, xmlText) {
         <labels type="array"/>
         <node-attributes type="array"/>
         <destinations type="array"/>
-      </value-date-range>
+      </value-date>
   
       <value-file-path>
         <default-string>mypreimagingfile.fits</default-string>
@@ -356,6 +374,7 @@ export function parseToPorisModel(store, xmlText) {
     for (const valueElm of valueElements) {
       const basicObj = parseBasicObject(valueElm, referemcedSusbystems)
 
+      basicObj['parent'] = null
       let valueFormatterId = getFEText(valueElm, 'value-formatter-id')
       basicObj[valueFormatterId] = valueFormatterId
 
@@ -516,12 +535,11 @@ export function parseToPorisModel(store, xmlText) {
 
     let defaultModeId = getFEText(subsElm, 'default-mode-id')
 
+
     basicObj['defaultModeId'] = defaultModeId
 
     JSONmodel.subsystems.push(new PorisNode(basicObj))
   }
-
-  console.log(JSONmodel)
 
   JSONmodel.rootSubsystem = JSONmodel.subsystems.find((subsys) => {
     return !referemcedSusbystems.includes(subsys.id)
@@ -534,6 +552,8 @@ export function parseToPorisModel(store, xmlText) {
 
   dereferenceDefaultMode(JSONmodel.modes)
   dereferenceDefaultMode(JSONmodel.subsystems)
+
+  console.log('Loaded model', JSONmodel)
 
   return JSONmodel
 }

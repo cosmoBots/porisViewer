@@ -1,18 +1,15 @@
-
-
 <template>
-  <div class="greetings">
+  <div class="greetings" v-if="!remoteModel">
     <h1 class="green">Model</h1>
-    
+
     <input v-model="modelName" />
     <button @click="updateModel">Update Model</button>
   </div>
 </template>
 
 <script setup>
-import {ref} from 'vue'
-import { useModelStore } from '@/stores/model';  
-
+import { ref } from 'vue'
+import { useModelStore } from '@/stores/model'
 
 const store = useModelStore()
 
@@ -22,6 +19,19 @@ const updateModel = () => {
   store.loadModel(modelName.value)
 }
 
+let remoteModel = false;
+//let thiskey = "1234"
+try {
+  thiskey;
+  store.loadModelURL(thiskey)
+  remoteModel = true
+  
+}
+catch (e) {
+  if (e.name == "ReferenceError") {
+    /* Do nothing */
+  }
+}
 </script>
 
 <style scoped>
@@ -42,6 +52,7 @@ h3 {
 }
 
 @media (min-width: 1024px) {
+
   .greetings h1,
   .greetings h3 {
     text-align: left;

@@ -10,7 +10,7 @@ export const VALUE_DATE_RANGE_TYPE = 'ValueDate'
 export const VALUE_FILE_PATH_TYPE = 'ValueFilePath'
 export const MODE_TYPE = 'Mode'
 export const SUBSYSTEM_TYPE = 'SubSystem'
-export const PARAM_TYPE = 'Param'
+export const COMMAND_TYPE = 'Command'
 
 export const ValueTypes = [
     VALUE_TYPE,
@@ -29,8 +29,8 @@ export class PorisNode {
         const destTypes = _isArray(destType) ? destType : [destType]
 
         
-        console.log(this)
-        console.log("=========")
+        //console.log(this)
+        //console.log("=========")
 
         //console.log(`getDestinations() destType: ${destType}`, obj)
         const modes = this.destinations.reduce((accumulator, dest) => {
@@ -62,5 +62,28 @@ export class PorisNode {
 
     getSubsystems() {
         return this.getDestinations(SUBSYSTEM_TYPE)
+    }
+
+    getValidModes() {
+        if (this.validModes == null)
+        {
+            this.validModes = []
+        }
+        return this.validModes
+    }
+
+    getActiveSubsystems()
+    {
+        let ret = []
+        let ss = this.subsystemsNodes
+        //console.log(`ss has subsystems ${ss.length}`)
+        ss.forEach((s) => {
+            //console.log(`s is ${typeof s} ${s.name}`)
+            if (s.getValidModes().length > 0) {
+                //console.log(`**** adding ${s.name}`)
+                ret.push(s)
+            }
+        });
+        return ret
     }
 }

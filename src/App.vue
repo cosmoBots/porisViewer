@@ -1,14 +1,14 @@
 <template>
   <header>
     <div class="wrapper">
-      <modelSelector />
+      <modelSelector  />
 
       <nav>
         <RouterLink :to="{ name: 'config' }">Config Panel</RouterLink>
-        <RouterLink :to="{ name: 'xml' }">Model Source XML</RouterLink>
+        <RouterLink v-if="!remoteModel" :to="{ name: 'xml' }">Model Source XML</RouterLink>
       </nav>
 
-      <div>
+      <!--div>
         <h3>Valid Modes</h3>
         <ul class="parametersModes">
           <li v-for="param in validModes" :key="param.id">{{ param.name }} / {{ param.id }}</li>
@@ -23,31 +23,34 @@
       <div>
         <h3>Model Values</h3>
         <ul class="parametersModes">
-          <li v-for="(value, name) of modelValues" :key="name">{{ name }} = {{ value }}</li>
+          <li v-for="(value, name) of systemValues" :key="name">{{ name }} = {{ value }}</li>
         </ul>
-      </div>
+      </div -->
     </div>
   </header>
 
   <RouterView />
 </template>
 <script setup>
-import { computed } from 'vue'
 import { RouterLink, RouterView } from 'vue-router'
-import { useModelStore } from '@/stores/model'
 import modelSelector from './components/ModelSelector.vue'
 
-const store = useModelStore()
+let remoteModel = false
+//let thiskey = "1234"
+try {
+  thiskey;
+  remoteModel = true
+} catch (error) {
+  /* Do nothing */
+}
 
-const validModes = computed(() => store.validModes)
-const currentModes = computed(() => store.currentModes)
-const modelValues = computed(() => store.modelValues)
+
 </script>
 
 <style scoped>
 header {
-  line-height: 1.5;
-  max-height: 100vh;
+  /*line-height: 1.5;
+  max-height: 100vh;*/
 }
 
 .logo {
@@ -82,7 +85,7 @@ nav a:first-of-type {
 
 @media (min-width: 1024px) {
   header {
-    display: flex;
+    /*display: flex;*/
     place-items: center;
     padding-right: calc(var(--section-gap) / 2);
   }

@@ -19,32 +19,53 @@ export const useModelStore = defineStore('model', () => {
   const subsystems = ref([])
   const rootSubsystem = ref()
 
-  const validModes = ref([])
   const currentModes = ref([])
 
-  const modelValues = ref({})
+  const systemValues = ref({})
 
   function loadModel(modelName) {
-    xmlModelLoader(modelName).then((model) => {
+    let doc = xmlModelLoader(`/models/${modelName}.xml`)
+    doc.then((model) => {
       xmlModel.value = model
 
       let JSONmodel = parseToPorisModel(this, model)
-      console.log('JSONModel', JSONmodel)
 
       values.value = JSONmodel.values
       modes.value = JSONmodel.modes
       subsystems.value = JSONmodel.subsystems
       rootSubsystem.value = JSONmodel.rootSubsystem
 
-      validModes.value = []
+      //console.log('LIMPIANDO valores por defecto')
       currentModes.value = []
 
-      modelValues.value = {}
+      systemValues.value = {}
 
+      //console.log('Initial setValidMode')
       setValidMode(JSONmodel.rootSubsystem)
     })
   }
+  
+  function loadModelURL(key) {
+    let doc = xmlModelLoader(`./form.xml?key=${key}`)
+    doc.then((model) => {
+      xmlModel.value = model
 
+      let JSONmodel = parseToPorisModel(this, model)
+
+      values.value = JSONmodel.values
+      modes.value = JSONmodel.modes
+      subsystems.value = JSONmodel.subsystems
+      rootSubsystem.value = JSONmodel.rootSubsystem
+
+      //console.log('LIMPIANDO valores por defecto')
+      currentModes.value = []
+
+      systemValues.value = {}
+
+      //console.log('Initial setValidMode')
+      setValidMode(JSONmodel.rootSubsystem)
+    })
+  }
   function getValue(id) {
     return values.value.find((element) => element.id == id)
   }
@@ -59,140 +80,77 @@ export const useModelStore = defineStore('model', () => {
 
   var DEBUG = false
 
+  function setValidModeFrom(subsystem, mode, validModes) {
+    subsystem.validModes = validModes
+    if (validModes.length > 0) {
+      let prevMode = subsystem.currentMode
+      let candidate = null
+      if (validModes.length > 0) {
+        if (mode != null && validModes.includes(mode)) {
+          console.log(`--> setValidMode_ candidate mode ${mode.name}`)
+          candidate = mode
+        } else {
+          if (validModes.includes(subsystem.defaultMode)) {
+            candidate = subsystem.defaultMode
+            console.log(`--> setValidMode_ candidate valid default ${subsystem.defaultMode.name}`)
+          } else {
+            candidate = validModes[0]
+            console.log(`--> setValidMode_ candidate first mode ${subsystem.validModes[0].name}`)
+          }
+        }
+      } else {
+        console.log(`--> setValidMode_ candidate default (root)`)
+        candidate = subsystem.defaultMode
+      }
+
+      if (prevMode != candidate) {
+        //console.log(`*** setValidMode_() subsystem:`, subsystem.name, candidate.name)
+        subsystem.currentMode = candidate
+        subsystem.candidateMode = candidate
+        currentModes.value[`${subsystem.id}`] = candidate
+        //console.log(`setValidMode Value set`, subsystem.currentMode)
+        if (subsystem.hasValues) {
+          getSystemValue(subsystem, subsystem.currentMode)
+        }
+        if (subsystem.hasSubsystems) {
+          subsystem.subsystemsNodes.forEach((ss) => {
+            setValidSubMode(ss, ss.currentMode, subsystem.currentMode)
+          })
+        }
+      }
+      return candidate
+    } else {
+      subsystem.currentMode = null
+      subsystem.candidateMode = null
+      console.log(`--> setValidMode_ null (no valid mode available)`)
+      return null
+    }
+  }
+
   /**
    * Resets the whole tree of valid modes
-   * @param {*} subsystem 
+   * @param {*} subsystem
    * @param {*} mode
    */
   function setValidMode(subsystem, mode) {
-    // console.log(`setValidMode() subsystem:`, subsystem, mode)
-    // console.log(`   setValidMode validModes`, validModes.value)
+    console.log(`setValidMode_ ${subsystem.name} ${mode?.name}, NOT using supermode`)
+    let validModes = getValidObjModes(subsystem)
+    //console.log(`   setValidMode validModes len ${validModes.length}`, validModes)
 
-    const newValidModes = mode? [mode] : [...subsystem.modesNodes]
-    _addValidModeRecursive(subsystem, mode? mode : subsystem.defaultMode, newValidModes, true, true)
-
-    validModes.value = newValidModes
-
-
-    // console.log(`   setValidMode setting current modes`)
-    const currentMode = mode? mode : subsystem.defaultMode
-    const newCurrentModes = [currentMode]
-    _addValidModeRecursive(subsystem, currentMode, newCurrentModes, true, false)
-
-    currentModes.value = newCurrentModes
-
-
-    //console.log(`setValidMode newValidMopdes`, validModes.value)
+    return setValidModeFrom(subsystem, mode, validModes)
   }
 
-  function _addValidModeRecursive(parent, mode, newValidModes, isRoot, addSibblingModes) {
-    // Lets dig into it's children modes ...
-
-    // DEBUG = true
-
-    // if (DEBUG) {
-    //   console.log(`_addValidModeRecursive mode.id: ${mode?.id}, isRoot: ${isRoot}, addSibblingModes: ${addSibblingModes}`, mode, newValidModes)
-    // }
-
-    if (mode.hasModes) {
-      const children = mode.modesNodes
-      // if (DEBUG) {
-      //   console.log(`_addValidModeRecursive mode.id: ${mode.id}, children`, children)
-      // }
-
-      if (children.length > 0) {
-        if (isRoot || addSibblingModes) {
-          for (const child of children) {
-
-            // if (DEBUG) {
-            //   console.log(`_addValidModeRecursive mode.id: ${mode.id}, child.id: ${child.id}`, child)
-            // }
-
-            newValidModes.push(child)
-
-            if (isRoot) {
-              _addValidModeRecursive(mode, child, newValidModes, false, addSibblingModes)
-            }
-          }
-          //console.log(`addValidMode newValidModes`, newValidModes)
-        }
-        
-        if (!isRoot) {
-          var childToFollow = null
-          
-          if (children.length === 0) {
-            childToFollow = mode.defaultMode
-          } else {
-            childToFollow = children[0]
-          }
-
-          if (!addSibblingModes) {
-            newValidModes.push(childToFollow)
-          }
-
-          // if (DEBUG) {
-          //   console.log(`_addValidModeRecursive mode.id: ${mode.id}, childToFollow.id: ${childToFollow.id}`)
-          // }
-
-          _addValidModeRecursive(mode, childToFollow, newValidModes, false, addSibblingModes)
-        }
-      }
+  function setValidSubMode(subsystem, mode, supermode) {
+    console.log(`setValidMode_ ${subsystem.name} ${mode?.name}, using supermode`, supermode.name)
+    let validModes = _intersection(subsystem.modesNodes, supermode.modesNodes)
     /*
-      let defaultMode = mode.defaultMode()
-      if (defaultMode) {
-        newValidModes.push(defaultMode)
-        _addValidModeRecursive(defaultMode, newValidModes, true)
-      }
-*/      
-    }
-  }
+    validModes.forEach((m) => {
+      console.log(`setValidMode_ valid:`, m)
+    })
+    */
+    //console.log(`   setValidMode validModes  len ${validModes.length}`, validModes)
 
-
-  /**
-   * Replaces the oldMode valid modes tree with the new one
-   * @param {*} newMode
-   */
-  function addValidMode(subsystem, newMode, oldMode) {
-    // DEBUG = false
-
-    // console.log(`addValidMode newMode`, newMode)
-    // console.log(`    addValidMode oldMode`, oldMode)
-    //console.log(`addValidMode paramModes`, validModes.value)
-
-// /*
-//     if (validModes.value.includes(newMode)) {
-//       console.log(`addValidMode newMode ${newMode.id} already on the list!`)
-//       return
-//     }
-// */
-    let strippedValidModes
-
-    if (oldMode) {
-      const oldModes = [oldMode]
-      _addValidModeRecursive(subsystem, oldMode, oldModes, true)
-
-      //console.log(`addValidMode oldModes`, oldModes)
-      //console.log(`addValidMode strippedValidModes`, strippedValidModes)
-      //console.log(`addValidMode strippedValidModes AFTER`, _difference(strippedValidModes, oldModes))
-
-      strippedValidModes = _difference(strippedValidModes, oldModes)
-    } else {
-      strippedValidModes = validModes.value
-    }
-
-    const newValidModes = _concat(strippedValidModes, newMode)
-    _addValidModeRecursive(subsystem, newMode, newValidModes, true)
-
-    const newValidUniqueModels = [...new Set(newValidModes)]
-
-    if (_intersection(validModes.value, newValidUniqueModels).length == newValidUniqueModels.length) {
-      console.log(`addValidMode no changes!`)
-      return
-    }
-
-    validModes.value = newValidUniqueModels
-
-    //console.log(`addValidMode newValidMopdes`, validModes.value)
+    return setValidModeFrom(subsystem, mode, validModes)
   }
 
   function getCurrentMode(modeOptions) {
@@ -213,13 +171,27 @@ export const useModelStore = defineStore('model', () => {
 
   function getValidObjModes(obj) {
     // if (obj.id === 534) {
-      // console.log(`getValidObjModes() obj.id: ${obj.id}`, obj)
-      //console.log(`getValidObjModes() getObjModes`, getObjModes(obj))
-      // console.log(`getValidObjModes() validModes`, validModes.value)
-      // console.log(`getValidObjModes() _intersection`,  _intersection(obj.modesNodes, validModes.value))
+    // console.log(`getValidObjModes() obj.id: ${obj.id}`, obj)
+    //console.log(`getValidObjModes() getObjModes`, getObjModes(obj))
+    // console.log(`getValidObjModes() validModes`, validModes.value)
+    // console.log(`getValidObjModes() _intersection`,  _intersection(obj.modesNodes, validModes.value))
     // }
 
-    return _intersection(obj.modesNodes, validModes.value)
+    /*
+    console.log(`obj: ${obj.name}`)
+    console.log(`objModes: ${obj.modesNodes}`)
+    obj.modesNodes.forEach((m) => {
+      console.log(m.name)
+    })
+    */
+    if (obj.parent != null) {
+      // console.log(`parent: ${obj.parent.name}`)
+      // console.log(`parent mode: ${obj.parent.currentMode.name}`)
+      // console.log(`parent.mode.submodes:`, obj.parent.currentMode.modesNodes)
+      return _intersection(obj.modesNodes, obj.parent.currentMode.modesNodes)
+    } else {
+      return obj.modesNodes
+    }
   }
 
   function hasValidObjModes(obj) {
@@ -227,24 +199,38 @@ export const useModelStore = defineStore('model', () => {
     return getValidObjModes(obj).length > 0
   }
 
-  function setModelValue(model, value) {
-    //console.log(`setModelValue() model: ${model.id}, value:`, value)
-    modelValues.value[`${model.id}`] = value
+  function setSystemValue(system, value) {
+    console.log(`setSystemValue() system: ${system.id}, value:`, value)
+    systemValues.value[`${system.id}`] = value
   }
 
-  function getModelValue(model, mode) {
-    let value = modelValues.value[`${model.id}`]
-    
-    console.log(`getModelValue() model: ${model.id}, _isUndefined(value): ${_isUndefined(value)}, mode / value`, mode, value)
+  function getSystemValue(system, mode) {
+    let value = systemValues.value[`${system.id}`]
 
-    let valueOptions = mode.valuesNodes
+    console.log(
+      `getSystemValue() system: ${system.id}, _isUndefined(value): ${_isUndefined(value)}, mode / value`,
+      mode,
+      value
+    )
 
-    if (valueOptions.length == 0) {
-      //console.log(`getModelValue() no value!!`)
+    if (!mode.hasValues) {
+      //console.log(`getSystemValue() no value!!`)
       return null
     }
 
-    console.log(`getModelValue() valueOptions[0].type: ${valueOptions[0].type}`)
+    let valueOptions = mode.valuesNodes
+
+    //console.log(`value`,value)
+    if (
+      value != null && !_isUndefined(value) &&
+      valueOptions.find((val) => {
+        val.id === value.id
+      }) === null
+    ) {
+      value = undefined
+    }
+
+    //console.log(`getModelValue() valueOptions[0].type: ${valueOptions[0].type}`)
 
     if (valueOptions[0].type == VALUE_STRING_TYPE) {
       if (_isUndefined(value)) {
@@ -259,7 +245,7 @@ export const useModelStore = defineStore('model', () => {
         value = valueOptions[0].defaultFloat
       }
     } else if (valueOptions[0].type == VALUE_FILE_PATH_TYPE) {
-      console.log("FILE")
+      //console.log('FILE')
       if (_isUndefined(value)) {
         value = valueOptions[0].defaultString
       }
@@ -269,7 +255,7 @@ export const useModelStore = defineStore('model', () => {
       }
     }
 
-    setModelValue(mode, value)
+    setSystemValue(system, value)
 
     return value
   }
@@ -283,19 +269,18 @@ export const useModelStore = defineStore('model', () => {
   return {
     xmlModel,
     rootSubsystem,
-    validModes,
     currentModes,
-    modelValues,
+    systemValues,
     loadModel,
+    loadModelURL,
     getValue,
     getMode,
     getSubsystem,
     getCurrentMode,
     setValidMode,
-    addValidMode,
     getValidObjModes,
     hasValidObjModes,
-    getModelValue,
-    setModelValue
+    getSystemValue,
+    setSystemValue
   }
 })
