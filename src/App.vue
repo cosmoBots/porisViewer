@@ -1,11 +1,11 @@
 <template>
   <header>
     <div class="wrapper">
-      <modelSelector />
+      <modelSelector v-if="!remoteModel"  />
 
       <nav>
         <RouterLink :to="{ name: 'config' }">Config Panel</RouterLink>
-        <RouterLink :to="{ name: 'xml' }">Model Source XML</RouterLink>
+        <RouterLink v-if="!remoteModel" :to="{ name: 'xml' }">Model Source XML</RouterLink>
       </nav>
 
       <!--div>
@@ -34,6 +34,14 @@
 <script setup>
 import { RouterLink, RouterView } from 'vue-router'
 import modelSelector from './components/ModelSelector.vue'
+let remoteModel = false
+try {
+  thiskey;
+  remoteModel = true
+} catch (error) {
+  /* Do nothing */
+}
+
 
 </script>
 
