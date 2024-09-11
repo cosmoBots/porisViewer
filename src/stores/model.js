@@ -24,7 +24,8 @@ export const useModelStore = defineStore('model', () => {
   const systemValues = ref({})
 
   function loadModel(modelName) {
-    xmlModelLoader(modelName).then((model) => {
+    let doc = xmlModelLoader(`/models/${modelName}.xml`)
+    doc.then((model) => {
       xmlModel.value = model
 
       let JSONmodel = parseToPorisModel(this, model)
@@ -43,7 +44,28 @@ export const useModelStore = defineStore('model', () => {
       setValidMode(JSONmodel.rootSubsystem)
     })
   }
+  
+  function loadModelURL(key) {
+    let doc = xmlModelLoader(`./form.xml?key=${key}`)
+    doc.then((model) => {
+      xmlModel.value = model
 
+      let JSONmodel = parseToPorisModel(this, model)
+
+      values.value = JSONmodel.values
+      modes.value = JSONmodel.modes
+      subsystems.value = JSONmodel.subsystems
+      rootSubsystem.value = JSONmodel.rootSubsystem
+
+      //console.log('LIMPIANDO valores por defecto')
+      currentModes.value = []
+
+      systemValues.value = {}
+
+      //console.log('Initial setValidMode')
+      setValidMode(JSONmodel.rootSubsystem)
+    })
+  }
   function getValue(id) {
     return values.value.find((element) => element.id == id)
   }
@@ -250,6 +272,7 @@ export const useModelStore = defineStore('model', () => {
     currentModes,
     systemValues,
     loadModel,
+    loadModelURL,
     getValue,
     getMode,
     getSubsystem,

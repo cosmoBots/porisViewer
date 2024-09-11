@@ -16,8 +16,15 @@ const store = useModelStore()
 const modelName = ref('osiris_reference_model')
 
 const updateModel = () => {
-  store.loadModel(modelName.value)
+store.loadModel(modelName.value)
 }
+
+try { thiskey; }
+    catch (e) {
+      if (e.name == "ReferenceError") {
+        store.loadModelURL(thiskey)
+      }
+    }
 </script>
 
 <style scoped>

@@ -14,8 +14,8 @@ function promisifyXml2Js(arg) {
     })
 }
 */
-export function xmlModelLoader(modelFileName) {
-    return axios.get(`/models/${modelFileName}.xml`)
+export function xmlModelLoader(path) {
+    return axios.get(path)
         .then(response => {
             //return promisifyXml2Js(response.data)
 
