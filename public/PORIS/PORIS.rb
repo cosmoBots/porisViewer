@@ -568,7 +568,7 @@ class PORISValue < PORIS
   # the tag name will be "value", but subclasses
   # might overload it
   def getXMLNodeName
-    "poris-value"
+    "value"
   end
 
   # getter for the node type (overloading PORIS one)
@@ -689,7 +689,7 @@ class PORISValueString < PORISValueData
 
   # getter for the XML tag name
   def getXMLNodeName
-    "poris-value-string"
+    "value-string"
   end
 
   # The node type is 6 for PORISValueStrings
@@ -750,7 +750,7 @@ class PORISValueFilePath < PORISValueString
 
   # Getter for the XML tag name of this item
   def getXMLNodeName
-    "poris-value-file-path"
+    "value-file-path"
   end
 
   # Dumps item to XML, uses super().toXML and
@@ -827,7 +827,7 @@ class PORISValueDate < PORISValueString
 
   # Getter for the XML tag name of this item
   def getXMLNodeName
-    "poris-value-date"
+    "value-date"
   end
 
   # getter for the XML tag name
@@ -946,7 +946,7 @@ class PORISValueFloat < PORISValueData
 
   # getter for the XML tag name
   def getXMLNodeName
-    "poris-value-float"
+    "value-double-range"
   end
 
   # getter for the formatter, overload super()'s
@@ -1192,7 +1192,7 @@ class PORISMode < PORIS
 
   # Getter for the XML tag name of this item
   def getXMLNodeName
-    "poris-mode"
+    "mode"
   end
 
   # Getter for the NodeType of this item
@@ -1521,7 +1521,7 @@ class PORISNode < PORIS
   # In XML all PORISNodes (no matter if they are systems or params)
   # are <sub-system>
   def getXMLNodeName
-    "poris-node"
+    "sub-system"
   end
 
   # Function to obtain the NodeType, overloading super's
@@ -1742,7 +1742,7 @@ class PORISParam < PORISNode
   end
 
   def getXMLNodeName
-    "poris-node"
+    "sub-system"
   end
 
   def toXML(doc)
@@ -1898,7 +1898,7 @@ class PORISSys < PORISNode
   end
 
   def getXMLNodeName
-    "poris-node"
+    "sub-system"
   end
 
   def self.fromXML(n_node, pdoc)
@@ -2024,23 +2024,23 @@ class PORISDoc
     if rootnode && rootnode.name == "poris"
       rootnode.elements.each do |ch|
         case ch.name
-        when "poris-mode"
+        when "mode"
           md = PORISMode.fromXML(ch, self)
-        when "poris-node"
+        when "sub-system"
           md = PORISNode.executeXMLParser(ch, self)
-        when "poris-value"
+        when "value"
           md = PORISValue.fromXML(ch, self)
-        when "poris-value-float"
+        when "value-double-range"
           md = PORISValueFloat.fromXML(ch, self)
-        when "poris-node"
+        when "sub-system"
           md = PORISSys.fromXML(ch, self)
-        when "poris-node"
+        when "sub-system"
           md = PORISParam.fromXML(ch, self)
-        when "poris-value-string"
+        when "value-string"
           md = PORISValueString.fromXML(ch, self)
-        when "poris-value-date"
+        when "value-date"
           md = PORISValueDate.fromXML(ch, self)
-        when "poris-value-file-path"
+        when "value-file-path"
           md = PORISValueFilePath.fromXML(ch, self)
         end
       end
