@@ -25,7 +25,7 @@ try {
 }
     catch (e) {
       if (e.name == "ReferenceError") {
-        
+        /* Do nothing */
       }
     }
 </script>
