@@ -198,8 +198,9 @@ export const useModelStore = defineStore('model', () => {
 
     let valueOptions = mode.valuesNodes
 
+    //console.log(`value`,value)
     if (
-      !_isUndefined(value) &&
+      value != null && !_isUndefined(value) &&
       valueOptions.find((val) => {
         val.id === value.id
       }) === null
