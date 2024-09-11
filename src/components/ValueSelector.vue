@@ -33,7 +33,7 @@
     </select>
 
     <span v-else>No values!</span>
-    {{ mode.id }}
+    {{ " " }}
   </div>
 </template>
 <script setup>

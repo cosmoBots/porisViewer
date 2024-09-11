@@ -34,12 +34,12 @@ export const useModelStore = defineStore('model', () => {
       subsystems.value = JSONmodel.subsystems
       rootSubsystem.value = JSONmodel.rootSubsystem
 
-      console.log('LIMPIANDO valores por defecto')
+      //console.log('LIMPIANDO valores por defecto')
       currentModes.value = []
 
       systemValues.value = {}
 
-      console.log('Initial setValidMode')
+      //console.log('Initial setValidMode')
       setValidMode(JSONmodel.rootSubsystem)
     })
   }
@@ -65,27 +65,28 @@ export const useModelStore = defineStore('model', () => {
       let candidate = null
       if (validModes.length > 0) {
         if (mode != null && validModes.includes(mode)) {
-          console.log(`setValidMode_ candidate mode`)
+          console.log(`--> setValidMode_ candidate mode ${mode.name}`)
           candidate = mode
         } else {
           if (validModes.includes(subsystem.defaultMode)) {
             candidate = subsystem.defaultMode
-            console.log(`setValidMode_ candidate default`)
+            console.log(`--> setValidMode_ candidate valid default ${subsystem.defaultMode.name}`)
           } else {
             candidate = validModes[0]
-            console.log(`setValidMode_ candidate firstvalid`)
+            console.log(`--> setValidMode_ candidate first mode ${subsystem.validModes[0].name}`)
           }
         }
       } else {
-        console.log(`setValidMode_ candidate default without parent`)
+        console.log(`--> setValidMode_ candidate default (root)`)
         candidate = subsystem.defaultMode
       }
 
       if (prevMode != candidate) {
-        console.log(`setValidMode_() subsystem:`, subsystem.name, candidate.name)
+        //console.log(`*** setValidMode_() subsystem:`, subsystem.name, candidate.name)
         subsystem.currentMode = candidate
+        subsystem.candidateMode = candidate
         currentModes.value[`${subsystem.id}`] = candidate
-        console.log(`setValidMode Value set`, subsystem.currentMode)
+        //console.log(`setValidMode Value set`, subsystem.currentMode)
         if (subsystem.hasValues) {
           getSystemValue(subsystem, subsystem.currentMode)
         }
@@ -98,6 +99,8 @@ export const useModelStore = defineStore('model', () => {
       return candidate
     } else {
       subsystem.currentMode = null
+      subsystem.candidateMode = null
+      console.log(`--> setValidMode_ null (no valid mode available)`)
       return null
     }
   }
@@ -108,22 +111,22 @@ export const useModelStore = defineStore('model', () => {
    * @param {*} mode
    */
   function setValidMode(subsystem, mode) {
+    console.log(`setValidMode_ ${subsystem.name} ${mode?.name}, NOT using supermode`)
     let validModes = getValidObjModes(subsystem)
-    console.log(`setValidMode_ NOT using supermode len ${validModes.length}`)
-    console.log(`setValidMode() subsystem:`, subsystem, mode)
-    console.log(`   setValidMode validModes`, validModes)
+    //console.log(`   setValidMode validModes len ${validModes.length}`, validModes)
 
     return setValidModeFrom(subsystem, mode, validModes)
   }
 
   function setValidSubMode(subsystem, mode, supermode) {
+    console.log(`setValidMode_ ${subsystem.name} ${mode?.name}, using supermode`, supermode.name)
     let validModes = _intersection(subsystem.modesNodes, supermode.modesNodes)
-    console.log(`setValidMode_ using supermode len ${validModes.length}`)
+    /*
     validModes.forEach((m) => {
-      console.log(`setValidMode_ valid: ${m}`)
+      console.log(`setValidMode_ valid:`, m)
     })
-    console.log(`setValidMode() subsystem:`, subsystem, mode)
-    console.log(`   setValidMode validModes`, validModes)
+    */
+    //console.log(`   setValidMode validModes  len ${validModes.length}`, validModes)
 
     return setValidModeFrom(subsystem, mode, validModes)
   }
@@ -152,22 +155,18 @@ export const useModelStore = defineStore('model', () => {
     // console.log(`getValidObjModes() _intersection`,  _intersection(obj.modesNodes, validModes.value))
     // }
 
+    /*
     console.log(`obj: ${obj.name}`)
     console.log(`objModes: ${obj.modesNodes}`)
     obj.modesNodes.forEach((m) => {
       console.log(m.name)
     })
+    */
     if (obj.parent != null) {
-      console.log(`parent: ${obj.parent.name}`)
-      console.log(`parent mode: ${obj.parent.currentMode}`)
-      console.log(`obj.modesNodes: ${obj.modesNodes}`)
-      console.log(`obj.modesNodes[0]: ${obj.modesNodes[0]}`)
-      console.log(`obj.modesNodes[0].name: ${obj.modesNodes[0].name}`)
-      let ret = _intersection(obj.modesNodes, obj.parent.currentMode.modes)
-      console.log('modesNodes ret')
-      console.log(`modesNodes ret[0]: ${obj.modesNodes[0]}`)
-      console.log(`modesNodes ret[0].name: ${obj.modesNodes[0].name}`)
-      return ret
+      // console.log(`parent: ${obj.parent.name}`)
+      // console.log(`parent mode: ${obj.parent.currentMode.name}`)
+      // console.log(`parent.mode.submodes:`, obj.parent.currentMode.modesNodes)
+      return _intersection(obj.modesNodes, obj.parent.currentMode.modesNodes)
     } else {
       return obj.modesNodes
     }
@@ -208,7 +207,7 @@ export const useModelStore = defineStore('model', () => {
       value = undefined
     }
 
-    console.log(`getModelValue() valueOptions[0].type: ${valueOptions[0].type}`)
+    //console.log(`getModelValue() valueOptions[0].type: ${valueOptions[0].type}`)
 
     if (valueOptions[0].type == VALUE_STRING_TYPE) {
       if (_isUndefined(value)) {
@@ -223,7 +222,7 @@ export const useModelStore = defineStore('model', () => {
         value = valueOptions[0].defaultFloat
       }
     } else if (valueOptions[0].type == VALUE_FILE_PATH_TYPE) {
-      console.log('FILE')
+      //console.log('FILE')
       if (_isUndefined(value)) {
         value = valueOptions[0].defaultString
       }

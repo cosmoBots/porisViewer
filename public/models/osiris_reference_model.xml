@@ -3088,7 +3088,14 @@
 		<node-type-id type="integer">4</node-type-id>
 		<ident>id_612</ident>
 		<project-id type="integer">0</project-id>
-		<labels type="array"/>
+		<labels type="array">
+			<label>
+				<name>Date(GMT)</name>
+				<scope-kind>
+					<name>CfgPanel</name>
+				</scope-kind>
+			</label>		
+		</labels>
 		<destinations type="array">
 			<destination type="PORISMode">
 				<id type="integer">614</id>

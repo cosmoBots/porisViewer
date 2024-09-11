@@ -1,12 +1,10 @@
 <template>
   <div class="subsystem-panel">
-    <h3 class="title" v-if="true">
-      {{ subsystem.name }} / {{ subsystem.id }} 
-      / {{ subsystem.currentMode.name}} / {{ subsystem.getActiveSubsystems().length}}
+    <h3 class="title" v-if="subsystem.label != '-'">
+      {{ subsystem.label || subsystem.name }}
     </h3>
-    <span v-else>{{ subsystem.id }}</span>
 
-    <div class="mode-selector" v-if="true || (subsystem.getValidModes().length > 1) && subsystem.hasSubsystems">
+    <div class="mode-selector" v-if="(subsystem.getValidModes().length > 1) && subsystem.hasSubsystems">
       <ModeSelector v-model="subsystem.candidateMode" :modes="subsystem.getValidModes()" />
     </div>
 
@@ -16,19 +14,15 @@
       :modes="subsystem.getValidModes()"
       :mode="subsystem.currentMode"
     />
-    {{ subsystem.getActiveSubsystems().length }}
     <template v-for="sub in subsystem.getActiveSubsystems()" :key="sub.id">
-      {{ subsystem.id }}
-      {{ sub.id }}
-      {{ subsystem.currentMode.name }}
-      <SubSystemPanel v-if="true || sub.hasSubsystems" :system="sub" />
-      ii
-      <!--InputSystemPanel
-        v-if="true || sub.hasModes && sub.hasValues && validMode(sub,mode) != null"
+      <SubSystemPanel v-if="sub.hasSubsystems" :system="sub" />
+      <InputSystemPanel
+        v-if="sub.hasModes && sub.hasValues && sub.currentMode != null"
         :subsystem="sub"
-      /-->
+        :modes="sub.getValidModes()"
+        :mode="sub.currentMode"        
+      />
     </template>
-    fin
   </div>
 </template>
 <script setup>
@@ -55,29 +49,18 @@ subsystem.candidateMode = subsystem.currentMode
 //console.log(`SubSystem name: ${subsystem.name}, ident: ${subsystem.ident} props.isRoot: ${props.isRoot}`)
 
 const modes = computed(() => {
-    console.log(`querying validModes for ${subsystem.name}: ${subsystem.getValidModes()}`)
+    //console.log(`querying validModes for ${subsystem.name}: ${subsystem.getValidModes()}`)
     return subsystem.getValidModes()
 })
 
-function updateMode(newMode, oldMode) {
-  console.log(`updateMode: isRoot: ${props.isRoot}, newMode: ${newMode?.id}, oldMode: ${oldMode?.id}`)
-    console.log("setValidMode inside updateNode")
-    store.setValidMode(subsystem, newMode)
-}
 
-watch(modes, (newModes) => {
-  console.log(`watch.modes, newModes :`, newModes)
-  const oldMode = subsystem.currentMode
-  if (!oldMode || !newModes.includes(oldMode)) {
-    store.setValidMode(subsystem, oldMode)
-  } 
-})
 
 watch(subsystem.candidateMode,(newMode) => {
   console.log(`watch.mode. mode ${subsystem.currentMode?.name}, newMode :${subsystem.candidateMode?.name}`)
-  if (subsystem.candidateMode != subsystem.currentMode)
+  if (subsystem.candidateMode != null && subsystem.candidateMode != subsystem.currentMode)
   {
     store.setValidMode(subsystem, subsystem.candidateMode)
+    //console.log(`watch result >> ${subsystem.currentMode.name}`)
   }
   
 })
@@ -85,7 +68,7 @@ watch(subsystem.candidateMode,(newMode) => {
 </script>
 <style lang="scss" scoped>
 .subsystem-panel {
-  background-color: rgba(204, 204, 204, 0.5);
+  background-color: rgba(204, 204, 204, 0.2);
   border: 1px solid #ccc;
   border-radius: 4px;
   padding: 8px;

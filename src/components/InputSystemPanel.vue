@@ -1,11 +1,11 @@
 <template>
   <div class="inputsystem-panel">
     <div class="input-mode-panel">
-      <span class="title">{{ subsystem.label || subsystem.name }} / {{ subsystem.id }}</span>
+      <span class="title">{{ subsystem.label || subsystem.name }}</span>
       <span class="value-selector">
         <ModeSelector
           class="mode-selector"
-          v-if="true || modes.length > 1"
+          v-if="modes.length > 1"
           v-model="currentMode"
           :modes="modes"
         />
@@ -49,9 +49,9 @@ watch(value, async (newValue) => {
 })
 
 watch(currentMode, (newMode) => {
-  console.log(`currentMode.set() mode:`, newMode)
+  console.log(`watch_input: currentMode.set() mode:`, newMode)
   //mode.value = newMode
-  //value.value = store.getSystemValue(props.subsystem, newMode)
+  value.value = store.getSystemValue(props.subsystem, newMode)
   console.log(`currentMode.set() value:`, value.value)
 })
 
@@ -66,11 +66,11 @@ watch(
 <style lang="scss" scoped>
 .inputsystem-panel {
   position: relative;
-  background-color: rgba(235, 117, 117, 0.5);
+  background-color: rgba(69, 120, 155, 0.5);
   border: 1px solid #ccc;
   border-radius: 4px;
-  padding: 8px;
-  margin: 8px;
+  padding: 6px;
+  margin: 6px;
 
   .input-mode-panel {
     display: flex;
@@ -82,7 +82,7 @@ watch(
 
     .value-selector {
       position: absolute;
-      right: 0;
+      right: 0.5em;
     }
   }
 }

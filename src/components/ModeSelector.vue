@@ -1,7 +1,7 @@
 <template>
   <select v-model="model">
     <option v-for="mode in modes" :key="mode.id" :value="mode">
-      {{ mode.label || mode.name }} / {{ mode.id }}
+      {{ mode.label || mode.name }}
     </option>
   </select>
 </template>
