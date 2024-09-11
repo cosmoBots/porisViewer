@@ -2,6 +2,7 @@ import { createRouter, createWebHistory } from 'vue-router'
 import ConfigPanelView from '../views/ConfigPanelView.vue'
 
 let remoteModel = false
+//let thiskey = "1234"
 try {
   thiskey;
   remoteModel = true

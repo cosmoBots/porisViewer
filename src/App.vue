@@ -1,7 +1,7 @@
 <template>
   <header>
     <div class="wrapper">
-      <modelSelector v-if="!remoteModel"  />
+      <modelSelector  />
 
       <nav>
         <RouterLink :to="{ name: 'config' }">Config Panel</RouterLink>
@@ -34,7 +34,9 @@
 <script setup>
 import { RouterLink, RouterView } from 'vue-router'
 import modelSelector from './components/ModelSelector.vue'
+
 let remoteModel = false
+//let thiskey = "1234"
 try {
   thiskey;
   remoteModel = true
@@ -47,8 +49,8 @@ try {
 
 <style scoped>
 header {
-  line-height: 1.5;
-  max-height: 100vh;
+  /*line-height: 1.5;
+  max-height: 100vh;*/
 }
 
 .logo {
@@ -83,7 +85,7 @@ nav a:first-of-type {
 
 @media (min-width: 1024px) {
   header {
-    display: flex;
+    /*display: flex;*/
     place-items: center;
     padding-right: calc(var(--section-gap) / 2);
   }

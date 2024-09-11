@@ -1,5 +1,5 @@
 <template>
-  <div class="greetings">
+  <div class="greetings" v-if="!remoteModel">
     <h1 class="green">Model</h1>
 
     <input v-model="modelName" />
@@ -19,9 +19,13 @@ const updateModel = () => {
   store.loadModel(modelName.value)
 }
 
+let remoteModel = false;
+//let thiskey = "1234"
 try {
   thiskey;
   store.loadModelURL(thiskey)
+  remoteModel = true
+  
 }
 catch (e) {
   if (e.name == "ReferenceError") {
