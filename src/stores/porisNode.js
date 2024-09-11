@@ -10,6 +10,7 @@ export const VALUE_DATE_RANGE_TYPE = 'ValueDate'
 export const VALUE_FILE_PATH_TYPE = 'ValueFilePath'
 export const MODE_TYPE = 'Mode'
 export const SUBSYSTEM_TYPE = 'SubSystem'
+export const COMMAND_TYPE = 'Command'
 
 export const ValueTypes = [
     VALUE_TYPE,

@@ -7,6 +7,7 @@ import {
   VALUE_FILE_PATH_TYPE,
   MODE_TYPE,
   SUBSYSTEM_TYPE,
+  COMMAND_TYPE,
   ValueTypes
 } from './porisNode'
 
@@ -19,7 +20,8 @@ const XMLTypeToPorisType = {
   PORISValueDate: VALUE_DATE_RANGE_TYPE,
   PORISValueFilePath: VALUE_FILE_PATH_TYPE,
   PORISMode: MODE_TYPE,
-  PORISNode: SUBSYSTEM_TYPE
+  PORISNode: SUBSYSTEM_TYPE,
+  PORISCmd: COMMAND_TYPE
 }
 
 // Foloowing XML tag names used for selecting the elements
@@ -80,15 +82,18 @@ function parseDestinations(elm, referemcedSusbystems) {
         const type = XMLTypeToPorisType[destElm.getAttribute('type')]
         const id = getFEText(destElm, 'id')
 
-        if (type == SUBSYSTEM_TYPE) {
-          if (
-            !referemcedSusbystems.find((elm) => {
-              elm == 1
-            })
-          ) {
-            referemcedSusbystems.push(id)
+        if (type != COMMAND_TYPE)
+        {
+          /* We ignore the PorisCmd type for now */
+          if (type == SUBSYSTEM_TYPE) {
+            if (
+              !referemcedSusbystems.find((elm) => {
+                elm == 1
+              })
+            ) {
+              referemcedSusbystems.push(id)
+            }
           }
-        }
         /*
           if (type == 'Value') {
   
@@ -97,9 +102,10 @@ function parseDestinations(elm, referemcedSusbystems) {
           } else if (type == 'SubSystem') {
   
           }
-  */
+        */
         destinations.push({ type, id })
       }
+    }
     }
   }
 
@@ -212,14 +218,23 @@ function parseBasicObject(elm, referemcedSusbystems) {
 function dereferenceNodeDestinations(JSONmodel, nodes) {
   nodes.forEach((node) => {
     if (node.destinations) {
+
+      // node.destinations.forEach((d) => {
+      //   console.log(`${node.id}:${node.name} -> `,d)
+      // })
+
       let derDestinations = node.destinations.map((dest) => {
         return JSONmodel.findNode(dest.type, dest.id)
       })
 
-      //console.log('DER', node)
+      console.log('DER', node)
 
       node.valuesNodes = derDestinations.filter(
-        (dest) => dest.type != MODE_TYPE && dest.type != SUBSYSTEM_TYPE
+        (dest) => 
+          {
+            //console.log("dest:", dest)
+            return dest.type != MODE_TYPE && dest.type != SUBSYSTEM_TYPE
+          }
       )
       node.modesNodes = derDestinations.filter((dest) => dest.type === MODE_TYPE)
       node.subsystemsNodes = derDestinations.filter((dest) => dest.type === SUBSYSTEM_TYPE)
