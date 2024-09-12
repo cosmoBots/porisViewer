@@ -191,6 +191,7 @@ function parseBasicObject(elm, referemcedSusbystems) {
   let nodeAttributes = parseNodeAttributes(elm)
   let label = parseLabels(elm)
 
+  let hasRealValues = !!destinations?.find((elm) => ValueTypes.includes(elm.type) && elm.id > 0)
   let hasValues = !!destinations?.find((elm) => ValueTypes.includes(elm.type))
   let hasModes = !!destinations?.find((elm) => elm.type == MODE_TYPE)
   let hasSubsystems = !!destinations?.find((elm) => elm.type == SUBSYSTEM_TYPE)
@@ -205,6 +206,7 @@ function parseBasicObject(elm, referemcedSusbystems) {
     nodeAttributes,
     label,
     hasValues,
+    hasRealValues,
     hasModes,
     hasSubsystems
   }

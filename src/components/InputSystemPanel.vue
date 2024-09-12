@@ -9,7 +9,7 @@
           v-model="currentMode"
           :modes="modes"
         />
-        <ValueSelector v-if="subsystem.hasValues" :mode="currentMode" v-model="value" />
+        <ValueSelector v-if="shallShowValueField(subsystem)" :mode="currentMode" v-model="value" />
       </span>
     </div>
   </div>
@@ -20,6 +20,15 @@ import { useModelStore } from '@/stores/model'
 import ModeSelector from './ModeSelector.vue'
 import ValueSelector from './ValueSelector.vue'
 
+
+function fakeParam(s) {
+  return (!s.hasSubSystems && !s.hasRealValues && s.hasValues && s.currentMode.hasValues)
+}
+
+function shallShowValueField(s)
+{
+  return !fakeParam(s)
+}
 const store = useModelStore()
 
 const props = defineProps({
