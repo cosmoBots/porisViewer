@@ -23,7 +23,9 @@ const rootSubsystem = computed(() => store.rootSubsystem)
   border: 1px solid #ccc;
   border-radius: 4px;
   padding: 8px;
-
+  max-width: fit-content;
+  min-width: 50em;
+  
   .title {
     font-weight: bold;
   }
