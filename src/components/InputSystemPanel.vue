@@ -5,7 +5,7 @@
       <span class="value-selector">
         <ModeSelector
           class="mode-selector"
-          v-if="modes.length > 1"
+          v-if="shallShowModeField(subsystem,mode)" 
           v-model="currentMode"
           :modes="modes"
         />
@@ -29,6 +29,11 @@ function shallShowValueField(s)
 {
   return !fakeParam(s)
 }
+function shallShowModeField(s,m)
+{
+  return m.length > 1 || fakeParam(s)
+}
+
 const store = useModelStore()
 
 const props = defineProps({

@@ -1,5 +1,5 @@
 <template>
-  <select v-model="model">
+  <select v-model="model" :disabled="modes.length < 2">
     <option v-for="mode in modes" :key="mode.id" :value="mode">
       {{ mode.label || mode.name }}
     </option>
