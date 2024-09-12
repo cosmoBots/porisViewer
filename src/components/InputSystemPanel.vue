@@ -22,7 +22,7 @@ import ValueSelector from './ValueSelector.vue'
 
 
 function fakeParam(s) {
-  return (!s.hasSubSystems && !s.hasRealValues && s.hasValues && s.currentMode.hasValues)
+  return (!s.hasSubsystems && !s.hasRealValues && s.hasValues && s.currentMode.hasValues)
 }
 
 function shallShowValueField(s)
