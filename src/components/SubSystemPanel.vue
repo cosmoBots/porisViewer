@@ -4,7 +4,7 @@
       {{ subsystem.label || subsystem.name }}
     </h3>
 
-    <div class="mode-selector" v-if="true || (subsystem.getValidModes().length > 1) && subsystem.hasSubsystems">
+    <div class="mode-selector" v-if="(subsystem.getValidModes().length > 1) && !subsystem.hasValues || (subsystem.getValidModes().length > 0) && (!subsystem.hasSubsystems || subsystem.currentMode.modesNodes.length == 0)">
       <ModeSelector v-model="subsystem.candidateMode" :modes="subsystem.getValidModes()" />
     </div>
 
@@ -15,19 +15,18 @@
       :mode="subsystem.currentMode"
     />
     <template v-for="sub in subsystem.getActiveSubsystems()" :key="sub.id">
-      <SubSystemPanel :system="sub" />
+      <SubSystemPanel :system="sub" v-if="!sub.hasValues && sub.modesNodes.length > 0"/>
       <InputSystemPanel
         v-if="sub.hasModes && sub.hasValues && sub.currentMode != null"
         :subsystem="sub"
         :modes="sub.getValidModes()"
-        :mode="sub.currentMode"        
-      />
+        :mode="sub.currentMode"/>
     </template>
   </div>
 </template>
 <script setup>
 import { intersection as _intersection } from 'lodash-es'
-import { ref, computed, watch } from 'vue'
+import { ref, computed, watch } from 'vue'  
 import { useModelStore } from '@/stores/model'
 import ModeSelector from './ModeSelector.vue'
 
