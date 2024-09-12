@@ -20,12 +20,11 @@ const updateModel = () => {
 }
 
 let remoteModel = false;
-//let thiskey = "1234"
+//let formtag = "./csys_poris/prj-ident/form?issue_id=12345&key=12345"
 try {
-  thiskey;
-  store.loadModelURL(thiskey)
+  formtag;
+  store.loadModelURL(formtag)
   remoteModel = true
-  
 }
 catch (e) {
   if (e.name == "ReferenceError") {

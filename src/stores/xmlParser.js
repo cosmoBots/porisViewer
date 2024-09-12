@@ -7,6 +7,7 @@ import {
   VALUE_FILE_PATH_TYPE,
   MODE_TYPE,
   SUBSYSTEM_TYPE,
+  COMMAND_TYPE,
   ValueTypes
 } from './porisNode'
 
@@ -231,7 +232,6 @@ function dereferenceNodeDestinations(JSONmodel, nodes) {
           }
       )
       node.modesNodes = derDestinations.filter((dest) => dest.type === MODE_TYPE)
-      node.paramNodes = derDestinations.filter((dest) => dest.type === PARAM_TYPE)
       node.subsystemsNodes = derDestinations.filter((dest) => dest.type === SUBSYSTEM_TYPE)
       node.modesNodes.forEach((m) => {
         console.log(`setting ${node.name} as parent of mode ${m.name}`)
@@ -271,8 +271,6 @@ export function parseToPorisModel(store, xmlText) {
       let source = null
       if (type == MODE_TYPE) {
         source = this.modes
-      } else if (type == PARAM_TYPE) {
-        source = this.params
       } else if (type == SUBSYSTEM_TYPE) {
         source = this.subsystems
       } else {
@@ -414,39 +412,6 @@ export function parseToPorisModel(store, xmlText) {
     }
   }
 
-  /*
-  <poris-param>
-		<name>BroadFilter</name>
-		<id type="integer">575</id>
-		<type>PORISParam</type>
-		<node-type-id type="integer">4</node-type-id>
-		<ident>id_575</ident>
-		<project-id type="integer">0</project-id>
-		<labels type="array"/>
-		<destinations type="array">
-			<destination type="PORISMode">
-				<id type="integer">583</id>
-			</destination>
-		</destinations>
-		<node-attributes type="array"/>
-		<default-mode-id type="integer">583</default-mode-id>
-		<default-value-id type="integer" nil="true"/>
-	</poris-param>
-  */
-
-  const paramsElements = xmlDoc.getElementsByTagName(XMLParamTagName)
-
-  for (const paramElm of paramsElements) {
-    const basicObj = parseBasicObject(paramElm, referemcedSusbystems)
-
-    let defaultModeId = getFEText(paramElm, 'default-mode-id')
-    let defaultValueId = getFEText(paramElm, 'default-value-id')
-
-    basicObj['defaultModeId'] = defaultModeId
-    basicObj['defaultValueId'] = defaultValueId
-
-    JSONmodel.params.push(new PorisNode(basicObj))
-  }
 
 
   /*

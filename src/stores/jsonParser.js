@@ -14,6 +14,7 @@ import {
   VALUE_FILE_PATH_TYPE,
   MODE_TYPE,
   SUBSYSTEM_TYPE,
+  COMMAND_TYPE,
   ValueTypes
 } from 'porisNode'
 

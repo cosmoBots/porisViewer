@@ -45,8 +45,8 @@ export const useModelStore = defineStore('model', () => {
     })
   }
   
-  function loadModelURL(key) {
-    let doc = xmlModelLoader(`./form.xml?key=${key}`)
+  function loadModelURL(path) {
+    let doc = xmlModelLoader(`${path}`)
     doc.then((model) => {
       xmlModel.value = model
 
