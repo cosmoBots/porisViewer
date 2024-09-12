@@ -1,11 +1,12 @@
 <template>
-  <div class="inputsystem-panel" v-if="subsystem.hasValues">
+  <!--br/>iiiiiiiiiiiiiii<br/-->
+  <div class="inputsystem-panel">
     <div class="input-mode-panel">
       <span class="title">{{ subsystem.label || subsystem.name }}</span>
       <span class="value-selector">
         <ModeSelector
           class="mode-selector"
-          v-if="shallShowModeField(subsystem,mode)" 
+          v-if="shallShowModeField(subsystem,modes)" 
           v-model="currentMode"
           :modes="modes"
         />
@@ -25,13 +26,17 @@ function fakeParam(s) {
   return (!s.hasSubsystems && !s.hasRealValues && s.hasValues && s.currentMode.hasValues)
 }
 
+function fakeParamWithNoValue(s) {
+  return (!s.hasRealValues && !s.currentMode.hasValues && !s.currentMode.hasModes)
+}
+
 function shallShowValueField(s)
 {
-  return !fakeParam(s)
+  return !fakeParam(s) && !fakeParamWithNoValue(s)
 }
 function shallShowModeField(s,m)
 {
-  return m.length > 1 || fakeParam(s)
+  return m.length > 1 || fakeParam(s) || fakeParamWithNoValue(s)
 }
 
 const store = useModelStore()

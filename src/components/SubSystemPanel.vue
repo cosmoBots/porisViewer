@@ -1,37 +1,38 @@
 <template>
   <div class="subsystem-panel" v-if="shallShowThisSystem(subsystem)">
     <h3 class="title" v-if="subsystem.label != '-'">
-      {{ subsystem.label || subsystem.name }}
+      {{subsystem.label || subsystem.name}}
     </h3>
 
-      {{ "(s)validModes #: " + subsystem.getValidModes().length }} /
-      {{ "(s)has_values #: " + subsystem.hasValues }} /
-      {{ "(s)has_subsystems #: " + subsystem.hasSubsystems }} /
-      {{ "(sm)has_submodes #: " + subsystem.currentMode.hasModes }} /
-      {{ "(sub)fake_param_wnv: " + fakeParamWithNoValue(subsystem) }}
+      <!--<br/> s:{{  subsystem.name  }} <br/>-->
+      <!--"(s)validModes #: " + subsystem.name + " " + subsystem.getValidModes().length  / -->
+      <!--"(s)has_values #: " + subsystem.hasValues  /-->
+      <!--"(s)has_subsystems #: " + subsystem.hasSubsystems  / -->
+      <!--"(sm)has_submodes #: " + subsystem.currentMode.hasModes  / -->
+      <!--"(sub)fake_param_wnv: " + fakeParamWithNoValue(subsystem) -->
     <div class="mode-selector" v-if="shallShowModeSelector(subsystem)">
       <ModeSelector v-model="subsystem.candidateMode" :modes="subsystem.getValidModes()" />
     </div>
 
-    <!--{{ "(s)shall_show_input_panel #: " + shallShowInputPanel(subsystem) }}-->
-    <InputSystemPanel v-if="shallShowInputPanel(subsystem)" :subsystem="subsystem" :modes="subsystem.getValidModes()"
-      :mode="subsystem.currentMode" />
-
     <template v-for="sub in subsystem.getActiveSubsystems()" :key="sub.id">
-      {{ "(sub)has_values: " + sub.hasValues }} /
-      {{ "(sub)has_real_values: " + sub.hasRealValues }} /
-      {{ "(sub)valid_modes #: " + sub.getValidModes().length }}
-      {{ "(sub)has_sub_systems: " + sub.hasSubsystems }}
-      {{ "(sub)fake_param: " + fakeParam(sub) }}
-      {{ "(sub)fake_param_wnv: " + fakeParamWithNoValue(sub) }}
-      {{ "(sub)shall_show_subpanel: " + shallShowSubPanels(subsystem, sub) }}
+      <!--br/>------------------<br/-->
+      <!--{{ sub.name }}<br/>-->
+      <!--"(sub)has_values: " + sub.hasValues  / -->
+      <!--"(sub)has_real_values: " + sub.hasRealValues  / -->
+      <!--"(sub)valid_modes #: " + sub.getValidModes().length -->
+      <!--"(sub)has_sub_systems: " + sub.hasSubsystems -->
+      <!--"(sub)fake_param: " + fakeParam(sub) -->
+      <!--"(sub)fake_param_wnv: " + fakeParamWithNoValue(sub) -->
+      <!--{{ "(sub)shall_show_subpanel: " + shallShowSubPanels(sub) }}-->
+      <SubSystemPanel :system="sub" v-if="shallShowSubPanels(sub)" />
+      <!--sub.name  <br/-->
+      <!--br/>------------------<br/-->
 
-      <SubSystemPanel :system="sub" v-if="shallShowSubPanels(subsystem, sub)" />
-      <!--{{ "(sub)shall_show_sub_inputpanel #: " + shallShowInputPanel(sub) }}-->
+      <!--<br/>{{ "(sub)shall_show_inputpanel #: " + shallShowInputPanel(sub) }}-->
+      <!--<br/>sub:{{ sub.name }}<br/>-->
       <InputSystemPanel v-if="shallShowInputPanel(sub)" :subsystem="sub" :modes="sub.getValidModes()"
       :mode="sub.currentMode" />
-
-    </template>
+    </template>    
   </div>
 </template>
 <script setup>
@@ -50,12 +51,12 @@ function fakeParamWithNoValue(s) {
   return (!s.hasRealValues && !s.currentMode.hasValues && !s.currentMode.hasModes)
 }
 
-function shallShowSubPanels(s0, s1) {
-  return !s0.hasRealValues && !shallShowInputPanel(s1) && !fakeParamWithNoValue(s0)
+function shallShowSubPanels(s) {
+  return !shallShowInputPanel(s)//!s0.hasRealValues && !(s1.hasRealValues || fakeParam(s1)) && !fakeParamWithNoValue(s0)
 }
 
 function shallShowInputPanel(s) {
-  return s.hasRealValues || fakeParam(s) 
+  return s.hasRealValues || fakeParam(s) || fakeParamWithNoValue(s)
 }
 
 function shallShowModeSelector(s) {
