@@ -13,7 +13,8 @@ import { useModelStore } from '@/stores/model'
 
 const store = useModelStore()
 
-const modelName = ref('osiris_reference_model')
+//const modelName = ref('osiris_reference_model')
+const modelName = ref('outputsource')
 
 const updateModel = () => {
   store.loadModel(modelName.value)

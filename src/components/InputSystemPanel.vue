@@ -1,5 +1,5 @@
 <template>
-  <div class="inputsystem-panel">
+  <div class="inputsystem-panel" v-if="subsystem.hasValues">
     <div class="input-mode-panel">
       <span class="title">{{ subsystem.label || subsystem.name }}</span>
       <span class="value-selector">
@@ -9,7 +9,7 @@
           v-model="currentMode"
           :modes="modes"
         />
-        <ValueSelector :mode="currentMode" v-model="value" />
+        <ValueSelector v-if="subsystem.hasValues" :mode="currentMode" v-model="value" />
       </span>
     </div>
   </div>

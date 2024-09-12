@@ -4,7 +4,7 @@
       {{ subsystem.label || subsystem.name }}
     </h3>
 
-    <div class="mode-selector" v-if="(subsystem.getValidModes().length > 1) && subsystem.hasSubsystems">
+    <div class="mode-selector" v-if="true || (subsystem.getValidModes().length > 1) && subsystem.hasSubsystems">
       <ModeSelector v-model="subsystem.candidateMode" :modes="subsystem.getValidModes()" />
     </div>
 
@@ -15,7 +15,7 @@
       :mode="subsystem.currentMode"
     />
     <template v-for="sub in subsystem.getActiveSubsystems()" :key="sub.id">
-      <SubSystemPanel v-if="sub.hasSubsystems" :system="sub" />
+      <SubSystemPanel :system="sub" />
       <InputSystemPanel
         v-if="sub.hasModes && sub.hasValues && sub.currentMode != null"
         :subsystem="sub"
