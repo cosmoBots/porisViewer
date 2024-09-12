@@ -2,9 +2,9 @@ import { createRouter, createWebHistory } from 'vue-router'
 import ConfigPanelView from '../views/ConfigPanelView.vue'
 
 let remoteModel = false
-//let formtag = "./csys_poris/prj-ident/form?issue_id=12345&key=12345"
+//let formpath = "./csys_poris/prj-ident/form?issue_id=12345&key=12345"
 try {
-  formtag;
+  formpath;
   remoteModel = true
 } catch (error) {
   /* Do nothing */

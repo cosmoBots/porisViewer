@@ -20,10 +20,10 @@ const updateModel = () => {
 }
 
 let remoteModel = false;
-//let formtag = "./csys_poris/prj-ident/form?issue_id=12345&key=12345"
+//let formpath = "./csys_poris/prj-ident/form?issue_id=12345&key=12345"
 try {
-  formtag;
-  store.loadModelURL(formtag)
+  formpath;
+  store.loadModelURL(formpath)
   remoteModel = true
 }
 catch (e) {
