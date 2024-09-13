@@ -5,19 +5,18 @@
     </h3>
 
       <!--<br/> s:{{  subsystem.name  }} <br/>-->
-      <!--"(s)validModes #: " + subsystem.name + " " + subsystem.getValidModes().length  / -->
-      <!--"(s)has_values #: " + subsystem.hasValues  /-->
-      <!--"(s)has_subsystems #: " + subsystem.hasSubsystems  / -->
+      <!--{{ "(s)validModes #: " + subsystem.name + " " + subsystem.getValidModes().length + " / " }}-->
+      <!--{{  "(s)has_values #: " + subsystem.hasValues + " / " }}-->
+      <!--{{  "(s)has_subsystems #: " + subsystem.hasSubsystems + " / " }}-->
       <!--"(sm)has_submodes #: " + subsystem.currentMode.hasModes  / -->
       <!--"(sub)fake_param_wnv: " + fakeParamWithNoValue(subsystem) -->
     <div class="mode-selector" v-if="shallShowModeSelector(subsystem)">
       <ModeSelector v-model="subsystem.candidateMode" :modes="subsystem.getValidModes()" />
     </div>
-
-    <template v-for="sub in subsystem.getActiveSubsystems()" :key="sub.id">
-      <!--br/>------------------<br/-->
+    <template v-for="sub in subsystem.getActiveSubnodes()" :key="sub.id">
+      <!--<br/>------------------<br/>-->
       <!--{{ sub.name }}<br/>-->
-      <!--"(sub)has_values: " + sub.hasValues  / -->
+      <!--{{ "(sub)has_values: " + sub.hasValues + " / " }}-->
       <!--"(sub)has_real_values: " + sub.hasRealValues  / -->
       <!--"(sub)valid_modes #: " + sub.getValidModes().length -->
       <!--"(sub)has_sub_systems: " + sub.hasSubsystems -->
@@ -28,12 +27,14 @@
       <!--sub.name  <br/-->
       <!--br/>------------------<br/-->
 
-      <!--<br/>{{ "(sub)shall_show_inputpanel #: " + shallShowInputPanel(sub) }}-->
       <!--<br/>sub:{{ sub.name }}<br/>-->
       <InputSystemPanel v-if="shallShowInputPanel(sub)" :subsystem="sub" :modes="sub.getValidModes()"
       :mode="sub.currentMode" />
-    </template>    
+    </template>
   </div>
+  <!--<br/>{{ "(sub)shall_show_inputpanel #: " + shallShowInputPanel(subsystem) }} -->
+    <InputSystemPanel v-if="shallShowInputPanel(subsystem)" :subsystem="subsystem" :modes="subsystem.getValidModes()"
+    :mode="subsystem.currentMode" />    
 </template>
 <script setup>
 import { intersection as _intersection } from 'lodash-es'
@@ -60,11 +61,11 @@ function shallShowInputPanel(s) {
 }
 
 function shallShowModeSelector(s) {
-  return (s.getValidModes().length > 1) || fakeParamWithNoValue(s)
+  return !s.hasRealValues && ((s.getValidModes().length > 1) || fakeParamWithNoValue(s))
 }
 
 function shallShowThisSystem(s) {
-  return s.getValidModes().length > 0
+  return s.getValidModes().length > 0 && !s.hasRealValues
 }
 
 const store = useModelStore()

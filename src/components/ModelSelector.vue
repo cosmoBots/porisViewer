@@ -14,7 +14,7 @@ import { useModelStore } from '@/stores/model'
 const store = useModelStore()
 
 //const modelName = ref('osiris_reference_model')
-const modelName = ref('ARCGenIII')
+const modelName = ref('ExpTime')
 
 const updateModel = () => {
   store.loadModel(modelName.value)

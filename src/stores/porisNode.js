@@ -71,13 +71,13 @@ export class PorisNode {
         return this.validModes
     }
 
-    getActiveSubsystems()
+    getActiveSubnodes()
     {
         let ret = []
         let ss = this.subsystemsNodes
-        //console.log(`ss has subsystems ${ss.length}`)
+        console.log(`${this.name} has subsystems ${ss.length}`)
         ss.forEach((s) => {
-            //console.log(`s is ${typeof s} ${s.name}`)
+            console.log(`s is ${typeof s} ${s.name}`)
             if (s.getValidModes().length > 0) {
                 //console.log(`**** adding ${s.name}`)
                 ret.push(s)
