@@ -101,11 +101,11 @@ watch(subsystem.candidateMode, (newMode) => {
 </script>
 <style lang="scss" scoped>
 .subsystem-panel {
-  background-color: rgba(204, 204, 204, 0.2);
+  background-color: rgba(204, 204, 204, 0.05);
   border: 1px solid #ccc;
   border-radius: 4px;
-  padding: 8px;
-  margin: 8px;
+  padding: 6px;
+  margin: 2px;
 
   .title {
     font-weight: bold;

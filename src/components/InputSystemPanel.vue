@@ -85,11 +85,12 @@ watch(
 <style lang="scss" scoped>
 .inputsystem-panel {
   position: relative;
-  background-color: rgba(69, 120, 155, 0.5);
+  background-color: rgba(69, 120, 155, 0.15);
   border: 1px solid #ccc;
   border-radius: 4px;
   padding: 6px;
   margin: 6px;
+  height: 23px;
 
   .input-mode-panel {
     display: flex;

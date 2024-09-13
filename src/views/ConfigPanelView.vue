@@ -22,9 +22,9 @@ const rootSubsystem = computed(() => store.rootSubsystem)
 .panel {
   border: 1px solid #ccc;
   border-radius: 4px;
-  padding: 8px;
+  padding: 6px;
   max-width: fit-content;
-  min-width: 50em;
+  min-width: 40em;
   
   .title {
     font-weight: bold;
