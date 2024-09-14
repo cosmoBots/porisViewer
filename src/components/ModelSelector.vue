@@ -19,19 +19,6 @@ const modelName = ref('ARCGenIIIcs')
 const updateModel = () => {
   store.loadModel(modelName.value)
 }
-
-let remoteModel = false;
-//let formpath = "./csys_poris/prj-ident/form?issue_id=12345&key=12345"
-try {
-  formpath;
-  store.loadModelURL(formpath)
-  remoteModel = true
-}
-catch (e) {
-  if (e.name == "ReferenceError") {
-    /* Do nothing */
-  }
-}
 </script>
 
 <style scoped>
@@ -52,7 +39,6 @@ h3 {
 }
 
 @media (min-width: 1024px) {
-
   .greetings h1,
   .greetings h3 {
     text-align: left;

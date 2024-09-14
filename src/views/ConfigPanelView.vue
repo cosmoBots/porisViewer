@@ -12,10 +12,19 @@ import SubSystemPanel from '../components/SubSystemPanel.vue'
 
 import { computed } from 'vue'
 import { useModelStore } from '@/stores/model'
-
 const store = useModelStore()
 
 const rootSubsystem = computed(() => store.rootSubsystem)
+
+const props = defineProps({
+  modelPath: {
+    type: String
+  }
+})
+
+if (props.modelPath) {
+  store.loadModelURL(props.modelPath)
+}
 </script>
 
 <style lang="scss" scoped>
@@ -25,7 +34,7 @@ const rootSubsystem = computed(() => store.rootSubsystem)
   padding: 6px;
   max-width: fit-content;
   min-width: 40em;
-  
+
   .title {
     font-weight: bold;
   }

@@ -1,7 +1,7 @@
 <template>
   <header>
     <div class="wrapper">
-      <modelSelector  />
+      <modelSelector />
 
       <nav>
         <RouterLink :to="{ name: 'config' }">Config Panel</RouterLink>
@@ -34,17 +34,6 @@
 <script setup>
 import { RouterLink, RouterView } from 'vue-router'
 import modelSelector from './components/ModelSelector.vue'
-
-let remoteModel = false
-//let formpath = "./csys_poris/prj-ident/form?issue_id=12345&key=12345"
-try {
-  formpath;
-  remoteModel = true
-} catch (error) {
-  /* Do nothing */
-}
-
-
 </script>
 
 <style scoped>

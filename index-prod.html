@@ -8,6 +8,11 @@
   </head>
   <body>
     <div id="porisViewer"></div>
-    <script type="module" src="/src/main-dev.js"></script>
+    <div id="porisViewer2"></div>
+    <script type="module">
+      import { createPorisViewerPanel } from '/src/main-prod.js'
+      createPorisViewerPanel('/models/ARCGenIII_from_csys.xml', '#porisViewer')
+      createPorisViewerPanel('/models/d.xml', '#porisViewer2')
+    </script>
   </body>
 </html>
