@@ -44,7 +44,7 @@ export const useModelStore = defineStore('model', () => {
       setValidMode(JSONmodel.rootSubsystem)
     })
   }
-  
+
   function loadModelURL(path) {
     let doc = xmlModelLoader(`${path}`)
     doc.then((model) => {
@@ -78,8 +78,6 @@ export const useModelStore = defineStore('model', () => {
     return subsystems.value.find((element) => element.id == id)
   }
 
-  var DEBUG = false
-
   function setValidModeFrom(subsystem, mode, validModes) {
     subsystem.validModes = validModes
     if (validModes.length > 0) {
@@ -87,19 +85,19 @@ export const useModelStore = defineStore('model', () => {
       let candidate = null
       if (validModes.length > 0) {
         if (mode != null && validModes.includes(mode)) {
-          console.log(`--> setValidMode_ candidate mode ${mode.name}`)
+          // console.log(`--> setValidMode_ candidate mode ${mode.name}`)
           candidate = mode
         } else {
           if (validModes.includes(subsystem.defaultMode)) {
             candidate = subsystem.defaultMode
-            console.log(`--> setValidMode_ candidate valid default ${subsystem.defaultMode.name}`)
+            // console.log(`--> setValidMode_ candidate valid default ${subsystem.defaultMode.name}`)
           } else {
             candidate = validModes[0]
-            console.log(`--> setValidMode_ candidate first mode ${subsystem.validModes[0].name}`)
+            // console.log(`--> setValidMode_ candidate first mode ${subsystem.validModes[0].name}`)
           }
         }
       } else {
-        console.log(`--> setValidMode_ candidate default (root)`)
+        // console.log(`--> setValidMode_ candidate default (root)`)
         candidate = subsystem.defaultMode
       }
 
@@ -122,7 +120,7 @@ export const useModelStore = defineStore('model', () => {
     } else {
       subsystem.currentMode = null
       subsystem.candidateMode = null
-      console.log(`--> setValidMode_ null (no valid mode available)`)
+      // console.log(`--> setValidMode_ null (no valid mode available)`)
       return null
     }
   }
@@ -133,7 +131,7 @@ export const useModelStore = defineStore('model', () => {
    * @param {*} mode
    */
   function setValidMode(subsystem, mode) {
-    console.log(`setValidMode_ ${subsystem.name} ${mode?.name}, NOT using supermode`)
+    // console.log(`setValidMode_ ${subsystem.name} ${mode?.name}, NOT using supermode`)
     let validModes = getValidObjModes(subsystem)
     //console.log(`   setValidMode validModes len ${validModes.length}`, validModes)
 
@@ -141,7 +139,7 @@ export const useModelStore = defineStore('model', () => {
   }
 
   function setValidSubMode(subsystem, mode, supermode) {
-    console.log(`setValidMode_ ${subsystem.name} ${mode?.name}, using supermode`, supermode.name)
+    // console.log(`setValidMode_ ${subsystem.name} ${mode?.name}, using supermode`, supermode.name)
     let validModes = _intersection(subsystem.modesNodes, supermode.modesNodes)
     /*
     validModes.forEach((m) => {
@@ -200,18 +198,18 @@ export const useModelStore = defineStore('model', () => {
   }
 
   function setSystemValue(system, value) {
-    console.log(`setSystemValue() system: ${system.id}, value:`, value)
+    // console.log(`setSystemValue() system: ${system.id}, value:`, value)
     systemValues.value[`${system.id}`] = value
   }
 
   function getSystemValue(system, mode) {
     let value = systemValues.value[`${system.id}`]
 
-    console.log(
-      `getSystemValue() system: ${system.id}, _isUndefined(value): ${_isUndefined(value)}, mode / value`,
-      mode,
-      value
-    )
+    // console.log(
+    //   `getSystemValue() system: ${system.id}, _isUndefined(value): ${_isUndefined(value)}, mode / value`,
+    //   mode,
+    //   value
+    // )
 
     if (!mode.hasValues) {
       //console.log(`getSystemValue() no value!!`)
@@ -222,7 +220,8 @@ export const useModelStore = defineStore('model', () => {
 
     //console.log(`value`,value)
     if (
-      value != null && !_isUndefined(value) &&
+      value != null &&
+      !_isUndefined(value) &&
       valueOptions.find((val) => {
         val.id === value.id
       }) === null

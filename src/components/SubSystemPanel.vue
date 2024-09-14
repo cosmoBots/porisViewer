@@ -106,7 +106,7 @@ watch(subsystem.candidateMode, (newMode) => {
   }
 })
 </script>
-<style lang="scss" scoped>
+<style lang="scss">
 .subsystem-panel {
   background-color: rgba(204, 204, 204, 0.05);
   border: 1px solid #ccc;

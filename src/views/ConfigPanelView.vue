@@ -3,7 +3,7 @@
     <div v-if="rootSubsystem" class="panel">
       <h2 class="title">{{ rootSubsystem.name }} Panel</h2>
 
-      <SubSystemPanel :system="rootSubsystem" :isRoot="true" />
+      <SubSystemPanel :system="rootSubsystem" />
     </div>
   </main>
 </template>
@@ -26,17 +26,3 @@ if (props.modelPath) {
   store.loadModelURL(props.modelPath)
 }
 </script>
-
-<style lang="scss" scoped>
-.panel {
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  padding: 6px;
-  max-width: fit-content;
-  min-width: 40em;
-
-  .title {
-    font-weight: bold;
-  }
-}
-</style>

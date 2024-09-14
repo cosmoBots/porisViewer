@@ -33,7 +33,6 @@ const XMLValueTagNames = [
   'value-file-path'
 ]
 
-
 const XMLModeTagName = 'mode'
 
 const XMLSystemTagName = 'sub-system'
@@ -82,8 +81,7 @@ function parseDestinations(elm, referemcedSusbystems) {
         const type = XMLTypeToPorisType[destElm.getAttribute('type')]
         const id = getFEText(destElm, 'id')
 
-        if (type != COMMAND_TYPE)
-        {
+        if (type != COMMAND_TYPE) {
           /* We ignore the PorisCmd type for now */
           if (type == SUBSYSTEM_TYPE) {
             if (
@@ -94,7 +92,7 @@ function parseDestinations(elm, referemcedSusbystems) {
               referemcedSusbystems.push(id)
             }
           }
-        /*
+          /*
           if (type == 'Value') {
   
           } else if (type == 'Mode') {
@@ -103,9 +101,9 @@ function parseDestinations(elm, referemcedSusbystems) {
   
           }
         */
-        destinations.push({ type, id })
+          destinations.push({ type, id })
+        }
       }
-    }
     }
   }
 
@@ -215,7 +213,6 @@ function parseBasicObject(elm, referemcedSusbystems) {
 function dereferenceNodeDestinations(JSONmodel, nodes) {
   nodes.forEach((node) => {
     if (node.destinations) {
-
       // node.destinations.forEach((d) => {
       //   console.log(`${node.id}:${node.name} -> `,d)
       // })
@@ -224,25 +221,20 @@ function dereferenceNodeDestinations(JSONmodel, nodes) {
         return JSONmodel.findNode(dest.type, dest.id)
       })
 
-      console.log('DER', node)
-
-      node.valuesNodes = derDestinations.filter(
-        (dest) => 
-          {
-            //console.log("dest:", dest)
-            return dest.type != MODE_TYPE && dest.type != SUBSYSTEM_TYPE
-          }
-      )
+      node.valuesNodes = derDestinations.filter((dest) => {
+        //console.log("dest:", dest)
+        return dest.type != MODE_TYPE && dest.type != SUBSYSTEM_TYPE
+      })
       node.modesNodes = derDestinations.filter((dest) => dest.type === MODE_TYPE)
       node.subsystemsNodes = derDestinations.filter((dest) => dest.type === SUBSYSTEM_TYPE)
       node.modesNodes.forEach((m) => {
-        console.log(`setting ${node.name} as parent of mode ${m.name}`)
+        // console.log(`setting ${node.name} as parent of mode ${m.name}`)
         m.parent = node
       })
       node.subsystemsNodes.forEach((m) => {
-        console.log(`setting ${node.name} as parent of subsystem ${m.name}`)
+        // console.log(`setting ${node.name} as parent of subsystem ${m.name}`)
         m.parent = node
-      })      
+      })
     }
   })
 }
@@ -414,8 +406,6 @@ export function parseToPorisModel(store, xmlText) {
     }
   }
 
-
-
   /*
     <poris-mode>
       <name>UsePreImaging_Dont150</name>
@@ -502,7 +492,6 @@ export function parseToPorisModel(store, xmlText) {
 
     let defaultModeId = getFEText(subsElm, 'default-mode-id')
 
-
     basicObj['defaultModeId'] = defaultModeId
 
     JSONmodel.subsystems.push(new PorisNode(basicObj))
@@ -520,7 +509,7 @@ export function parseToPorisModel(store, xmlText) {
   dereferenceDefaultMode(JSONmodel.modes)
   dereferenceDefaultMode(JSONmodel.subsystems)
 
-  console.log('Loaded model', JSONmodel)
+  // console.log('Loaded model', JSONmodel)
 
   return JSONmodel
 }

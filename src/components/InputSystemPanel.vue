@@ -6,7 +6,7 @@
       <span class="value-selector">
         <ModeSelector
           class="mode-selector"
-          v-if="shallShowModeField(subsystem,modes)" 
+          v-if="shallShowModeField(subsystem, modes)"
           v-model="currentMode"
           :modes="modes"
         />
@@ -21,21 +21,18 @@ import { useModelStore } from '@/stores/model'
 import ModeSelector from './ModeSelector.vue'
 import ValueSelector from './ValueSelector.vue'
 
-
 function fakeParam(s) {
-  return (!s.hasSubsystems && !s.hasRealValues && s.hasValues && s.currentMode.hasValues)
+  return !s.hasSubsystems && !s.hasRealValues && s.hasValues && s.currentMode.hasValues
 }
 
 function fakeParamWithNoValue(s) {
-  return (!s.hasRealValues && !s.currentMode.hasValues && !s.currentMode.hasModes)
+  return !s.hasRealValues && !s.currentMode.hasValues && !s.currentMode.hasModes
 }
 
-function shallShowValueField(s)
-{
+function shallShowValueField(s) {
   return !fakeParam(s) && !fakeParamWithNoValue(s)
 }
-function shallShowModeField(s,m)
-{
+function shallShowModeField(s, m) {
   return m.length > 1 || fakeParam(s) || fakeParamWithNoValue(s)
 }
 

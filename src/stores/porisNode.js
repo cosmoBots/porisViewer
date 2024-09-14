@@ -1,7 +1,4 @@
-import {
-    assign as _assign,
-    isArray as _isArray,
-  } from 'lodash-es' 
+import { assign as _assign, isArray as _isArray } from 'lodash-es'
 
 export const VALUE_TYPE = 'Value'
 export const VALUE_STRING_TYPE = 'ValueString'
@@ -12,77 +9,74 @@ export const MODE_TYPE = 'Mode'
 export const SUBSYSTEM_TYPE = 'SubSystem'
 export const COMMAND_TYPE = 'Command'
 export const ValueTypes = [
-    VALUE_TYPE,
-    VALUE_STRING_TYPE,
-    VALUE_DOUBLE_RANGE_TYPE,
-    VALUE_DATE_RANGE_TYPE,
-    VALUE_FILE_PATH_TYPE
-  ]
+  VALUE_TYPE,
+  VALUE_STRING_TYPE,
+  VALUE_DOUBLE_RANGE_TYPE,
+  VALUE_DATE_RANGE_TYPE,
+  VALUE_FILE_PATH_TYPE
+]
 
 export class PorisNode {
-    constructor(args) {
-        _assign(this, args)
+  constructor(args) {
+    _assign(this, args)
+  }
+
+  getDestinations(destType) {
+    const destTypes = _isArray(destType) ? destType : [destType]
+
+    //console.log(this)
+    //console.log("=========")
+
+    //console.log(`getDestinations() destType: ${destType}`, obj)
+    const modes = this.destinations.reduce((accumulator, dest) => {
+      if (destTypes.includes(dest.type)) {
+        accumulator.push(dest)
+      }
+      return accumulator
+    }, [])
+
+    return modes
+  }
+
+  getValues() {
+    if (this.hasValues) {
+      return this.getDestinations(ValueTypes)
+    } else {
+      return []
     }
+  }
 
-    getDestinations(destType) {
-        const destTypes = _isArray(destType) ? destType : [destType]
-
-        
-        //console.log(this)
-        //console.log("=========")
-
-        //console.log(`getDestinations() destType: ${destType}`, obj)
-        const modes = this.destinations.reduce((accumulator, dest) => {
-          if (destTypes.includes(dest.type)) {
-            accumulator.push(dest)
-            }
-          return accumulator
-        }, [])
-    
-        return modes
+  getModes() {
+    //console.log(`getObjModes()`, obj)
+    if (this.hasModes) {
+      return this.getDestinations(MODE_TYPE)
+    } else {
+      return []
     }
+  }
 
-    getValues() {
-        if (this.hasValues) {
-            return this.getDestinations(ValueTypes)
-        } else {
-            return []
-        }
-    }
+  getSubsystems() {
+    return this.getDestinations(SUBSYSTEM_TYPE)
+  }
 
-    getModes() {
-        //console.log(`getObjModes()`, obj)
-        if (this.hasModes) {
-            return this.getDestinations(MODE_TYPE)
-        } else {
-            return []
-        }
+  getValidModes() {
+    if (this.validModes == null) {
+      this.validModes = []
     }
+    return this.validModes
+  }
 
-    getSubsystems() {
-        return this.getDestinations(SUBSYSTEM_TYPE)
-    }
-
-    getValidModes() {
-        if (this.validModes == null)
-        {
-            this.validModes = []
-        }
-        return this.validModes
-    }
-
-    getActiveSubnodes()
-    {
-        let ret = []
-        let ss = this.subsystemsNodes
-        console.log(`${this.name} has subsystems ${ss.length}`)
-        ss.forEach((s) => {
-            console.log(`s is ${typeof s} ${s.name}`)
-            if (s.getValidModes().length > 0) {
-                //console.log(`**** adding ${s.name}`)
-                ret.push(s)
-            }
-        });
-        return ret
-    }
+  getActiveSubnodes() {
+    let ret = []
+    let ss = this.subsystemsNodes
+    // console.log(`${this.name} has subsystems ${ss.length}`)
+    ss.forEach((s) => {
+      // console.log(`s is ${typeof s} ${s.name}`)
+      if (s.getValidModes().length > 0) {
+        //console.log(`**** adding ${s.name}`)
+        ret.push(s)
+      }
+    })
+    return ret
+  }
 }
