@@ -57,7 +57,7 @@ function fakeParam(s) {
 }
 
 function fakeParamWithNoValue(s) {
-  return !s.hasRealValues && !s.currentMode.hasValues && !s.currentMode.hasModes
+  return !s.hasRealValues && !s.currentMode.hasValues && !s.currentMode.hasModes && !s.hasSubsystems
 }
 
 function shallShowSubPanels(s) {
