@@ -1,11 +1,11 @@
 <template>
-  <main>
+  <div>
     <div v-if="rootSubsystem" class="panel">
       <h2 class="title">{{ rootSubsystem.name }} Panel</h2>
 
       <SubSystemPanel :system="rootSubsystem" />
     </div>
-  </main>
+  </div>
 </template>
 <script setup>
 import SubSystemPanel from '../components/SubSystemPanel.vue'
