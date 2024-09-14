@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="poris-main">
     <div v-if="rootSubsystem" class="panel">
       <h2 class="title">{{ rootSubsystem.name }} Panel</h2>
 
@@ -26,3 +26,8 @@ if (props.modelPath) {
   store.loadModelURL(props.modelPath)
 }
 </script>
+<style scoped lang="scss">
+.poris-main {
+  max-width: 40em;
+}
+</style>
