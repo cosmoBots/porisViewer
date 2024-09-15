@@ -69,7 +69,7 @@ function shallShowInputPanel(s) {
 }
 
 function shallShowModeSelector(s) {
-  return !s.hasRealValues && (s.getValidModes().length > 1 || fakeParamWithNoValue(s))
+  return (!s.currentMode.hasValues && !s.currentMode.hasModes) || s.getValidModes().length > 1
 }
 
 function shallShowThisSystem(s) {
