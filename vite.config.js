@@ -19,7 +19,8 @@ export default ({ mode }) => {
       sourcemap: true,
       lib: {
         entry: {
-          prod: './src/main-prod.js'
+          prod: './src/main-prod.js',
+          dev: './src/main-dev.js'
         },
         formats: ['es', 'cjs']
       }

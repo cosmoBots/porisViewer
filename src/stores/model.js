@@ -131,9 +131,9 @@ export const useModelStore = defineStore('model', () => {
    * @param {*} mode
    */
   function setValidMode(subsystem, mode) {
-    // console.log(`setValidMode_ ${subsystem.name} ${mode?.name}, NOT using supermode`)
+    console.log(`setValidMode_ ${subsystem.name} ${mode?.name}, NOT using supermode`)
     let validModes = getValidObjModes(subsystem)
-    //console.log(`   setValidMode validModes len ${validModes.length}`, validModes)
+    console.log(`   setValidMode validModes len ${validModes.length}`, validModes)
 
     return setValidModeFrom(subsystem, mode, validModes)
   }
@@ -146,7 +146,7 @@ export const useModelStore = defineStore('model', () => {
       console.log(`setValidMode_ valid:`, m)
     })
     */
-    //console.log(`   setValidMode validModes  len ${validModes.length}`, validModes)
+    console.log(`   setValidMode validModes  len ${validModes.length}`, validModes)
 
     return setValidModeFrom(subsystem, mode, validModes)
   }
@@ -183,9 +183,9 @@ export const useModelStore = defineStore('model', () => {
     })
     */
     if (obj.parent != null) {
-      // console.log(`parent: ${obj.parent.name}`)
-      // console.log(`parent mode: ${obj.parent.currentMode.name}`)
-      // console.log(`parent.mode.submodes:`, obj.parent.currentMode.modesNodes)
+      console.log(`parent: ${obj.parent.name}`)
+      console.log(`parent mode: ${obj.parent.currentMode.name}`)
+      console.log(`parent.mode.submodes:`, obj.parent.currentMode.modesNodes)
       return _intersection(obj.modesNodes, obj.parent.currentMode.modesNodes)
     } else {
       return obj.modesNodes
