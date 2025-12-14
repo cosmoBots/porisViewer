@@ -18,12 +18,14 @@ export const useModelStore = defineStore('model', () => {
   const modes = ref([])
   const subsystems = ref([])
   const rootSubsystem = ref()
+  const isLoading = ref(false)
 
   const currentModes = ref([])
 
   const systemValues = ref({})
 
   function loadModel(modelName) {
+    isLoading.value = true
     let doc = xmlModelLoader(`/models/${modelName}.xml`)
     doc.then((model) => {
       xmlModel.value = model
@@ -42,10 +44,13 @@ export const useModelStore = defineStore('model', () => {
 
       //console.log('Initial setValidMode')
       setValidMode(JSONmodel.rootSubsystem)
+    }).finally(() => {
+      isLoading.value = false
     })
   }
 
   function loadModelURL(path) {
+    isLoading.value = true
     let doc = xmlModelLoader(`${path}`)
     doc.then((model) => {
       xmlModel.value = model
@@ -64,6 +69,8 @@ export const useModelStore = defineStore('model', () => {
 
       //console.log('Initial setValidMode')
       setValidMode(JSONmodel.rootSubsystem)
+    }).finally(() => {
+      isLoading.value = false
     })
   }
   function getValue(id) {
@@ -268,6 +275,7 @@ export const useModelStore = defineStore('model', () => {
   return {
     xmlModel,
     rootSubsystem,
+    isLoading,
     currentModes,
     systemValues,
     loadModel,
