@@ -8,3 +8,4 @@
 tools/** linguist-detectable=false
 scripts/** linguist-detectable=false
 backend/** linguist-detectable=false
+public/** linguist-detectable=false
