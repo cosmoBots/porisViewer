@@ -4,7 +4,8 @@ import {
   difference as _difference,
   isUndefined as _isUndefined
 } from 'lodash-es'
-import { ref } from 'vue'
+import { ref, triggerRef } from 'vue'
+import { pauseTracking, enableTracking } from '@vue/reactivity'
 import { defineStore } from 'pinia'
 
 import { VALUE_STRING_TYPE, VALUE_DOUBLE_RANGE_TYPE, VALUE_FILE_PATH_TYPE } from './porisNode'
@@ -127,16 +128,35 @@ export const useModelStore = defineStore('model', () => {
   }
 
   /**
-   * Resets the whole tree of valid modes
-   * @param {*} subsystem
-   * @param {*} mode
+   * Internal function that does the actual mode setting without tracking
    */
-  function setValidMode(subsystem, mode) {
+  function setValidModeInternal(subsystem, mode) {
     debugLog(`setValidMode_ ${subsystem.name} ${mode?.name}, NOT using supermode`)
     let validModes = getValidObjModes(subsystem)
     debugLog(`   setValidMode validModes len ${validModes.length}`, validModes)
 
     return setValidModeFrom(subsystem, mode, validModes)
+  }
+
+  /**
+   * Resets the whole tree of valid modes
+   * Pauses Vue reactivity tracking during the recursive update to avoid
+   * intermediate re-renders, then triggers a single update at the end.
+   * @param {*} subsystem
+   * @param {*} mode
+   */
+  function setValidMode(subsystem, mode) {
+    pauseTracking()
+    let result
+    try {
+      result = setValidModeInternal(subsystem, mode)
+    } finally {
+      enableTracking()
+    }
+    // Trigger a single update for the reactive refs after all changes are done
+    triggerRef(currentModes)
+    triggerRef(systemValues)
+    return result
   }
 
   function setValidSubMode(subsystem, mode, supermode) {
