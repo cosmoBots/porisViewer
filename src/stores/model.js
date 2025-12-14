@@ -11,6 +11,7 @@ import { VALUE_STRING_TYPE, VALUE_DOUBLE_RANGE_TYPE, VALUE_FILE_PATH_TYPE } from
 
 import { xmlModelLoader } from '@/api/modelLoader'
 import { parseToPorisModel } from './xmlParser'
+import { debugLog } from '@/utils/debug'
 
 export const useModelStore = defineStore('model', () => {
   const xmlModel = ref(null)
@@ -131,9 +132,9 @@ export const useModelStore = defineStore('model', () => {
    * @param {*} mode
    */
   function setValidMode(subsystem, mode) {
-    console.log(`setValidMode_ ${subsystem.name} ${mode?.name}, NOT using supermode`)
+    debugLog(`setValidMode_ ${subsystem.name} ${mode?.name}, NOT using supermode`)
     let validModes = getValidObjModes(subsystem)
-    console.log(`   setValidMode validModes len ${validModes.length}`, validModes)
+    debugLog(`   setValidMode validModes len ${validModes.length}`, validModes)
 
     return setValidModeFrom(subsystem, mode, validModes)
   }
@@ -143,10 +144,10 @@ export const useModelStore = defineStore('model', () => {
     let validModes = _intersection(subsystem.modesNodes, supermode.modesNodes)
     /*
     validModes.forEach((m) => {
-      console.log(`setValidMode_ valid:`, m)
+      debugLog(`setValidMode_ valid:`, m)
     })
     */
-    console.log(`   setValidMode validModes  len ${validModes.length}`, validModes)
+    debugLog(`   setValidMode validModes  len ${validModes.length}`, validModes)
 
     return setValidModeFrom(subsystem, mode, validModes)
   }
@@ -176,16 +177,16 @@ export const useModelStore = defineStore('model', () => {
     // }
 
     /*
-    console.log(`obj: ${obj.name}`)
-    console.log(`objModes: ${obj.modesNodes}`)
+    debugLog(`obj: ${obj.name}`)
+    debugLog(`objModes: ${obj.modesNodes}`)
     obj.modesNodes.forEach((m) => {
-      console.log(m.name)
+      debugLog(m.name)
     })
     */
     if (obj.parent != null) {
-      console.log(`parent: ${obj.parent.name}`)
-      console.log(`parent mode: ${obj.parent.currentMode.name}`)
-      console.log(`parent.mode.submodes:`, obj.parent.currentMode.modesNodes)
+      debugLog(`parent: ${obj.parent.name}`)
+      debugLog(`parent mode: ${obj.parent.currentMode.name}`)
+      debugLog(`parent.mode.submodes:`, obj.parent.currentMode.modesNodes)
       return _intersection(obj.modesNodes, obj.parent.currentMode.modesNodes)
     } else {
       return obj.modesNodes

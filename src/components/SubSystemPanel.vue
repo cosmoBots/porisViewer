@@ -48,6 +48,7 @@
 import { intersection as _intersection } from 'lodash-es'
 import { ref, computed, watch } from 'vue'
 import { useModelStore } from '@/stores/model'
+import { debugLog } from '@/utils/debug'
 import ModeSelector from './ModeSelector.vue'
 
 import InputSystemPanel from './InputSystemPanel.vue'
@@ -97,12 +98,12 @@ const modes = computed(() => {
 })
 
 watch(subsystem.candidateMode, (newMode) => {
-  console.log(
+  debugLog(
     `watch.mode. mode ${subsystem.currentMode?.name}, newMode :${subsystem.candidateMode?.name}`
   )
   if (subsystem.candidateMode != null && subsystem.candidateMode != subsystem.currentMode) {
     store.setValidMode(subsystem, subsystem.candidateMode)
-    console.log(`watch result >> ${subsystem.currentMode.name}`)
+    debugLog(`watch result >> ${subsystem.currentMode.name}`)
   }
 })
 </script>
