@@ -1,0 +1,10 @@
+# Forzar Vue
+*.vue linguist-language=Vue
+
+# Ignorar Python auxiliar
+*.py linguist-detectable=false
+
+# Ignorar carpetas de tooling
+tools/** linguist-detectable=false
+scripts/** linguist-detectable=false
+backend/** linguist-detectable=false
