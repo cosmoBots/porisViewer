@@ -1,35 +1,85 @@
 # porisViewer
 
-This template should help get you started developing with Vue 3 in Vite.
+Proyecto para visualizar y editar modelos PORIS a partir de ficheros XML.
 
-## Recommended IDE Setup
+**Resumen rápido**: la UI está construida con Vue 3 + Vite + Pinia. Los XML se descargan con `axios`, se parsean en el cliente en `src/stores/xmlParser.js` y el modelo resultante se guarda en el store de Pinia (`src/stores/model.js`).
 
-[VSCode](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur) + [TypeScript Vue Plugin (Volar)](https://marketplace.visualstudio.com/items?itemName=Vue.vscode-typescript-vue-plugin).
+**Requisitos**:
+- **Node >=16** (según tu entorno), npm
+- Ejecutar `npm install` para instalar dependencias
 
-## Customize configuration
-
-See [Vite Configuration Reference](https://vitejs.dev/config/).
-
-## Project Setup
-
+**Comandos comunes**:
 ```sh
 npm install
+npm run dev        # servidor de desarrollo (Vite + HMR)
+npm run build      # build para producción
+npm run preview:prod # preview del build (usa "preview:prod" definido en package.json)
 ```
 
-### Compile and Hot-Reload for Development
+**IDE recomendado**: VSCode + Volar (para Vue 3).
 
+**Estructura relevante**:
+- **Código de carga/parseo XML**: [src/api/modelLoader.js](src/api/modelLoader.js#L1) y [src/stores/xmlParser.js](src/stores/xmlParser.js#L1)
+- **Modelo y estado**: [src/stores/model.js](src/stores/model.js#L1) (Pinia)
+- **Clases de nodos**: [src/stores/porisNode.js](src/stores/porisNode.js#L1)
+- **Componentes principales**: [src/App-dev.vue](src/App-dev.vue#L1), [src/components/ModelSelector.vue](src/components/ModelSelector.vue#L1), [src/components/InputSystemPanel.vue](src/components/InputSystemPanel.vue#L1), [src/views/ModelXMLView.vue](src/views/ModelXMLView.vue#L1)
+
+**Cómo se carga un modelo (resumen técnico)**:
+- `src/api/modelLoader.js`: descarga el XML con `axios` y devuelve el texto XML.
+- `src/stores/xmlParser.js` (`parseToPorisModel()`): usa `DOMParser` para transformar el XML en una estructura JavaScript (`JSONmodel`) y crea instancias de `PorisNode`.
+- `src/stores/model.js`: llama a `parseToPorisModel()` y asigna `values`, `modes`, `subsystems` y `rootSubsystem` a refs de Pinia.
+
+**Problema observado**
+Cuando el "modelo" crece mucho (miles de nodos o estructuras muy profundas) la aplicación se queda estancada durante mucho tiempo antes de reaccionar a cambios: esto suele ocurrir en el momento en que el modelo se asigna al store (conversión a reactividad profunda) o cuando el render intenta procesar muchas entradas.
+
+**Contexto en Vue**
+- Convertir objetos y arrays muy grandes a estructuras reactivas es costoso. Vue 2 (Object.defineProperty) era especialmente lento; Vue 3 (Proxy) mejora el rendimiento, pero la creación/recursión de proxies para muchos objetos sigue siendo una operación que puede bloquear el hilo principal.
+- HMR / dev-server puede volverse lento si el proyecto importa o procesa activos muy grandes en tiempo de desarrollo.
+
+Recomendaciones y pasos para diagnosticar y mitigar (para ejecutar en otra máquina)
+
+**Diagnóstico (pasos reproducibles)**
+- 1) Arrancar el servidor de desarrollo: `npm run dev`.
+- 2) Abrir la app en Chrome/Edge y usar pestaña Performance para grabar la carga completa del modelo y buscar "Long Tasks" y scripting cost.
+- 3) Instrumentar temporalmente el parseo/assignación añadiendo `console.time('parse')` / `console.timeEnd('parse')` alrededor de `parseToPorisModel()` y la asignación en `loadModel()` para medir cuánto tiempo ocupa cada paso.
+- 4) Probar el `build` de producción: `npm run build && npm run preview:prod` y comparar tiempos (el comportamiento en producción suele ser más rápido por optimizaciones y sin HMR).
+
+**Mitigaciones de bajo esfuerzo (cambios de código rápidos)**
+- Opción A — Evitar reactividad profunda para el dataset completo: usar `shallowRef` o `markRaw` para almacenar el modelo.
+
+Ejemplo con `shallowRef` en `src/stores/model.js`:
+```js
+import { shallowRef } from 'vue'
+// ...
+const values = shallowRef([])
+// al asignar: values.value = JSONmodel.values
+```
+
+Ejemplo con `markRaw` para evitar que Vue convierta los nodos en proxies:
+```js
+import { markRaw } from 'vue'
+// después de parsear:
+values.value = JSONmodel.values.map(v => markRaw(v))
+modes.value = JSONmodel.modes.map(m => markRaw(m))
+```
+
+- Opción B — Mantener el modelo no reactivo y exponer sólo lo necesario: asignar el modelo completo con `markRaw(JSONmodel)` y crear refs reactivos sólo para los parámetros que la UI necesite actualizar.
+- Opción C — Parseo en un Web Worker: mover `parseToPorisModel()` fuera del hilo principal para que no bloquee el render.
+- Opción D — Procesado por chunks / incremental: si no puedes usar worker, trocea la carga con `setTimeout`/`requestIdleCallback` y va añadiendo partes progresivamente.
+- Opción E — Virtualizar listados/árboles en la UI: si hay listas largas, usar un virtual-scroller para renderizar sólo los elementos visibles.
+
+**Consejos específicos para este repo**
+- `src/stores/xmlParser.js` crea muchas instancias `new PorisNode(...)` y `src/stores/model.js` las guarda en `ref` normales. Cambiar esas refs por `shallowRef` o aplicar `markRaw()` a los nodos suele eliminar la pausa larga en la asignación.
+- Medir y aislar: añadir `console.time` antes/ después de `parseToPorisModel()` y antes/después de `values.value = JSONmodel.values` para saber si el coste está en parseo o en la conversión reactiva.
+
+**Comandos útiles para probar y perfilar**
 ```sh
+npm install
 npm run dev
-```
-
-### Compile and Minify for Production
-
-```sh
+# en otra terminal, build+preview
 npm run build
+npm run preview:prod
 ```
 
-### Lint with [ESLint](https://eslint.org/)
 
-```sh
-npm run lint
-```
+

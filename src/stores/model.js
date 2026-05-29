@@ -4,7 +4,7 @@ import {
   difference as _difference,
   isUndefined as _isUndefined
 } from 'lodash-es'
-import { ref } from 'vue'
+import { ref, shallowRef, markRaw } from 'vue'
 import { defineStore } from 'pinia'
 
 import { VALUE_STRING_TYPE, VALUE_DOUBLE_RANGE_TYPE, VALUE_FILE_PATH_TYPE } from './porisNode'
@@ -14,26 +14,34 @@ import { parseToPorisModel } from './xmlParser'
 
 export const useModelStore = defineStore('model', () => {
   const xmlModel = ref(null)
-  const values = ref([])
-  const modes = ref([])
-  const subsystems = ref([])
-  const rootSubsystem = ref()
+  // Use shallowRef to avoid deep reactivity on large model graphs
+  const values = shallowRef([])
+  const modes = shallowRef([])
+  const subsystems = shallowRef([])
+  const rootSubsystem = shallowRef(null)
 
   const currentModes = ref([])
 
   const systemValues = ref({})
 
   function loadModel(modelName) {
+    console.time('loadModel_total')
     let doc = xmlModelLoader(`/models/${modelName}.xml`)
     doc.then((model) => {
       xmlModel.value = model
 
+      console.time('parseToPorisModel')
       let JSONmodel = parseToPorisModel(this, model)
+      console.timeEnd('parseToPorisModel')
 
-      values.value = JSONmodel.values
-      modes.value = JSONmodel.modes
-      subsystems.value = JSONmodel.subsystems
-      rootSubsystem.value = JSONmodel.rootSubsystem
+      // mark raw to avoid Vue creating deep proxies for each node
+      console.time('assignModel')
+      values.value = JSONmodel.values.map((v) => markRaw(v))
+      modes.value = JSONmodel.modes.map((m) => markRaw(m))
+      subsystems.value = JSONmodel.subsystems.map((s) => markRaw(s))
+      rootSubsystem.value = markRaw(JSONmodel.rootSubsystem)
+      console.timeEnd('assignModel')
+      console.timeEnd('loadModel_total')
 
       //console.log('LIMPIANDO valores por defecto')
       currentModes.value = []
@@ -46,16 +54,21 @@ export const useModelStore = defineStore('model', () => {
   }
 
   function loadModelURL(path) {
+    console.time('loadModelURL_total')
     let doc = xmlModelLoader(`${path}`)
     doc.then((model) => {
       xmlModel.value = model
 
+      console.time('parseToPorisModel')
       let JSONmodel = parseToPorisModel(this, model)
+      console.timeEnd('parseToPorisModel')
 
-      values.value = JSONmodel.values
-      modes.value = JSONmodel.modes
-      subsystems.value = JSONmodel.subsystems
-      rootSubsystem.value = JSONmodel.rootSubsystem
+      console.time('assignModel')
+      values.value = JSONmodel.values.map((v) => markRaw(v))
+      modes.value = JSONmodel.modes.map((m) => markRaw(m))
+      subsystems.value = JSONmodel.subsystems.map((s) => markRaw(s))
+      rootSubsystem.value = markRaw(JSONmodel.rootSubsystem)
+      console.timeEnd('assignModel')
 
       //console.log('LIMPIANDO valores por defecto')
       currentModes.value = []
@@ -64,6 +77,7 @@ export const useModelStore = defineStore('model', () => {
 
       //console.log('Initial setValidMode')
       setValidMode(JSONmodel.rootSubsystem)
+      console.timeEnd('loadModelURL_total')
     })
   }
   function getValue(id) {
