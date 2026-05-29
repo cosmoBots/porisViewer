@@ -4,13 +4,15 @@ import {
   difference as _difference,
   isUndefined as _isUndefined
 } from 'lodash-es'
-import { ref, shallowRef, markRaw } from 'vue'
+import { ref, shallowRef, markRaw, triggerRef } from 'vue'
+import { pauseTracking, enableTracking } from '@vue/reactivity'
 import { defineStore } from 'pinia'
 
 import { VALUE_STRING_TYPE, VALUE_DOUBLE_RANGE_TYPE, VALUE_FILE_PATH_TYPE } from './porisNode'
 
 import { xmlModelLoader } from '@/api/modelLoader'
 import { parseToPorisModel } from './xmlParser'
+import { debugLog } from '@/utils/debug'
 
 export const useModelStore = defineStore('model', () => {
   const xmlModel = ref(null)
@@ -19,13 +21,14 @@ export const useModelStore = defineStore('model', () => {
   const modes = shallowRef([])
   const subsystems = shallowRef([])
   const rootSubsystem = shallowRef(null)
+  const isLoading = ref(false)
 
   const currentModes = ref([])
 
   const systemValues = ref({})
 
   function loadModel(modelName) {
-    console.time('loadModel_total')
+    isLoading.value = true
     let doc = xmlModelLoader(`/models/${modelName}.xml`)
     doc.then((model) => {
       xmlModel.value = model
@@ -41,7 +44,6 @@ export const useModelStore = defineStore('model', () => {
       subsystems.value = JSONmodel.subsystems.map((s) => markRaw(s))
       rootSubsystem.value = markRaw(JSONmodel.rootSubsystem)
       console.timeEnd('assignModel')
-      console.timeEnd('loadModel_total')
 
       //console.log('LIMPIANDO valores por defecto')
       currentModes.value = []
@@ -50,11 +52,13 @@ export const useModelStore = defineStore('model', () => {
 
       //console.log('Initial setValidMode')
       setValidMode(JSONmodel.rootSubsystem)
+    }).finally(() => {
+      isLoading.value = false
     })
   }
 
   function loadModelURL(path) {
-    console.time('loadModelURL_total')
+    isLoading.value = true
     let doc = xmlModelLoader(`${path}`)
     doc.then((model) => {
       xmlModel.value = model
@@ -77,7 +81,8 @@ export const useModelStore = defineStore('model', () => {
 
       //console.log('Initial setValidMode')
       setValidMode(JSONmodel.rootSubsystem)
-      console.timeEnd('loadModelURL_total')
+    }).finally(() => {
+      isLoading.value = false
     })
   }
   function getValue(id) {
@@ -140,16 +145,35 @@ export const useModelStore = defineStore('model', () => {
   }
 
   /**
+   * Internal function that does the actual mode setting without tracking
+   */
+  function setValidModeInternal(subsystem, mode) {
+    debugLog(`setValidMode_ ${subsystem.name} ${mode?.name}, NOT using supermode`)
+    let validModes = getValidObjModes(subsystem)
+    debugLog(`   setValidMode validModes len ${validModes.length}`, validModes)
+
+    return setValidModeFrom(subsystem, mode, validModes)
+  }
+
+  /**
    * Resets the whole tree of valid modes
+   * Pauses Vue reactivity tracking during the recursive update to avoid
+   * intermediate re-renders, then triggers a single update at the end.
    * @param {*} subsystem
    * @param {*} mode
    */
   function setValidMode(subsystem, mode) {
-    console.log(`setValidMode_ ${subsystem.name} ${mode?.name}, NOT using supermode`)
-    let validModes = getValidObjModes(subsystem)
-    console.log(`   setValidMode validModes len ${validModes.length}`, validModes)
-
-    return setValidModeFrom(subsystem, mode, validModes)
+    pauseTracking()
+    let result
+    try {
+      result = setValidModeInternal(subsystem, mode)
+    } finally {
+      enableTracking()
+    }
+    // Trigger a single update for the reactive refs after all changes are done
+    triggerRef(currentModes)
+    triggerRef(systemValues)
+    return result
   }
 
   function setValidSubMode(subsystem, mode, supermode) {
@@ -157,10 +181,10 @@ export const useModelStore = defineStore('model', () => {
     let validModes = _intersection(subsystem.modesNodes, supermode.modesNodes)
     /*
     validModes.forEach((m) => {
-      console.log(`setValidMode_ valid:`, m)
+      debugLog(`setValidMode_ valid:`, m)
     })
     */
-    console.log(`   setValidMode validModes  len ${validModes.length}`, validModes)
+    debugLog(`   setValidMode validModes  len ${validModes.length}`, validModes)
 
     return setValidModeFrom(subsystem, mode, validModes)
   }
@@ -190,16 +214,16 @@ export const useModelStore = defineStore('model', () => {
     // }
 
     /*
-    console.log(`obj: ${obj.name}`)
-    console.log(`objModes: ${obj.modesNodes}`)
+    debugLog(`obj: ${obj.name}`)
+    debugLog(`objModes: ${obj.modesNodes}`)
     obj.modesNodes.forEach((m) => {
-      console.log(m.name)
+      debugLog(m.name)
     })
     */
     if (obj.parent != null) {
-      console.log(`parent: ${obj.parent.name}`)
-      console.log(`parent mode: ${obj.parent.currentMode.name}`)
-      console.log(`parent.mode.submodes:`, obj.parent.currentMode.modesNodes)
+      debugLog(`parent: ${obj.parent.name}`)
+      debugLog(`parent mode: ${obj.parent.currentMode.name}`)
+      debugLog(`parent.mode.submodes:`, obj.parent.currentMode.modesNodes)
       return _intersection(obj.modesNodes, obj.parent.currentMode.modesNodes)
     } else {
       return obj.modesNodes
@@ -282,6 +306,7 @@ export const useModelStore = defineStore('model', () => {
   return {
     xmlModel,
     rootSubsystem,
+    isLoading,
     currentModes,
     systemValues,
     loadModel,
