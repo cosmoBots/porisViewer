@@ -22,7 +22,9 @@
     <div id="porisViewer"></div>
     <script type="module">
       import { createPorisViewerPanel } from '/src/main-prod.js'
-      createPorisViewerPanel('/models/d.xml', '#porisViewer')
+      const params = new URLSearchParams(window.location.search)
+      const modelPath = params.get('model') || '/models/d.xml'
+      createPorisViewerPanel(modelPath, '#porisViewer')
     </script>
   </body>
 </html>

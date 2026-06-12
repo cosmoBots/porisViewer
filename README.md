@@ -11,9 +11,23 @@ Proyecto para visualizar y editar modelos PORIS a partir de ficheros XML.
 **Comandos comunes**:
 ```sh
 npm install
+npm ci             # instalación reproducible si existe package-lock.json
 npm run dev        # servidor de desarrollo (Vite + HMR)
 npm run build      # build para producción
 npm run preview:prod # preview del build (usa "preview:prod" definido en package.json)
+```
+
+**Uso desde pyPORIS**:
+```sh
+../porispanel.sh --web example/example
+```
+
+El lanzador copia el XML generado a `public/runtime/`, arranca Vite en
+`127.0.0.1:5173` si hace falta y abre una URL con el parámetro `model`.
+También puede abrirse manualmente:
+
+```text
+http://127.0.0.1:5173/?model=%2Fruntime%2Fexample_example.xml
 ```
 
 **IDE recomendado**: VSCode + Volar (para Vue 3).
@@ -31,6 +45,5 @@ npm run preview:prod # preview del build (usa "preview:prod" definido en package
 
 **Soporte y diagnóstico**
 Para detalles de lentitud, diagnóstico y optimización de rendimiento, revisa `TROUBLESHOOTING.md`.
-
 
 

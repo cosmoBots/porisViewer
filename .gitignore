@@ -133,4 +133,5 @@ dist
 public/global_dict2.json
 public/inverse_aliases.json
 public/node_aliases.json
+public/runtime/
 __pycache__
