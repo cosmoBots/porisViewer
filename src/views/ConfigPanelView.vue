@@ -7,24 +7,106 @@
       <h2 class="title">{{ rootSubsystem.name }} Panel</h2>
 
       <SubSystemPanel :system="rootSubsystem" />
+
+      <div v-if="controlEnabled" class="actions">
+        <button type="button" :disabled="isBusy" @click="commitChanges">Commit changes</button>
+        <button type="button" :disabled="isBusy" @click="cancelChanges">Cancel</button>
+        <button v-if="commandName" type="button" :disabled="isBusy" @click="executeCommand(commandName)">
+          {{ commandName }}
+        </button>
+      </div>
+
+      <div v-if="statusMessage" class="status" :class="{ error: hasError }">
+        {{ statusMessage }}
+      </div>
     </div>
   </div>
 </template>
 <script setup>
 import SubSystemPanel from '../components/SubSystemPanel.vue'
 
-import { computed } from 'vue'
+import { computed, ref } from 'vue'
 import { useModelStore } from '@/stores/model'
+import { commitPorisState, executePorisCommand, hasPorisControl } from '@/api/porisControl'
 const store = useModelStore()
 
 const isLoading = computed(() => store.isLoading)
 const rootSubsystem = computed(() => store.rootSubsystem)
+const isBusy = ref(false)
+const statusMessage = ref('')
+const hasError = ref(false)
+const controlEnabled = hasPorisControl()
+const commandName = import.meta.env.VITE_PORIS_COMMAND_NAME || ''
 
 const props = defineProps({
   modelPath: {
     type: String
   }
 })
+
+function currentValueFor(system) {
+  const value = store.systemValues[`${system.id}`]
+  if (value && typeof value === 'object') {
+    return { name: value.name, id: value.id, type: value.type }
+  }
+  if (typeof value === 'number') {
+    return { number: value }
+  }
+  if (system.currentMode?.valuesNodes?.length) {
+    const fallback = system.currentMode.valuesNodes[0]
+    return { name: fallback.name, id: fallback.id, type: fallback.type }
+  }
+  return null
+}
+
+function serializeSystem(system) {
+  return {
+    id: system.id,
+    name: system.name,
+    mode: system.currentMode
+      ? { id: system.currentMode.id, name: system.currentMode.name }
+      : null,
+    value: currentValueFor(system),
+    subsystems: (system.subsystemsNodes || []).map(serializeSystem)
+  }
+}
+
+function buildPorisPayload() {
+  return {
+    root: serializeSystem(rootSubsystem.value)
+  }
+}
+
+async function runAction(action, successText) {
+  isBusy.value = true
+  hasError.value = false
+  statusMessage.value = ''
+  try {
+    await action()
+    statusMessage.value = successText
+  } catch (error) {
+    hasError.value = true
+    statusMessage.value = error?.response?.data?.error || error.message || String(error)
+  } finally {
+    isBusy.value = false
+  }
+}
+
+function commitChanges() {
+  runAction(() => commitPorisState(buildPorisPayload()), 'Changes committed')
+}
+
+function executeCommand(name) {
+  runAction(() => executePorisCommand(name), `${name} executed`)
+}
+
+function cancelChanges() {
+  statusMessage.value = ''
+  hasError.value = false
+  if (props.modelPath) {
+    store.loadModelURL(props.modelPath)
+  }
+}
 
 if (props.modelPath) {
   store.loadModelURL(props.modelPath)
@@ -57,4 +139,26 @@ if (props.modelPath) {
     transform: rotate(360deg);
   }
 }
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 12px;
+}
+
+.actions button {
+  min-height: 32px;
+  padding: 4px 10px;
+}
+
+.status {
+  margin-top: 8px;
+  color: #245f36;
+}
+
+.status.error {
+  color: #9f2222;
+}
+
 </style>

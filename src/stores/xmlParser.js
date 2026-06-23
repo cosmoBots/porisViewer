@@ -14,9 +14,18 @@ import {
 // Mapping between XML types, as defined on <type> and <destination type="">
 // and the common project types
 const XMLTypeToPorisType = {
+  Value: VALUE_TYPE,
+  ValueString: VALUE_STRING_TYPE,
+  ValueDoubleRange: VALUE_DOUBLE_RANGE_TYPE,
+  ValueDateRange: VALUE_DATE_RANGE_TYPE,
+  ValueFilePath: VALUE_FILE_PATH_TYPE,
+  Mode: MODE_TYPE,
+  SubSystem: SUBSYSTEM_TYPE,
+  Command: COMMAND_TYPE,
   PORISValue: VALUE_TYPE,
   PORISValueString: VALUE_STRING_TYPE,
   PORISValueFloat: VALUE_DOUBLE_RANGE_TYPE,
+  PORISValueDoubleRange: VALUE_DOUBLE_RANGE_TYPE,
   PORISValueDate: VALUE_DATE_RANGE_TYPE,
   PORISValueFilePath: VALUE_FILE_PATH_TYPE,
   PORISMode: MODE_TYPE,
@@ -81,7 +90,7 @@ function parseDestinations(elm, referemcedSusbystems) {
         const type = XMLTypeToPorisType[destElm.getAttribute('type')]
         const id = getFEText(destElm, 'id')
 
-        if (type != COMMAND_TYPE) {
+        if (type && type != COMMAND_TYPE) {
           /* We ignore the PorisCmd type for now */
           if (type == SUBSYSTEM_TYPE) {
             if (
