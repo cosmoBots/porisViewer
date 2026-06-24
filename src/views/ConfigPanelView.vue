@@ -49,11 +49,16 @@ function currentValueFor(system) {
   if (value && typeof value === 'object') {
     return { name: value.name, id: value.id, type: value.type }
   }
+  const fallback = system.currentMode?.valuesNodes?.[0]
   if (typeof value === 'number') {
-    return { number: value }
+    return {
+      number: value,
+      name: fallback?.name || null,
+      id: fallback?.id || null,
+      type: fallback?.type || null
+    }
   }
-  if (system.currentMode?.valuesNodes?.length) {
-    const fallback = system.currentMode.valuesNodes[0]
+  if (fallback) {
     return { name: fallback.name, id: fallback.id, type: fallback.type }
   }
   return null
