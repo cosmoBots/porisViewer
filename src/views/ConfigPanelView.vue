@@ -6,6 +6,13 @@
     <div v-else-if="rootSubsystem" class="panel">
       <h2 class="title">{{ rootSubsystem.name }} Panel</h2>
 
+      <div v-if="visibleMonitorCapsules.length" class="monitor-capsules">
+        <div v-for="capsule in visibleMonitorCapsules" :key="capsule.id" class="monitor-capsule">
+          <span class="monitor-name">{{ capsule.label }}</span>
+          <span class="monitor-value">{{ capsule.value }}</span>
+        </div>
+      </div>
+
       <SubSystemPanel :system="rootSubsystem" />
 
       <div v-if="controlEnabled" class="actions">
@@ -25,9 +32,9 @@
 <script setup>
 import SubSystemPanel from '../components/SubSystemPanel.vue'
 
-import { computed, ref } from 'vue'
+import { computed, onBeforeUnmount, onMounted, ref } from 'vue'
 import { useModelStore } from '@/stores/model'
-import { commitPorisState, executePorisCommand, hasPorisControl } from '@/api/porisControl'
+import { commitPorisState, executePorisCommand, getPorisState, hasPorisControl } from '@/api/porisControl'
 const store = useModelStore()
 
 const isLoading = computed(() => store.isLoading)
@@ -37,6 +44,9 @@ const statusMessage = ref('')
 const hasError = ref(false)
 const controlEnabled = hasPorisControl()
 const commandName = import.meta.env.VITE_PORIS_COMMAND_NAME || ''
+const monitorCapsules = ref([])
+const visibleMonitorCapsules = computed(() => monitorCapsules.value.filter((capsule) => capsule.visible))
+let monitorTimer = null
 
 const props = defineProps({
   modelPath: {
@@ -82,6 +92,18 @@ function buildPorisPayload() {
   }
 }
 
+async function refreshMonitorCapsules() {
+  if (!controlEnabled) {
+    return
+  }
+  try {
+    const state = await getPorisState()
+    monitorCapsules.value = state?.monitors || []
+  } catch {
+    monitorCapsules.value = []
+  }
+}
+
 async function runAction(action, successText) {
   isBusy.value = true
   hasError.value = false
@@ -116,6 +138,19 @@ function cancelChanges() {
 if (props.modelPath) {
   store.loadModelURL(props.modelPath)
 }
+
+onMounted(() => {
+  refreshMonitorCapsules()
+  if (controlEnabled) {
+    monitorTimer = window.setInterval(refreshMonitorCapsules, 1000)
+  }
+})
+
+onBeforeUnmount(() => {
+  if (monitorTimer) {
+    window.clearInterval(monitorTimer)
+  }
+})
 </script>
 <style scoped lang="scss">
 .poris-main {
@@ -143,6 +178,31 @@ if (props.modelPath) {
   to {
     transform: rotate(360deg);
   }
+}
+
+.monitor-capsules {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.monitor-capsule {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  min-height: 30px;
+  padding: 5px 8px;
+  border: 1px solid #b8c1ca;
+  background: #eef3f7;
+}
+
+.monitor-name {
+  font-weight: 600;
+}
+
+.monitor-value {
+  font-family: monospace;
 }
 
 .actions {

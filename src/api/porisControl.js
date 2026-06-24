@@ -13,3 +13,7 @@ export function commitPorisState(payload) {
 export function executePorisCommand(commandName) {
   return axios.post(`${baseURL}/api/poris/command/${commandName}`, {}).then((response) => response.data)
 }
+
+export function getPorisState() {
+  return axios.get(`${baseURL}/api/poris/state`).then((response) => response.data)
+}
