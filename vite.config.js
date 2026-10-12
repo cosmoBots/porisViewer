@@ -34,6 +34,8 @@ export default ({ mode }) => {
         formats: mode === 'csys-plugin' ? ['es'] : ['es', 'cjs']
       }
     },
-    define: isCsysPlugin ? {} : { 'process.env': env }
+    define: isCsysPlugin
+      ? { 'process.env.NODE_ENV': JSON.stringify('production') }
+      : { 'process.env': env }
   })
 }
