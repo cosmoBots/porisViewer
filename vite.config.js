@@ -4,10 +4,12 @@ import { defineConfig, loadEnv } from 'vite'
 import vue from '@vitejs/plugin-vue'
 import vueJsx from '@vitejs/plugin-vue-jsx'
 export default ({ mode }) => {
-  const env = loadEnv(mode, process.cwd(), '')
+  const isCsysPlugin = mode === 'csys-plugin'
+  const env = isCsysPlugin ? {} : loadEnv(mode, process.cwd(), '')
 
   return defineConfig({
     plugins: [vue(), vueJsx()],
+    ...(isCsysPlugin ? { publicDir: false } : {}),
     resolve: {
       alias: {
         '@': fileURLToPath(new URL('./src', import.meta.url))
@@ -16,7 +18,7 @@ export default ({ mode }) => {
     build: {
       emptyOutDir: false,
       outDir: 'dist',
-      sourcemap: true,
+      sourcemap: !isCsysPlugin,
       lib: {
         // The Redmine plugin serves Rails-digested assets. A single entry
         // avoids shared chunks whose relative URLs would bypass Sprockets'
@@ -31,8 +33,6 @@ export default ({ mode }) => {
         formats: mode === 'csys-plugin' ? ['es'] : ['es', 'cjs']
       }
     },
-    define: {
-      'process.env': env
-    }
+    define: isCsysPlugin ? {} : { 'process.env': env }
   })
 }
