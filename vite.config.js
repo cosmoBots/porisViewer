@@ -10,6 +10,7 @@ export default ({ mode }) => {
   return defineConfig({
     plugins: [vue(), vueJsx()],
     ...(isCsysPlugin ? { publicDir: false } : {}),
+    envPrefix: isCsysPlugin ? 'COSMOSYS_PORIS_BUILD_' : 'VITE_',
     resolve: {
       alias: {
         '@': fileURLToPath(new URL('./src', import.meta.url))
