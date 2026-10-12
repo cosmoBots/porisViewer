@@ -1,8 +1,21 @@
 <template>
   <div class="subsystem-panel" v-if="shallShowThisSystem(subsystem)">
-    <h3 class="title" v-if="subsystem.label != '-'">
-      {{ subsystem.label || subsystem.name }}
-    </h3>
+    <div class="subsystem-heading">
+      <h3 class="title" v-if="subsystem.label != '-'">
+        {{ subsystem.label || subsystem.name }}
+      </h3>
+      <div v-if="subsystem.commandsNodes?.length" class="command-buttons">
+        <button
+          v-for="command in subsystem.commandsNodes"
+          :key="command.id"
+          type="button"
+          data-poris-command
+          @click="launchCommand(command, $event)"
+        >
+          {{ command.label || command.name }}
+        </button>
+      </div>
+    </div>
 
     <!--<br/> s:{{  subsystem.name  }} <br/>-->
     <!--{{ "(s)validModes #: " + subsystem.name + " " + subsystem.getValidModes().length + " / " }}-->
@@ -23,7 +36,11 @@
       <!--"(sub)fake_param: " + fakeParam(sub) -->
       <!--"(sub)fake_param_wnv: " + fakeParamWithNoValue(sub) -->
       <!--{{ "(sub)shall_show_subpanel: " + shallShowSubPanels(sub) }}-->
-      <SubSystemPanel :system="sub" v-if="shallShowSubPanels(sub)" />
+      <SubSystemPanel
+        :system="sub"
+        v-if="shallShowSubPanels(sub)"
+        @command-launched="emit('command-launched', $event)"
+      />
       <!--sub.name  <br/-->
       <!--br/>------------------<br/-->
 
@@ -33,6 +50,7 @@
         :subsystem="sub"
         :modes="sub.getValidModes()"
         :mode="sub.currentMode"
+        @command-launched="emit('command-launched', $event)"
       />
     </template>
   </div>
@@ -42,11 +60,11 @@
     :subsystem="subsystem"
     :modes="subsystem.getValidModes()"
     :mode="subsystem.currentMode"
+    @command-launched="emit('command-launched', $event)"
   />
 </template>
 <script setup>
-import { intersection as _intersection } from 'lodash-es'
-import { ref, computed, watch } from 'vue'
+import { ref, watch } from 'vue'
 import { useModelStore } from '@/stores/model'
 import { debugLog } from '@/utils/debug'
 import ModeSelector from './ModeSelector.vue'
@@ -86,18 +104,24 @@ const props = defineProps({
   }
 })
 
+const emit = defineEmits(['command-launched'])
+
 const system = ref(props.system)
 const subsystem = system.value
 subsystem.candidateMode = subsystem.currentMode
 
+function launchCommand(command, event) {
+  if (event.currentTarget.dataset.porisCommandCancelled === 'true') {
+    delete event.currentTarget.dataset.porisCommandCancelled
+    return
+  }
+
+  emit('command-launched', { systemName: subsystem.name, commandName: command.name })
+}
+
 //console.log(`SubSystem name: ${subsystem.name}, ident: ${subsystem.ident} props.isRoot: ${props.isRoot}`)
 
-const modes = computed(() => {
-  //console.log(`querying validModes for ${subsystem.name}: ${subsystem.getValidModes()}`)
-  return subsystem.getValidModes()
-})
-
-watch(subsystem.candidateMode, (newMode) => {
+watch(subsystem.candidateMode, () => {
   debugLog(
     `watch.mode. mode ${subsystem.currentMode?.name}, newMode :${subsystem.candidateMode?.name}`
   )
@@ -114,6 +138,20 @@ watch(subsystem.candidateMode, (newMode) => {
   border-radius: 4px;
   padding: 6px;
   margin: 2px;
+
+  .subsystem-heading {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 8px;
+  }
+
+  .command-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    gap: 4px;
+  }
 
   .title {
     font-weight: bold;

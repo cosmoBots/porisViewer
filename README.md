@@ -4,6 +4,17 @@ Proyecto para visualizar y editar modelos PORIS a partir de ficheros XML.
 
 **Resumen rápido**: la UI está construida con Vue 3 + Vite + Pinia. Los XML se descargan con `axios`, se parsean en el cliente en `src/stores/xmlParser.js` y el modelo resultante se guarda en el store de Pinia (`src/stores/model.js`).
 
+Los contenedores pueden asociar comandos mediante referencias XML en un bloque
+`<commands>` separado de `<destinations>`. El visor los presenta como botones
+informativos y emite un aviso local al pulsarlos; no ejecuta comandos PORIS en
+el servidor.
+
+Cuando un modo activa varios `prValue`, el formulario permite elegir cuál está
+activo, sin importar si son enums, flotantes, textos u otros tipos. Si sólo hay
+un candidato, omite ese selector. El editor y la validación (incluido el rango
+numérico) corresponden al `prValue` elegido; el estado del formulario conserva
+por separado ese nodo activo y el dato editable.
+
 **Requisitos**:
 - **Node >=16** (según tu entorno), npm
 - Ejecutar `npm install` para instalar dependencias
@@ -45,5 +56,3 @@ http://127.0.0.1:5173/?model=%2Fruntime%2Fexample_example.xml
 
 **Soporte y diagnóstico**
 Para detalles de lentitud, diagnóstico y optimización de rendimiento, revisa `TROUBLESHOOTING.md`.
-
-

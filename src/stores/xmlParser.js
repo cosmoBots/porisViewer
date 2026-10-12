@@ -45,6 +45,7 @@ const XMLValueTagNames = [
 const XMLModeTagName = 'mode'
 
 const XMLSystemTagName = 'sub-system'
+const XMLCommandTagName = 'command'
 
 /**
  * Returns the value of text XML, converted to the type defined on the
@@ -117,6 +118,16 @@ function parseDestinations(elm, referemcedSusbystems) {
   }
 
   return destinations.length > 0 ? destinations : null
+}
+
+function parseCommandReferences(elm) {
+  const commandsArray = elm.getElementsByTagName('commands')
+  if (commandsArray.length === 0) return []
+
+  return Array.from(commandsArray[0].getElementsByTagName('command-ref')).map((commandElm) => ({
+    type: COMMAND_TYPE,
+    id: getFEText(commandElm, 'id')
+  }))
 }
 
 function parseNodeAttributes(elm) {
@@ -195,6 +206,7 @@ function parseBasicObject(elm, referemcedSusbystems) {
   let nodeTypeId = getFEText(elm, 'node-type-id')
   let type = XMLTypeToPorisType[getFEText(elm, 'type')] // Converto from XML type to standard Poris type
   let destinations = parseDestinations(elm, referemcedSusbystems)
+  let commandReferences = parseCommandReferences(elm)
   let nodeAttributes = parseNodeAttributes(elm)
   let label = parseLabels(elm)
 
@@ -210,6 +222,7 @@ function parseBasicObject(elm, referemcedSusbystems) {
     nodeTypeId,
     type,
     destinations,
+    commandReferences,
     nodeAttributes,
     label,
     hasValues,
@@ -263,12 +276,28 @@ function dereferenceDefaultMode(nodes) {
   })
 }
 
+function dereferenceCommandReferences(model, nodes) {
+  nodes.forEach((node) => {
+    node.commandsNodes = (node.commandReferences || [])
+      .map((command) => model.findNode(command.type, command.id))
+      .filter(Boolean)
+  })
+}
+
+function dereferenceDefaultValue(nodes) {
+  nodes.forEach((node) => {
+    node.defaultValue =
+      node.valuesNodes?.find((value) => value.id === node.defaultValueId) || node.valuesNodes?.[0] || null
+  })
+}
+
 export function parseToPorisModel(store, xmlText) {
   const JSONmodel = {
     values: [],
     modes: [],
     params: [],
     subsystems: [],
+    commands: [],
 
     findNode: function (type, id) {
       let source = null
@@ -276,6 +305,8 @@ export function parseToPorisModel(store, xmlText) {
         source = this.modes
       } else if (type == SUBSYSTEM_TYPE) {
         source = this.subsystems
+      } else if (type == COMMAND_TYPE) {
+        source = this.commands
       } else {
         source = this.values
       }
@@ -462,6 +493,12 @@ export function parseToPorisModel(store, xmlText) {
     JSONmodel.modes.push(new PorisNode(basicObj))
   }
 
+  const commandElements = xmlDoc.getElementsByTagName(XMLCommandTagName)
+  for (const commandElm of commandElements) {
+    const basicObj = parseBasicObject(commandElm, referemcedSusbystems)
+    JSONmodel.commands.push(new PorisNode(basicObj))
+  }
+
   /*
     <poris-sys>
       <name>OsirisMD</name>
@@ -517,6 +554,8 @@ export function parseToPorisModel(store, xmlText) {
 
   dereferenceDefaultMode(JSONmodel.modes)
   dereferenceDefaultMode(JSONmodel.subsystems)
+  dereferenceDefaultValue(JSONmodel.modes)
+  dereferenceCommandReferences(JSONmodel, JSONmodel.subsystems)
 
   // console.log('Loaded model', JSONmodel)
 

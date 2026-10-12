@@ -1,38 +1,42 @@
 <template>
   <div class="input">
-    <input v-if="isValueString()" v-model="model" type="text" />
-
-    <input
-      v-else-if="isValueDoubleRange()"
-      class="numberPicker"
-      v-model.number="model"
-      type="number"
-      step=".01"
-      :min="values[0].rangemin"
-      :max="values[0].rangemax"
-    />
-
-    <VueDatePicker
-      v-else-if="isValueDateRange()"
-      v-model="model"
-      :min="values[0].datemin"
-      :max="values[0].datemax"
-      enable-seconds
-      is-24
-    />
-
-    <input v-else-if="isValueFilePath()" type="file" :accept="values[0].fileExtension" />
-
     <select
-      v-else-if="isValue()"
-      v-model="model"
-      :disabled="values.length < 2"
-      @update:modelValue="changeModel"
+      v-if="values.length > 1"
+      v-model="selectedValue"
+      class="active-value-selector"
     >
       <option v-for="v in values" :key="v.id" :value="v">{{ v.name }}</option>
     </select>
 
-    <span v-else>No values!</span>
+    <input v-if="isValueString()" v-model="dataValue" type="text" />
+
+    <input
+      v-else-if="isValueDoubleRange()"
+      class="numberPicker"
+      v-model.number="dataValue"
+      type="number"
+      step=".01"
+      :min="activeValue.rangemin"
+      :max="activeValue.rangemax"
+      @focus="rememberPreviousValue"
+      @keydown="preventOutOfRangeStep"
+      @blur="restoreInvalidValue"
+    />
+
+    <VueDatePicker
+      v-else-if="isValueDateRange()"
+      v-model="dataValue"
+      :min="activeValue.datemin"
+      :max="activeValue.datemax"
+      enable-seconds
+      is-24
+    />
+
+    <input v-else-if="isValueFilePath()" type="file" :accept="activeValue.fileExtension" />
+
+    <span v-else-if="isValue() && values.length === 1">{{ activeValue.name }}</span>
+
+    <span v-else-if="!activeValue">No values!</span>
     {{ " " }}
   </div>
 </template>
@@ -59,11 +63,56 @@ const props = defineProps({
   }
 })
 
-const model = defineModel()
+const selectedValue = defineModel('selectedValue')
+const dataValue = defineModel('dataValue')
+const previousValue = ref(null)
 
-function changeModel(newVal) {
-  //console.log(`changeModel() newVal`, newVal)
-  model.value = newVal
+function isWithinActiveRange(value, valueNode = activeValue.value) {
+  if (value == null || value === '') return false
+
+  const numericValue = Number(value)
+  return (
+    Number.isFinite(numericValue) &&
+    numericValue >= valueNode.rangemin &&
+    numericValue <= valueNode.rangemax
+  )
+}
+
+function rememberPreviousValue() {
+  previousValue.value = dataValue.value
+}
+
+function preventOutOfRangeStep(event) {
+  if (event.key !== 'ArrowUp' && event.key !== 'ArrowDown') return
+
+  const currentValue = Number(dataValue.value)
+  if (!Number.isFinite(currentValue)) return
+
+  const valueNode = activeValue.value
+  const step = Number(event.currentTarget.step) || 1
+  const nextValue = currentValue + (event.key === 'ArrowUp' ? step : -step)
+
+  if (!isWithinActiveRange(nextValue, valueNode)) event.preventDefault()
+}
+
+function restoreInvalidValue(event) {
+  const valueNode = activeValue.value
+  if (isWithinActiveRange(dataValue.value, valueNode)) return
+
+  const previous = previousValue.value
+  const restoreValue = isWithinActiveRange(previous, valueNode) ? previous : Number(valueNode.defaultFloat)
+  const commandButton = event.relatedTarget?.closest?.('[data-poris-command]')
+
+  if (commandButton) {
+    const continueCommand = window.confirm(
+      'This value is outside the active range. Restore the previous value and continue with the command? Choose Cancel to cancel the command.'
+    )
+    if (!continueCommand) commandButton.dataset.porisCommandCancelled = 'true'
+  } else {
+    window.alert('This value is outside the active range. The previous value will be restored.')
+  }
+
+  dataValue.value = restoreValue
 }
 
 const mode = ref(props.mode)
@@ -76,16 +125,17 @@ const values = computed(() => {
   }
 })
 
-const isValueString = () => values.value.length && values.value[0].type === VALUE_STRING_TYPE
+const activeValue = computed(() => selectedValue.value || mode.value.defaultValue || values.value[0])
 
-const isValueDoubleRange = () =>
-  values.value.length && values.value[0].type === VALUE_DOUBLE_RANGE_TYPE
+const isValueString = () => activeValue.value?.type === VALUE_STRING_TYPE
 
-const isValueFilePath = () => values.value.length && values.value[0].type === VALUE_FILE_PATH_TYPE
+const isValueDoubleRange = () => activeValue.value?.type === VALUE_DOUBLE_RANGE_TYPE
 
-const isValueDateRange = () => values.value.length && values.value[0].type === VALUE_DATE_RANGE_TYPE
+const isValueFilePath = () => activeValue.value?.type === VALUE_FILE_PATH_TYPE
 
-const isValue = () => values.value.length && values.value[0].type === VALUE_TYPE
+const isValueDateRange = () => activeValue.value?.type === VALUE_DATE_RANGE_TYPE
+
+const isValue = () => activeValue.value?.type === VALUE_TYPE
 
 /*
 console.log(`ValueSelector mode:`, props.mode)

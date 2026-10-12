@@ -1,14 +1,16 @@
-import {
-  concat as _concat,
-  intersection as _intersection,
-  difference as _difference,
-  isUndefined as _isUndefined
-} from 'lodash-es'
+import { intersection as _intersection } from 'lodash-es'
 import { ref, triggerRef } from 'vue'
+// These reactivity internals are not exported from Vue's public entry point.
+// eslint-disable-next-line vue/prefer-import-from-vue
 import { pauseTracking, enableTracking } from '@vue/reactivity'
 import { defineStore } from 'pinia'
 
-import { VALUE_STRING_TYPE, VALUE_DOUBLE_RANGE_TYPE, VALUE_FILE_PATH_TYPE } from './porisNode'
+import {
+  VALUE_STRING_TYPE,
+  VALUE_DOUBLE_RANGE_TYPE,
+  VALUE_FILE_PATH_TYPE,
+  VALUE_DATE_RANGE_TYPE
+} from './porisNode'
 
 import { xmlModelLoader } from '@/api/modelLoader'
 import { parseToPorisModel } from './xmlParser'
@@ -116,14 +118,17 @@ export const useModelStore = defineStore('model', () => {
         subsystem.candidateMode = candidate
         currentModes.value[`${subsystem.id}`] = candidate
         //console.log(`setValidMode Value set`, subsystem.currentMode)
-        if (subsystem.hasValues) {
-          getSystemValue(subsystem, subsystem.currentMode)
-        }
-        if (subsystem.hasSubsystems) {
-          subsystem.subsystemsNodes.forEach((ss) => {
-            setValidSubMode(ss, ss.currentMode, subsystem.currentMode)
-          })
-        }
+      }
+
+      // A mode may become active through its parent even when the selected
+      // child mode itself did not change. Ensure its value/default either way.
+      if (subsystem.hasValues) {
+        getSystemValue(subsystem, candidate)
+      }
+      if (subsystem.hasSubsystems) {
+        subsystem.subsystemsNodes.forEach((ss) => {
+          setValidSubMode(ss, ss.currentMode, candidate)
+        })
       }
       return candidate
     } else {
@@ -225,66 +230,52 @@ export const useModelStore = defineStore('model', () => {
     return getValidObjModes(obj).length > 0
   }
 
-  function setSystemValue(system, value) {
-    // console.log(`setSystemValue() system: ${system.id}, value:`, value)
-    systemValues.value[`${system.id}`] = value
+  function setSystemValue(system, value, data) {
+    // Keep the selected PORIS value and its editable data together. The
+    // selected value determines which type/range validator applies.
+    systemValues.value[`${system.id}`] = { value, data }
   }
 
-  function getSystemValue(system, mode) {
-    let value = systemValues.value[`${system.id}`]
+  function getSystemValue(system, mode, requestedValue = null) {
+    const previous = systemValues.value[`${system.id}`] || {}
 
     // console.log(
-    //   `getSystemValue() system: ${system.id}, _isUndefined(value): ${_isUndefined(value)}, mode / value`,
+    //   `getSystemValue() system: ${system.id}, mode / state`,
     //   mode,
     //   value
     // )
 
-    if (!mode.hasValues) {
+    if (!mode?.hasValues) {
       //console.log(`getSystemValue() no value!!`)
-      return null
+      setSystemValue(system, null, null)
+      return { value: null, data: null }
     }
 
-    let valueOptions = mode.valuesNodes
-
-    //console.log(`value`,value)
-    if (
-      value != null &&
-      !_isUndefined(value) &&
-      valueOptions.find((val) => {
-        val.id === value.id
-      }) === null
-    ) {
-      value = undefined
+    const valueOptions = mode.valuesNodes || []
+    if (valueOptions.length === 0) {
+      setSystemValue(system, null, null)
+      return { value: null, data: null }
     }
+    const defaultValue = valueOptions.find((option) => option.id === mode.defaultValue?.id) || valueOptions[0]
+    let value = valueOptions.find((option) => option.id === (requestedValue || previous.value)?.id) || defaultValue
+    let data = previous.data
 
-    //console.log(`getModelValue() valueOptions[0].type: ${valueOptions[0].type}`)
-
-    if (valueOptions[0].type == VALUE_STRING_TYPE) {
-      if (_isUndefined(value)) {
-        value = valueOptions[0].defaultString
+    if (value.type === VALUE_DOUBLE_RANGE_TYPE) {
+      if (typeof data !== 'number' || !Number.isFinite(data) || data < Number(value.rangemin) || data > Number(value.rangemax)) {
+        data = Number(value.defaultFloat)
       }
-    } else if (valueOptions[0].type == VALUE_DOUBLE_RANGE_TYPE) {
-      if (
-        _isUndefined(value) ||
-        valueOptions[0].rangemin > value ||
-        valueOptions[0].rangemax < value
-      ) {
-        value = valueOptions[0].defaultFloat
-      }
-    } else if (valueOptions[0].type == VALUE_FILE_PATH_TYPE) {
-      //console.log('FILE')
-      if (_isUndefined(value)) {
-        value = valueOptions[0].defaultString
-      }
+    } else if (value.type === VALUE_STRING_TYPE || value.type === VALUE_FILE_PATH_TYPE) {
+      if (typeof data !== 'string') data = value.defaultString || ''
+    } else if (value.type === VALUE_DATE_RANGE_TYPE) {
+      if (data == null) data = value.defaultDate
     } else {
-      if (_isUndefined(value) || !valueOptions.includes(value)) {
-        value = valueOptions[0]
-      }
+      // Discrete PORIS values carry their own selection and have no second
+      // data editor. Keep any prior scalar intact so switching temporarily to
+      // an enum does not discard a numeric value that may be valid again.
     }
 
-    setSystemValue(system, value)
-
-    return value
+    setSystemValue(system, value, data)
+    return { value, data }
   }
 
   /*

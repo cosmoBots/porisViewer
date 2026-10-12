@@ -1,8 +1,19 @@
 <template>
   <!--br/>iiiiiiiiiiiiiii<br/-->
-  <div class="inputsystem-panel">
+  <div class="inputsystem-panel" :class="{ 'has-commands': subsystem.commandsNodes?.length }">
     <div class="input-mode-panel">
       <span class="title">{{ subsystem.label || subsystem.name }}</span>
+      <span v-if="subsystem.commandsNodes?.length" class="command-buttons">
+        <button
+          v-for="command in subsystem.commandsNodes"
+          :key="command.id"
+          type="button"
+          data-poris-command
+          @click="launchCommand(command, $event)"
+        >
+          {{ command.label || command.name }}
+        </button>
+      </span>
       <span class="value-selector">
         <ModeSelector
           class="mode-selector"
@@ -10,7 +21,12 @@
           v-model="currentMode"
           :modes="modes"
         />
-        <ValueSelector v-if="shallShowValueField(subsystem)" :mode="currentMode" v-model="value" />
+        <ValueSelector
+          v-if="shallShowValueField(subsystem)"
+          :mode="currentMode"
+          v-model:selected-value="selectedValue"
+          v-model:data-value="dataValue"
+        />
       </span>
     </div>
   </div>
@@ -53,22 +69,53 @@ const props = defineProps({
   }
 })
 
+const emit = defineEmits(['command-launched'])
+
+function launchCommand(command, event) {
+  if (event.currentTarget.dataset.porisCommandCancelled === 'true') {
+    delete event.currentTarget.dataset.porisCommandCancelled
+    return
+  }
+
+  emit('command-launched', { systemName: props.subsystem.name, commandName: command.name })
+}
+
 const currentMode = ref(props.mode)
+const selectedValue = ref(null)
+const dataValue = ref(null)
 
-const value = defineModel()
+function syncValue(requestedValue = null) {
+  const state = store.getSystemValue(props.subsystem, currentMode.value, requestedValue)
+  selectedValue.value = state.value
+  dataValue.value = state.data
+}
 
-value.value = store.getSystemValue(props.subsystem, currentMode.value)
+syncValue()
 
-watch(value, async (newValue) => {
-  //console.log(`setValue() model: ${props.subsystem.ident}, value: ${newValue}`)
-  store.setSystemValue(props.subsystem, newValue)
-})
+watch(selectedValue, (newValue) => {
+  if (newValue) {
+    const state = store.getSystemValue(props.subsystem, currentMode.value, newValue)
+    if (dataValue.value !== state.data) dataValue.value = state.data
+  }
+}, { flush: 'sync' })
+
+watch(dataValue, (newValue) => {
+  if (selectedValue.value) store.setSystemValue(props.subsystem, selectedValue.value, newValue)
+}, { flush: 'sync' })
+
+watch(
+  () => store.systemValues[`${props.subsystem.id}`],
+  (newState) => {
+    if (!newState) return
+    if (selectedValue.value?.id !== newState.value?.id) selectedValue.value = newState.value
+    if (dataValue.value !== newState.data) dataValue.value = newState.data
+  },
+  { flush: 'sync' }
+)
 
 watch(currentMode, (newMode) => {
   console.log(`watch_input: currentMode.set() mode:`, newMode)
-  //mode.value = newMode
-  value.value = store.getSystemValue(props.subsystem, newMode)
-  console.log(`currentMode.set() value:`, value.value)
+  syncValue()
 })
 
 watch(
@@ -96,10 +143,33 @@ watch(
       font-weight: bold;
       padding-right: 16px;
     }
+  }
+
+  .value-selector {
+    position: absolute;
+    right: 0.5em;
+  }
+
+  .command-buttons {
+    position: absolute;
+    top: 0.35em;
+    right: 0.5em;
+    display: flex;
+    gap: 4px;
+  }
+
+  &.has-commands {
+    height: auto;
+    min-height: 23px;
+    padding-top: 2.2em;
+
+    .input-mode-panel {
+      min-height: 1.8em;
+    }
 
     .value-selector {
-      position: absolute;
       right: 0.5em;
+      bottom: 0.35em;
     }
   }
 }

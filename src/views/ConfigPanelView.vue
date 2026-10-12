@@ -1,5 +1,5 @@
 <template>
-  <div class="poris-main">
+  <div class="poris-main" :class="{ compact: props.compact }" @click.capture="clearCommandMessage" @keydown.capture="clearCommandMessage">
     <div v-if="isLoading" class="loading">
       <span class="spinner"></span>
     </div>
@@ -13,7 +13,7 @@
         </div>
       </div>
 
-      <SubSystemPanel :system="rootSubsystem" />
+      <SubSystemPanel :system="rootSubsystem" @command-launched="showCommandLaunchedMessage" />
 
       <div v-if="controlEnabled" class="actions">
         <button type="button" :disabled="isBusy" @click="commitChanges">Commit changes</button>
@@ -21,6 +21,10 @@
         <button v-if="commandName" type="button" :disabled="isBusy" @click="executeCommand(commandName)">
           {{ commandName }}
         </button>
+      </div>
+
+      <div v-if="commandMessage" class="status command-message">
+        {{ commandMessage }}
       </div>
 
       <div v-if="statusMessage" class="status" :class="{ error: hasError }">
@@ -41,6 +45,7 @@ const isLoading = computed(() => store.isLoading)
 const rootSubsystem = computed(() => store.rootSubsystem)
 const isBusy = ref(false)
 const statusMessage = ref('')
+const commandMessage = ref('')
 const hasError = ref(false)
 const controlEnabled = hasPorisControl()
 const commandName = import.meta.env.VITE_PORIS_COMMAND_NAME || ''
@@ -51,27 +56,32 @@ let monitorTimer = null
 const props = defineProps({
   modelPath: {
     type: String
+  },
+  compact: {
+    type: Boolean,
+    default: false
   }
 })
 
 function currentValueFor(system) {
-  const value = store.systemValues[`${system.id}`]
-  if (value && typeof value === 'object') {
-    return { name: value.name, id: value.id, type: value.type }
-  }
-  const fallback = system.currentMode?.valuesNodes?.[0]
-  if (typeof value === 'number') {
+  const state = store.systemValues[`${system.id}`]
+  const selected = state?.value || system.currentMode?.defaultValue || system.currentMode?.valuesNodes?.[0]
+  if (!selected) return null
+
+  if (typeof state?.data === 'number') {
     return {
-      number: value,
-      name: fallback?.name || null,
-      id: fallback?.id || null,
-      type: fallback?.type || null
+      number: state.data,
+      name: selected.name,
+      id: selected.id,
+      type: selected.type
     }
   }
-  if (fallback) {
-    return { name: fallback.name, id: fallback.id, type: fallback.type }
+
+  if (selected.type === 'ValueString' || selected.type === 'ValueFilePath') {
+    return { data: state?.data ?? '', name: selected.name, id: selected.id, type: selected.type }
   }
-  return null
+
+  return { name: selected.name, id: selected.id, type: selected.type }
 }
 
 function serializeSystem(system) {
@@ -127,6 +137,15 @@ function executeCommand(name) {
   runAction(() => executePorisCommand(name), `${name} executed`)
 }
 
+function showCommandLaunchedMessage({ systemName, commandName }) {
+  hasError.value = false
+  commandMessage.value = `We launched ${systemName}.${commandName}`
+}
+
+function clearCommandMessage() {
+  commandMessage.value = ''
+}
+
 function cancelChanges() {
   statusMessage.value = ''
   hasError.value = false
@@ -155,6 +174,11 @@ onBeforeUnmount(() => {
 <style scoped lang="scss">
 .poris-main {
   max-width: 40em;
+}
+
+.poris-main.compact {
+  max-width: 100%;
+  font-size: 0.9em;
 }
 
 .loading {
