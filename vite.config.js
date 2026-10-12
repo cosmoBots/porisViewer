@@ -18,11 +18,17 @@ export default ({ mode }) => {
       outDir: 'dist',
       sourcemap: true,
       lib: {
-        entry: {
-          prod: './src/main-prod.js',
-          dev: './src/main-dev.js'
-        },
-        formats: ['es', 'cjs']
+        // The Redmine plugin serves Rails-digested assets. A single entry
+        // avoids shared chunks whose relative URLs would bypass Sprockets'
+        // asset-path rewriting when the browser imports the viewer module.
+        entry: mode === 'csys-plugin'
+          ? './src/main-prod.js'
+          : {
+              prod: './src/main-prod.js',
+              dev: './src/main-dev.js'
+            },
+        ...(mode === 'csys-plugin' ? { fileName: () => 'prod.js' } : {}),
+        formats: mode === 'csys-plugin' ? ['es'] : ['es', 'cjs']
       }
     },
     define: {
