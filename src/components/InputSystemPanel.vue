@@ -77,7 +77,12 @@ function launchCommand(command, event) {
     return
   }
 
-  emit('command-launched', { systemName: props.subsystem.name, commandName: command.name })
+  emit('command-launched', {
+    systemId: props.subsystem.id,
+    systemName: props.subsystem.name,
+    commandId: command.id,
+    commandName: command.name
+  })
 }
 
 const currentMode = ref(props.mode)

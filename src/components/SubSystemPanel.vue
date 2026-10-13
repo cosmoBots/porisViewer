@@ -116,7 +116,12 @@ function launchCommand(command, event) {
     return
   }
 
-  emit('command-launched', { systemName: subsystem.name, commandName: command.name })
+  emit('command-launched', {
+    systemId: subsystem.id,
+    systemName: subsystem.name,
+    commandId: command.id,
+    commandName: command.name
+  })
 }
 
 //console.log(`SubSystem name: ${subsystem.name}, ident: ${subsystem.ident} props.isRoot: ${props.isRoot}`)

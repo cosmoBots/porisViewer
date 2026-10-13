@@ -13,7 +13,7 @@
         </div>
       </div>
 
-      <SubSystemPanel :system="rootSubsystem" @command-launched="showCommandLaunchedMessage" />
+      <SubSystemPanel :system="rootSubsystem" @command-launched="handleCommandLaunched" />
 
       <div v-if="canCommit || controlEnabled" class="actions">
         <button v-if="canCommit" type="button" :disabled="isBusy" @click="commitChanges">
@@ -162,8 +162,33 @@ function executeCommand(name) {
   runAction(() => executePorisCommand(name), `${name} executed`)
 }
 
-function showCommandLaunchedMessage({ systemName, commandName }) {
+async function handleCommandLaunched({ systemId, systemName, commandId, commandName }) {
   hasError.value = false
+  if (props.commitUrl) {
+    const result = await runAction(
+      () => commitPorisState(
+        {
+          ...buildPorisPayload(),
+          operations: [{ type: 'invoke_command', node_id: systemId, command_id: commandId }]
+        },
+        { url: props.commitUrl, csrfToken: props.csrfToken }
+      ),
+      `Command ${systemName}.${commandName} sent to the PORIS runtime`
+    )
+    if (result?.state) {
+      store.applyRuntimeState(result.state)
+      emit('committed', result)
+    }
+    const commandResult = result?.operations?.find((operation) => operation.type === 'invoke_command')
+    if (commandResult?.accepted) {
+      commandMessage.value = `We launched ${systemName}.${commandName}`
+    } else if (commandResult) {
+      hasError.value = true
+      statusMessage.value = commandResult.reason || 'The PORIS command was rejected'
+    }
+    return
+  }
+
   commandMessage.value = `We launched ${systemName}.${commandName}`
 }
 
