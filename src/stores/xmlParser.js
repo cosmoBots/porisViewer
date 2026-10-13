@@ -291,6 +291,61 @@ function dereferenceDefaultValue(nodes) {
   })
 }
 
+function installImplicitUnknownModes(model) {
+  const unknownIds = new Set()
+  model.subsystems.forEach((subsystem) => {
+    subsystem.modesNodes ||= []
+    const explicitUnknown = subsystem.modesNodes.find((mode) => mode.name?.trim().toLowerCase() === 'unknown')
+    const unknown = explicitUnknown || new PorisNode({
+      id: `unknown:${subsystem.id}`,
+      ident: `unknown:${subsystem.ident}`,
+      name: 'Unknown',
+      label: 'Unknown',
+      nodeTypeId: 6,
+      type: MODE_TYPE,
+      destinations: [],
+      hasValues: false,
+      hasRealValues: false,
+      hasModes: false,
+      hasSubsystems: false
+    })
+
+    unknown.name = 'Unknown'
+    unknown.label = 'Unknown'
+    unknown.parent = subsystem
+    unknown.destinations = []
+    unknown.valuesNodes = []
+    unknown.modesNodes = []
+    unknown.subsystemsNodes = []
+    unknown.commandsNodes = []
+    unknown.hasValues = false
+    unknown.hasRealValues = false
+    unknown.hasModes = false
+    unknown.hasSubsystems = false
+    unknown.defaultValue = null
+    unknown.isImplicitUnknown = true
+
+    subsystem.unknownMode = unknown
+    unknownIds.add(unknown.id)
+    subsystem.modesNodes = subsystem.modesNodes.filter((mode) => mode !== explicitUnknown)
+    if (!model.modes.includes(unknown)) model.modes.push(unknown)
+
+    if (subsystem === model.rootSubsystem) {
+      subsystem.modesNodes.unshift(unknown)
+      subsystem.defaultMode = unknown
+      subsystem.defaultModeId = unknown.id
+      subsystem.hasModes = true
+    }
+  })
+
+  model.modes.forEach((mode) => {
+    if (!mode.modesNodes) return
+
+    mode.modesNodes = mode.modesNodes.filter((candidate) => !unknownIds.has(candidate.id))
+    mode.hasModes = mode.modesNodes.length > 0
+  })
+}
+
 export function parseToPorisModel(store, xmlText) {
   const JSONmodel = {
     values: [],
@@ -556,6 +611,7 @@ export function parseToPorisModel(store, xmlText) {
   dereferenceDefaultMode(JSONmodel.subsystems)
   dereferenceDefaultValue(JSONmodel.modes)
   dereferenceCommandReferences(JSONmodel, JSONmodel.subsystems)
+  installImplicitUnknownModes(JSONmodel)
 
   // console.log('Loaded model', JSONmodel)
 

@@ -121,7 +121,7 @@ function launchCommand(command, event) {
 
 //console.log(`SubSystem name: ${subsystem.name}, ident: ${subsystem.ident} props.isRoot: ${props.isRoot}`)
 
-watch(subsystem.candidateMode, () => {
+watch(() => subsystem.candidateMode, () => {
   debugLog(
     `watch.mode. mode ${subsystem.currentMode?.name}, newMode :${subsystem.candidateMode?.name}`
   )

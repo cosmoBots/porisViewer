@@ -1,4 +1,3 @@
-import { intersection as _intersection } from 'lodash-es'
 import { ref, triggerRef } from 'vue'
 // These reactivity internals are not exported from Vue's public entry point.
 // eslint-disable-next-line vue/prefer-import-from-vue
@@ -91,52 +90,34 @@ export const useModelStore = defineStore('model', () => {
 
   function setValidModeFrom(subsystem, mode, validModes) {
     subsystem.validModes = validModes
+    let candidate = null
     if (validModes.length > 0) {
-      let prevMode = subsystem.currentMode
-      let candidate = null
-      if (validModes.length > 0) {
-        if (mode != null && validModes.includes(mode)) {
-          // console.log(`--> setValidMode_ candidate mode ${mode.name}`)
-          candidate = mode
-        } else {
-          if (validModes.includes(subsystem.defaultMode)) {
-            candidate = subsystem.defaultMode
-            // console.log(`--> setValidMode_ candidate valid default ${subsystem.defaultMode.name}`)
-          } else {
-            candidate = validModes[0]
-            // console.log(`--> setValidMode_ candidate first mode ${subsystem.validModes[0].name}`)
-          }
-        }
-      } else {
-        // console.log(`--> setValidMode_ candidate default (root)`)
+      if (mode != null && validModes.includes(mode)) {
+        candidate = mode
+      } else if (subsystem.parent == null && validModes.includes(subsystem.defaultMode)) {
         candidate = subsystem.defaultMode
+      } else {
+        candidate = validModes[0]
       }
-
-      if (prevMode != candidate) {
-        //console.log(`*** setValidMode_() subsystem:`, subsystem.name, candidate.name)
-        subsystem.currentMode = candidate
-        subsystem.candidateMode = candidate
-        currentModes.value[`${subsystem.id}`] = candidate
-        //console.log(`setValidMode Value set`, subsystem.currentMode)
-      }
-
-      // A mode may become active through its parent even when the selected
-      // child mode itself did not change. Ensure its value/default either way.
-      if (subsystem.hasValues) {
-        getSystemValue(subsystem, candidate)
-      }
-      if (subsystem.hasSubsystems) {
-        subsystem.subsystemsNodes.forEach((ss) => {
-          setValidSubMode(ss, ss.currentMode, candidate)
-        })
-      }
-      return candidate
     } else {
-      subsystem.currentMode = null
-      subsystem.candidateMode = null
-      // console.log(`--> setValidMode_ null (no valid mode available)`)
-      return null
+      candidate = subsystem.unknownMode || null
     }
+
+    const changed = subsystem.currentMode !== candidate
+    subsystem.currentMode = candidate
+    subsystem.candidateMode = candidate
+    currentModes.value[`${subsystem.id}`] = candidate
+
+    // Re-evaluate state even when the mode object is unchanged: its eligible
+    // value ranges and descendants may have changed with the parent context.
+    if (subsystem.hasValues) getSystemValue(subsystem, candidate)
+    if (subsystem.hasSubsystems) {
+      subsystem.subsystemsNodes.forEach((child) => {
+        setValidSubMode(child, child.currentMode, candidate)
+      })
+    }
+    if (changed) debugLog(`PORIS mode changed for ${subsystem.name}: ${candidate?.name || 'none'}`)
+    return candidate
   }
 
   /**
@@ -173,7 +154,10 @@ export const useModelStore = defineStore('model', () => {
 
   function setValidSubMode(subsystem, mode, supermode) {
     // console.log(`setValidMode_ ${subsystem.name} ${mode?.name}, using supermode`, supermode.name)
-    let validModes = _intersection(subsystem.modesNodes, supermode.modesNodes)
+    const subsystemModeIds = new Set(subsystem.modesNodes.map((candidate) => candidate.id))
+    // The supermode's destination order carries PORIS priority. Preserve it
+    // while limiting the list to modes actually offered by this subsystem.
+    let validModes = supermode.modesNodes.filter((candidate) => subsystemModeIds.has(candidate.id))
     /*
     validModes.forEach((m) => {
       debugLog(`setValidMode_ valid:`, m)
@@ -205,7 +189,6 @@ export const useModelStore = defineStore('model', () => {
     // console.log(`getValidObjModes() obj.id: ${obj.id}`, obj)
     //console.log(`getValidObjModes() getObjModes`, getObjModes(obj))
     // console.log(`getValidObjModes() validModes`, validModes.value)
-    // console.log(`getValidObjModes() _intersection`,  _intersection(obj.modesNodes, validModes.value))
     // }
 
     /*
@@ -215,11 +198,14 @@ export const useModelStore = defineStore('model', () => {
       debugLog(m.name)
     })
     */
-    if (obj.parent != null) {
+    if (obj.parent != null && obj.parent.currentMode != null) {
       debugLog(`parent: ${obj.parent.name}`)
       debugLog(`parent mode: ${obj.parent.currentMode.name}`)
       debugLog(`parent.mode.submodes:`, obj.parent.currentMode.modesNodes)
-      return _intersection(obj.modesNodes, obj.parent.currentMode.modesNodes)
+      const childModeIds = new Set(obj.modesNodes.map((candidate) => candidate.id))
+      return obj.parent.currentMode.modesNodes.filter((candidate) => childModeIds.has(candidate.id))
+    } else if (obj.parent != null) {
+      return []
     } else {
       return obj.modesNodes
     }
