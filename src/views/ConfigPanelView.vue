@@ -15,9 +15,11 @@
 
       <SubSystemPanel :system="rootSubsystem" @command-launched="showCommandLaunchedMessage" />
 
-      <div v-if="controlEnabled" class="actions">
-        <button type="button" :disabled="isBusy" @click="commitChanges">Commit changes</button>
-        <button type="button" :disabled="isBusy" @click="cancelChanges">Cancel</button>
+      <div v-if="canCommit || controlEnabled" class="actions">
+        <button v-if="canCommit" type="button" :disabled="isBusy" @click="commitChanges">
+          {{ props.commitUrl ? 'Commit' : 'Commit changes' }}
+        </button>
+        <button v-if="controlEnabled" type="button" :disabled="isBusy" @click="cancelChanges">Cancel</button>
         <button v-if="commandName" type="button" :disabled="isBusy" @click="executeCommand(commandName)">
           {{ commandName }}
         </button>
@@ -36,7 +38,7 @@
 <script setup>
 import SubSystemPanel from '../components/SubSystemPanel.vue'
 
-import { computed, onBeforeUnmount, onMounted, ref } from 'vue'
+import { computed, onBeforeUnmount, onMounted, ref, watch } from 'vue'
 import { useModelStore } from '@/stores/model'
 import { commitPorisState, executePorisCommand, getPorisState, hasPorisControl } from '@/api/porisControl'
 const store = useModelStore()
@@ -48,6 +50,7 @@ const statusMessage = ref('')
 const commandMessage = ref('')
 const hasError = ref(false)
 const controlEnabled = hasPorisControl()
+const canCommit = computed(() => Boolean(props.commitUrl) || controlEnabled)
 const commandName = import.meta.env.VITE_PORIS_COMMAND_NAME || ''
 const monitorCapsules = ref([])
 const visibleMonitorCapsules = computed(() => monitorCapsules.value.filter((capsule) => capsule.visible))
@@ -60,8 +63,22 @@ const props = defineProps({
   compact: {
     type: Boolean,
     default: false
+  },
+  commitUrl: {
+    type: String,
+    default: ''
+  },
+  csrfToken: {
+    type: String,
+    default: ''
+  },
+  initialState: {
+    type: Array,
+    default: () => []
   }
 })
+
+const emit = defineEmits(['committed'])
 
 function currentValueFor(system) {
   const state = store.systemValues[`${system.id}`]
@@ -119,8 +136,9 @@ async function runAction(action, successText) {
   hasError.value = false
   statusMessage.value = ''
   try {
-    await action()
+    const result = await action()
     statusMessage.value = successText
+    return result
   } catch (error) {
     hasError.value = true
     statusMessage.value = error?.response?.data?.error || error.message || String(error)
@@ -129,8 +147,15 @@ async function runAction(action, successText) {
   }
 }
 
-function commitChanges() {
-  runAction(() => commitPorisState(buildPorisPayload()), 'Changes committed')
+async function commitChanges() {
+  const result = await runAction(
+    () => commitPorisState(buildPorisPayload(), { url: props.commitUrl, csrfToken: props.csrfToken }),
+    'Commit applied to the PORIS runtime'
+  )
+  if (result?.state) {
+    store.applyRuntimeState(result.state)
+    emit('committed', result)
+  }
 }
 
 function executeCommand(name) {
@@ -157,6 +182,14 @@ function cancelChanges() {
 if (props.modelPath) {
   store.loadModelURL(props.modelPath)
 }
+
+watch(
+  () => store.rootSubsystem,
+  (root) => {
+    if (root && props.initialState.length) store.applyRuntimeState(props.initialState)
+  },
+  { immediate: true }
+)
 
 onMounted(() => {
   refreshMonitorCapsules()

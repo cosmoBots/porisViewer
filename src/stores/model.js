@@ -222,6 +222,31 @@ export const useModelStore = defineStore('model', () => {
     systemValues.value[`${system.id}`] = { value, data }
   }
 
+  // Hydrate the browser model from the committed session state returned by
+  // the PORIS runtime. Rows are ordered parent-first by the server.
+  function applyRuntimeState(rows) {
+    for (const row of rows || []) {
+      const subsystem = getSubsystem(row.node_id)
+      if (!subsystem) continue
+
+      const mode = String(row.mode_id || '').startsWith('unknown:')
+        ? subsystem.unknownMode
+        : getMode(row.mode_id)
+      const validModes = subsystem.getValidModes()
+      if (mode && (validModes.includes(mode) || (mode === subsystem.unknownMode && validModes.length === 0))) {
+        setValidMode(subsystem, mode)
+      }
+
+      if (row.value_id != null) {
+        const value = getValue(row.value_id)
+        const activeValues = subsystem.currentMode?.valuesNodes || []
+        if (value && activeValues.some((candidate) => candidate.id == value.id)) {
+          setSystemValue(subsystem, value, row.data)
+        }
+      }
+    }
+  }
+
   function getSystemValue(system, mode, requestedValue = null) {
     const previous = systemValues.value[`${system.id}`] || {}
 
@@ -286,6 +311,7 @@ export const useModelStore = defineStore('model', () => {
     getValidObjModes,
     hasValidObjModes,
     getSystemValue,
-    setSystemValue
+    setSystemValue,
+    applyRuntimeState
   }
 })

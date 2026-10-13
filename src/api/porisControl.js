@@ -6,8 +6,10 @@ export function hasPorisControl() {
   return Boolean(baseURL)
 }
 
-export function commitPorisState(payload) {
-  return axios.post(`${baseURL}/api/poris/commit`, payload).then((response) => response.data)
+export function commitPorisState(payload, { url, csrfToken } = {}) {
+  const target = url || `${baseURL}/api/poris/commit`
+  const headers = csrfToken ? { 'X-CSRF-Token': csrfToken } : {}
+  return axios.post(target, payload, { headers }).then((response) => response.data)
 }
 
 export function executePorisCommand(commandName) {
