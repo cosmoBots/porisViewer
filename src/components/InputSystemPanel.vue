@@ -145,8 +145,9 @@ watch(
     display: flex;
 
     .title {
-      font-weight: bold;
-      padding-right: 16px;
+      font-size: 0.75em;
+      font-weight: 600;
+      padding-right: 10px;
     }
   }
 

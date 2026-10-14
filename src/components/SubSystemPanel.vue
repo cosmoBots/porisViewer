@@ -84,7 +84,10 @@ function shallShowSubPanels(s) {
 }
 
 function shallShowInputPanel(s) {
-  return s.hasRealValues || fakeParam(s) || fakeParamWithNoValue(s)
+  return s.hasRealValues ||
+    fakeParam(s) ||
+    fakeParamWithNoValue(s) ||
+    (!s.hasSubsystems && s.currentMode?.hasValues)
 }
 
 function shallShowModeSelector(s) {
@@ -169,7 +172,10 @@ watch(() => subsystem.candidateMode, () => {
   }
 
   .title {
-    font-weight: bold;
+    margin: 0 0 4px;
+    font-size: 0.75em;
+    font-weight: 600;
+    line-height: 1.2;
   }
 }
 </style>
