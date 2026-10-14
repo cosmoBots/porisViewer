@@ -179,7 +179,7 @@ export const useModelStore = defineStore('model', () => {
     const subsystemModeIds = new Set(subsystem.modesNodes.map((candidate) => candidate.id))
     // The supermode's destination order carries PORIS priority. Preserve it
     // while limiting the list to modes actually offered by this subsystem.
-    let validModes = supermode.modesNodes.filter((candidate) => subsystemModeIds.has(candidate.id))
+    let validModes = (supermode.modesNodes || []).filter((candidate) => subsystemModeIds.has(candidate.id))
     /*
     validModes.forEach((m) => {
       debugLog(`setValidMode_ valid:`, m)
@@ -225,7 +225,7 @@ export const useModelStore = defineStore('model', () => {
       debugLog(`parent mode: ${obj.parent.currentMode.name}`)
       debugLog(`parent.mode.submodes:`, obj.parent.currentMode.modesNodes)
       const childModeIds = new Set(obj.modesNodes.map((candidate) => candidate.id))
-      return obj.parent.currentMode.modesNodes.filter((candidate) => childModeIds.has(candidate.id))
+      return (obj.parent.currentMode.modesNodes || []).filter((candidate) => childModeIds.has(candidate.id))
     } else if (obj.parent != null) {
       return []
     } else {
