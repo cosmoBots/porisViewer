@@ -110,11 +110,14 @@ const system = ref(props.system)
 const subsystem = system.value
 subsystem.candidateMode = subsystem.currentMode
 const activeSubnodes = computed(() => {
-  // setValidMode batches recursive updates and triggers this ref once the
-  // whole subtree has been reconciled. Depend on it so children that became
-  // Unknown are removed from the form immediately.
-  store.currentModes
-  return subsystem.getActiveSubnodes()
+  // Derive visibility from the active mode's actual PORIS destinations. This
+  // prevents a child from lingering in the form if its cached validModes are
+  // stale while the subtree is being reconciled (e.g. Single -> no frames).
+  const activeMode = subsystem.currentMode
+  const enabledModeIds = new Set((activeMode?.modesNodes || []).map((mode) => mode.id))
+  return (subsystem.subsystemsNodes || []).filter((child) =>
+    (child.modesNodes || []).some((mode) => enabledModeIds.has(mode.id))
+  )
 })
 
 function launchCommand(command, event) {
