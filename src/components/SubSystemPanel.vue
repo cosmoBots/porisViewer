@@ -26,7 +26,7 @@
     <div class="mode-selector" v-if="shallShowModeSelector(subsystem)">
       <ModeSelector v-model="subsystem.candidateMode" :modes="subsystem.getValidModes()" />
     </div>
-    <template v-for="sub in subsystem.getActiveSubnodes()" :key="sub.id">
+    <template v-for="sub in activeSubnodes" :key="sub.id">
       <!--<br/>------------------<br/>-->
       <!--{{ sub.name }}<br/>-->
       <!--{{ "(sub)has_values: " + sub.hasValues + " / " }}-->
@@ -64,7 +64,7 @@
   />
 </template>
 <script setup>
-import { ref, watch } from 'vue'
+import { computed, ref, watch } from 'vue'
 import { useModelStore } from '@/stores/model'
 import { debugLog } from '@/utils/debug'
 import ModeSelector from './ModeSelector.vue'
@@ -109,6 +109,13 @@ const emit = defineEmits(['command-launched'])
 const system = ref(props.system)
 const subsystem = system.value
 subsystem.candidateMode = subsystem.currentMode
+const activeSubnodes = computed(() => {
+  // setValidMode batches recursive updates and triggers this ref once the
+  // whole subtree has been reconciled. Depend on it so children that became
+  // Unknown are removed from the form immediately.
+  store.currentModes
+  return subsystem.getActiveSubnodes()
+})
 
 function launchCommand(command, event) {
   if (event.currentTarget.dataset.porisCommandCancelled === 'true') {
