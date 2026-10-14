@@ -129,7 +129,10 @@ export const useModelStore = defineStore('model', () => {
 
     // Re-evaluate state even when the mode object is unchanged: its eligible
     // value ranges and descendants may have changed with the parent context.
-    if (subsystem.hasValues) getSystemValue(subsystem, candidate)
+    // Values are attached to modes, not necessarily directly to the
+    // subsystem. Reconcile every node so a child that falls back to Unknown
+    // cannot retain the value it had in its previously active mode.
+    getSystemValue(subsystem, candidate)
     if (subsystem.hasSubsystems) {
       subsystem.subsystemsNodes.forEach((child) => {
         setValidSubMode(child, child.currentMode, candidate)
