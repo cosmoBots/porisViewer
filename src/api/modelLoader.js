@@ -15,7 +15,7 @@ function promisifyXml2Js(arg) {
 }
 */
 export function xmlModelLoader(path) {
-    return axios.get(path)
+    return axios.get(path, { withCredentials: true })
         .then(response => {
             //return promisifyXml2Js(response.data)
 

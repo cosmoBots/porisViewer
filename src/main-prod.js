@@ -5,11 +5,11 @@ import ConfigPanelView from './views/ConfigPanelView.vue'
 import { setDebug } from './utils/debug'
 
 export function createPorisViewerPanel(modelPath, mountPoint, options = {}) {
-  const { debug = false, compact = false, commitUrl = '', csrfToken = '', initialState = [], onCommit } = options
+  const { debug = false, compact = false, commitUrl = '', csrfToken = '', initialState = [], modelXml = '', onCommit } = options
 
   setDebug(debug)
 
-  let rootProps = { modelPath, compact, commitUrl, csrfToken, initialState, onCommitted: onCommit }
+  let rootProps = { modelPath, modelXml, compact, commitUrl, csrfToken, initialState, onCommitted: onCommit }
 
   const app = createApp(ConfigPanelView, rootProps)
 

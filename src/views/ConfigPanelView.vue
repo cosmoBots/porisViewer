@@ -60,6 +60,10 @@ const props = defineProps({
   modelPath: {
     type: String
   },
+  modelXml: {
+    type: String,
+    default: ''
+  },
   compact: {
     type: Boolean,
     default: false
@@ -199,13 +203,16 @@ function clearCommandMessage() {
 function cancelChanges() {
   statusMessage.value = ''
   hasError.value = false
-  if (props.modelPath) {
-    store.loadModelURL(props.modelPath)
-  }
+  loadModel()
 }
 
-if (props.modelPath) {
-  store.loadModelURL(props.modelPath)
+function loadModel() {
+  if (props.modelXml) store.loadModelXML(props.modelXml)
+  else if (props.modelPath) store.loadModelURL(props.modelPath)
+}
+
+if (props.modelXml || props.modelPath) {
+  loadModel()
 }
 
 watch(

@@ -76,6 +76,25 @@ export const useModelStore = defineStore('model', () => {
       isLoading.value = false
     })
   }
+
+  function loadModelXML(xmlText) {
+    isLoading.value = true
+    Promise.resolve(xmlText).then((model) => {
+      xmlModel.value = model
+
+      let JSONmodel = parseToPorisModel(this, model)
+
+      values.value = JSONmodel.values
+      modes.value = JSONmodel.modes
+      subsystems.value = JSONmodel.subsystems
+      rootSubsystem.value = JSONmodel.rootSubsystem
+      currentModes.value = []
+      systemValues.value = {}
+      setValidMode(JSONmodel.rootSubsystem)
+    }).finally(() => {
+      isLoading.value = false
+    })
+  }
   function getValue(id) {
     return values.value.find((element) => element.id == id)
   }
@@ -303,6 +322,7 @@ export const useModelStore = defineStore('model', () => {
     systemValues,
     loadModel,
     loadModelURL,
+    loadModelXML,
     getValue,
     getMode,
     getSubsystem,
