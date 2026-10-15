@@ -15,6 +15,6 @@ You will find the complete JSky components set at:
 
 2011-12-20 At Abades, Tenerife Island, World.
 
-Any questions? contact txinto@elporis.com
+Any questions? contact cosmosys@elporis.com
 
 Tx.
