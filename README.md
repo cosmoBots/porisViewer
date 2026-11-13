@@ -15,6 +15,16 @@ un candidato, omite ese selector. El editor y la validación (incluido el rango
 numérico) corresponden al `prValue` elegido; el estado del formulario conserva
 por separado ese nodo activo y el dato editable.
 
+Al enfocar un campo numérico con un rango finito aparece un slider flotante
+para aproximar el valor. El campo sigue admitiendo teclado y sus flechas de
+ajuste fino; ambos controles comparten el mismo dato y los límites del valor
+PORIS seleccionado. Escape o salir del control oculta el slider. Usarlo sólo
+edita la configuración del formulario: no confirma ni ejecuta comandos.
+
+Para probar este control de forma aislada, arrancar `npm run dev -- --port 5189`
+y ejecutar en otra terminal `node tests/numeric-range-browser.mjs` (Node 22+ y
+Chrome en PATH, o `CHROME_BIN`). Usa datos de prueba locales, no un runtime real.
+
 **Requisitos**:
 - **Node >=16** (según tu entorno), npm
 - Ejecutar `npm install` para instalar dependencias

@@ -10,14 +10,14 @@
 
     <input v-if="isValueString()" v-model="dataValue" type="text" />
 
-    <input
+    <NumericRangeInput
       v-else-if="isValueDoubleRange()"
-      class="numberPicker"
-      v-model.number="dataValue"
-      type="number"
+      v-model="dataValue"
       step=".01"
       :min="activeValue.rangemin"
       :max="activeValue.rangemax"
+      :label="activeValue.name"
+      :key="activeValue.id"
       @focus="rememberPreviousValue"
       @keydown="preventOutOfRangeStep"
       @blur="restoreInvalidValue"
@@ -42,6 +42,7 @@
 </template>
 <script setup>
 import { ref, computed, watch } from 'vue'
+import NumericRangeInput from './NumericRangeInput.vue'
 import VueDatePicker from '@vuepic/vue-datepicker'
 import '@vuepic/vue-datepicker/dist/main.css'
 
@@ -165,9 +166,5 @@ watch(values, (newVal, oldVal) => {
 <style lang="scss" scoped>
 .input {
   display: inline;
-
-  .numberPicker {
-    text-align: right;
-  }
 }
 </style>
