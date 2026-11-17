@@ -26,7 +26,7 @@ y ejecutar en otra terminal `node tests/numeric-range-browser.mjs` (Node 22+ y
 Chrome en PATH, o `CHROME_BIN`). Usa datos de prueba locales, no un runtime real.
 
 **Requisitos**:
-- **Node >=16** (según tu entorno), npm
+- **Node >=22** (el repositorio usa la versión de `.nvmrc`), npm
 - Ejecutar `npm install` para instalar dependencias
 
 **Comandos comunes**:
