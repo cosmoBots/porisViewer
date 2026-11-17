@@ -1,0 +1,82 @@
+# Checks on every pull request and on every push to main.
+#
+# The viewer is a library that the cosmosys_poris plugin bundles, so a
+# dependency update is only safe if the code still lints, still builds in
+# both modes the plugin and the demo use, and still works in a browser.
+# Dependabot opens its pull requests against this workflow, and the two
+# jobs below are the required checks that decide whether they can merge.
+# Actions are pinned by commit, and Dependabot moves the pins. No job
+# uses secrets, as pull requests from Dependabot get a read-only token.
+#
+# There are two jobs, not one, so that a failure says at a glance whether
+# the sources are wrong (checks) or the behaviour is (browser), and so
+# that the slow browser tests run in parallel with the quick checks. The
+# job names are required checks of the repository ruleset: renaming them
+# means changing the ruleset too.
+name: ci
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  checks:
+    name: checks
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Lint
+        run: npm run lint:check
+
+      - name: Build the library (demo and dev entries)
+        run: npm run build
+
+      # The bundle the cosmosys_poris plugin builds and serves.
+      - name: Build the plugin bundle
+        run: npm run build -- --mode csys-plugin
+
+  browser:
+    name: browser
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      # The tests drive the Chrome of the runner image (google-chrome, or
+      # the binary in CHROME_BIN).
+      - name: Slider test
+        run: npm run test:slider
+
+      - name: Smoke test
+        run: npm run test:smoke
