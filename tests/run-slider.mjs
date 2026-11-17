@@ -16,16 +16,23 @@ const server = await createServer({
   server: { host, port, strictPort: true }
 })
 
+const pause = (ms) => new Promise((resolve) => setTimeout(resolve, ms))
+// Time left before `deadline`, capped at `cap` and never below 1 ms.
+const remaining = (deadline, cap = Infinity) => Math.max(1, Math.min(cap, deadline - Date.now()))
+
 // Fetches each URL and, recursively, every absolute or relative module it
-// imports. Returns the sorted URL list, or null if any request failed.
-async function crawl(entries) {
+// imports. Returns the sorted URL list, or null if any request failed. Each
+// request is aborted after 10 s or at `deadline`, whichever comes first.
+async function crawl(entries, deadline) {
   const seen = new Set()
   let ok = true
   const visit = async (url) => {
     if (seen.has(url)) return
     seen.add(url)
     try {
-      const response = await fetch(baseUrl + url)
+      const response = await fetch(baseUrl + url, {
+        signal: AbortSignal.timeout(remaining(deadline, 10000))
+      })
       const code = await response.text()
       if (!response.ok) throw new Error(`${response.status} ${url}`)
       const imports = [...code.matchAll(/\b(?:from|import)\s*\(?\s*["']([./][^"']*)["']/g)]
@@ -55,17 +62,21 @@ try {
   const deadline = Date.now() + 60000
   let previous = null
   for (;;) {
-    const current = await crawl([
-      '/tests/numeric-range.html',
-      '/@vite/client',
-      '/tests/numeric-range.js'
+    const current = await crawl(
+      ['/tests/numeric-range.html', '/@vite/client', '/tests/numeric-range.js'],
+      deadline
+    )
+    // Vite has no timeout of its own here; never wait past the deadline. The
+    // timer is unref'd so that it does not keep the process alive later.
+    await Promise.race([
+      server.waitForRequestsIdle?.(),
+      new Promise((resolve) => setTimeout(resolve, remaining(deadline)).unref())
     ])
-    await server.waitForRequestsIdle?.()
     if (current && previous === current) break
     if (previous) console.log('Waiting for Vite to finish optimizing dependencies...')
     if (Date.now() > deadline) throw new Error(`Vite did not settle on ${baseUrl}`)
     previous = current
-    await new Promise((resolve) => setTimeout(resolve, 200))
+    await pause(200)
   }
 
   const test = spawn(
