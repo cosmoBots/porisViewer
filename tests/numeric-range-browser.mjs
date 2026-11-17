@@ -1,53 +1,12 @@
-// Run Vite on localhost:5189, then: node tests/numeric-range-browser.mjs
+// Run with `npm run test:slider`, or start Vite on 127.0.0.1:5189 and then run
+// node tests/numeric-range-browser.mjs
 /* eslint-env node */
-import { spawn } from 'node:child_process'
-import { mkdtemp, readFile, rm } from 'node:fs/promises'
-import { tmpdir } from 'node:os'
-import { join } from 'node:path'
 import assert from 'node:assert/strict'
+import { launchChrome, pause } from './cdp.mjs'
 
-const profile = await mkdtemp(join(tmpdir(), 'poris-slider-'))
-const pause = ms => new Promise(resolve => setTimeout(resolve, ms))
-const chrome = spawn(process.env.CHROME_BIN || 'google-chrome', [
-  '--headless=new', '--no-sandbox', '--disable-dev-shm-usage', '--remote-debugging-port=0',
-  `--user-data-dir=${profile}`, '--window-size=1280,720', 'about:blank'
-], { stdio: 'ignore' })
-let socket
+const browser = await launchChrome()
+const { call, evaluate, exceptions: errors } = browser
 try {
-  let port
-  for (let i = 0; i < 100 && !port; i++) {
-    try { port = (await readFile(join(profile, 'DevToolsActivePort'), 'utf8')).split('\n')[0] } catch { /* Chrome is still starting. */ }
-    if (!port) await pause(100)
-  }
-  assert(port, 'Chrome did not start')
-  const targets = await (await fetch(`http://127.0.0.1:${port}/json/list`)).json()
-  socket = new WebSocket(targets.find(t => t.type === 'page').webSocketDebuggerUrl)
-  await new Promise((resolve, reject) => { socket.onopen = resolve; socket.onerror = reject })
-  let seq = 0
-  const pending = new Map(), errors = []
-  socket.onmessage = ({ data }) => {
-    const m = JSON.parse(data)
-    if (m.method === 'Runtime.exceptionThrown') errors.push(m.params.exceptionDetails.text)
-    const request = pending.get(m.id)
-    if (request) {
-      pending.delete(m.id)
-      m.error ? request.reject(new Error(m.error.message)) : request.resolve(m.result)
-    }
-  }
-  const call = (method, params = {}) => new Promise((resolve, reject) => {
-    const id = ++seq
-    const timer = setTimeout(() => reject(new Error(`Timeout: ${method}`)), 10000)
-    pending.set(id, { resolve: result => { clearTimeout(timer); resolve(result) },
-      reject: error => { clearTimeout(timer); reject(error) } })
-    socket.send(JSON.stringify({ id, method, params }))
-  })
-  const evaluate = async expression => {
-    const r = await call('Runtime.evaluate', { expression, returnByValue: true, awaitPromise: true })
-    if (r.exceptionDetails) throw new Error(r.exceptionDetails.exception?.description || r.exceptionDetails.text)
-    return r.result.value
-  }
-  await call('Runtime.enable')
-  await call('Page.enable')
   await call('Emulation.setFocusEmulationEnabled', { enabled: true })
   await call('Page.navigate', { url: `${process.env.VIEWER_TEST_URL || 'http://127.0.0.1:5189'}/tests/numeric-range.html` })
   for (let i = 0; i < 100 && !await evaluate(`!!document.querySelector('.numberPicker')`); i++) await pause(100)
@@ -97,8 +56,5 @@ try {
   assert.deepEqual(errors, [])
   console.log('PASS: number/slider synchronization, floating outside scroll panel, limits, fine keyboard step, selected value switch, focus transfer, Escape and outside focus/pointer')
 } finally {
-  socket?.close()
-  chrome.kill('SIGTERM')
-  await new Promise(resolve => chrome.exitCode !== null ? resolve() : chrome.once('exit', resolve))
-  await rm(profile, { recursive: true, force: true })
+  await browser.close()
 }
