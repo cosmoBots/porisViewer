@@ -61,11 +61,32 @@ export async function launchChrome({ windowSize = '1280,720', callTimeout = 1000
     if (spawnError) throw new Error(`Chrome could not be launched: ${spawnError.message}`)
     if (!port) throw new Error('Chrome did not start')
 
-    const targets = await (await fetch(`http://127.0.0.1:${port}/json/list`)).json()
-    socket = new WebSocket(targets.find((t) => t.type === 'page').webSocketDebuggerUrl)
+    // Chrome may write DevToolsActivePort before its endpoint answers; bound
+    // both the target lookup and the WebSocket handshake so that a stuck
+    // endpoint fails (and is cleaned up below) instead of hanging the test.
+    const targets = await fetch(`http://127.0.0.1:${port}/json/list`, {
+      signal: AbortSignal.timeout(callTimeout)
+    })
+      .then((response) => response.json())
+      .catch((error) => {
+        throw new Error(`DevTools endpoint did not answer: ${error.message}`)
+      })
+    const page = targets.find((t) => t.type === 'page')
+    if (!page) throw new Error('Chrome exposes no page target')
+    socket = new WebSocket(page.webSocketDebuggerUrl)
     await new Promise((resolve, reject) => {
-      socket.onopen = resolve
-      socket.onerror = reject
+      const timer = setTimeout(
+        () => reject(new Error('Timeout: DevTools WebSocket did not open')),
+        callTimeout
+      )
+      socket.onopen = () => {
+        clearTimeout(timer)
+        resolve()
+      }
+      socket.onerror = () => {
+        clearTimeout(timer)
+        reject(new Error('DevTools WebSocket could not connect'))
+      }
     })
 
     let seq = 0
