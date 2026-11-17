@@ -13,7 +13,8 @@
     "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs --fix --ignore-path .gitignore",
     "lint:check": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs --ignore-path .gitignore",
     "format": "prettier --write src/",
-    "test:slider": "node tests/run-slider.mjs"
+    "test:slider": "node tests/run-slider.mjs",
+    "test:smoke": "node tests/smoke-bundle.mjs"
   },
   "dependencies": {
     "@vuepic/vue-datepicker": "^8.2.0",
