@@ -13,6 +13,9 @@ import { launchChrome, pause } from './cdp.mjs'
 
 const root = fileURLToPath(new URL('..', import.meta.url))
 const modelsDir = join(root, 'public', 'models')
+// Directories of modelsDir whose *.xml files are tested, without recursion:
+// osiris/old/ only holds superseded GraphML sources and is left out.
+const MODEL_SUBDIRS = ['', 'osiris']
 
 // Models that are known not to render, with the reason. Keep this explicit:
 // a model listed here is reported as SKIP, never silently ignored.
@@ -161,7 +164,11 @@ try {
   const baseUrl = `http://127.0.0.1:${server.address().port}`
   browser = await launchChrome()
 
-  const models = (await readdir(modelsDir)).filter((f) => f.endsWith('.xml')).sort()
+  const models = []
+  for (const subdir of MODEL_SUBDIRS) {
+    const files = (await readdir(join(modelsDir, subdir))).filter((f) => f.endsWith('.xml'))
+    models.push(...files.sort().map((f) => (subdir ? `${subdir}/${f}` : f)))
+  }
   let passed = 0
   for (const name of models) {
     if (EXCLUDED.has(name)) {

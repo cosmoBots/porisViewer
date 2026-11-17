@@ -27,7 +27,8 @@ para el servidor al acabar. Usa datos de prueba locales, no un runtime real.
 
 `npm run test:smoke` construye en un directorio temporal el bundle que se
 entrega al plugin cosmoSys (`--mode csys-plugin`), comprueba `prod.js` y
-`style.css` y monta con él cada modelo de `public/models/` en Chrome headless.
+`style.css` y monta con él cada `*.xml` de `public/models/` y de
+`public/models/osiris/` en Chrome headless.
 
 Ambos tests necesitan Node 22+ y Chrome: `google-chrome` en PATH o la ruta del
 ejecutable en `CHROME_BIN`.
