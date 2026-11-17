@@ -1,3 +1,5 @@
+/* global formpath -- not declared on purpose: the host page (the Redmine
+   plugin) defines it, and the try/catch below probes for it. */
 import { createRouter, createWebHistory } from 'vue-router'
 import ConfigPanelView from '../views/ConfigPanelView.vue'
 

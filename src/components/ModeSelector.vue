@@ -26,7 +26,7 @@ const modes = ref(props.modes)
 
 watch(
   () => props.modes,
-  (newVal, oldVal) => {
+  (newVal) => {
     //console.log(`Prop changed: ${newVal}, oldVal: ${oldVal}`)
     modes.value = newVal
   }
