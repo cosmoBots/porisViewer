@@ -189,6 +189,11 @@ try {
       (skipped ? `, ${skipped} skipped` : '') +
       ` in ${((Date.now() - started) / 1000).toFixed(1)} s`
   )
+  // An empty or fully excluded model list must not pass as a green run.
+  if (models.length - skipped === 0) {
+    failed = true
+    console.log(`FAIL  no model was mounted (looked in ${modelsDir})`)
+  }
 } catch (error) {
   failed = true
   console.error(error)
