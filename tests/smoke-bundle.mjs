@@ -102,12 +102,12 @@ function serve(outDir) {
 
 // Mounts one model in a fresh page and returns what was rendered or why not.
 async function checkModel(browser, baseUrl, name) {
-  const { call, evaluate, waitFor, exceptions, consoleErrors } = browser
+  const { goto, evaluate, waitFor, exceptions, consoleErrors } = browser
   const xml = await readFile(join(modelsDir, name), 'utf8')
   exceptions.length = 0
   consoleErrors.length = 0
 
-  await call('Page.navigate', { url: `${baseUrl}/` })
+  await goto(`${baseUrl}/`)
   if (!(await waitFor(`typeof window.createPorisViewerPanel === 'function'`))) {
     return { problems: ['prod.js did not load or does not export createPorisViewerPanel'] }
   }
