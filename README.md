@@ -21,9 +21,17 @@ ajuste fino; ambos controles comparten el mismo dato y los límites del valor
 PORIS seleccionado. Escape o salir del control oculta el slider. Usarlo sólo
 edita la configuración del formulario: no confirma ni ejecuta comandos.
 
-Para probar este control de forma aislada, arrancar `npm run dev -- --port 5189`
-y ejecutar en otra terminal `node tests/numeric-range-browser.mjs` (Node 22+ y
-Chrome en PATH, o `CHROME_BIN`). Usa datos de prueba locales, no un runtime real.
+Para probar este control de forma aislada, ejecutar `npm run test:slider`:
+arranca Vite en `127.0.0.1:5189`, lanza `tests/numeric-range-browser.mjs` y
+para el servidor al acabar. Usa datos de prueba locales, no un runtime real.
+
+`npm run test:smoke` construye en un directorio temporal el bundle que se
+entrega al plugin cosmoSys (`--mode csys-plugin`), comprueba `prod.js` y
+`style.css` y monta con él cada `*.xml` de `public/models/` y de
+`public/models/osiris/` en Chrome headless.
+
+Ambos tests necesitan Node 22+ y Chrome: `google-chrome` en PATH o la ruta del
+ejecutable en `CHROME_BIN`.
 
 **Requisitos**:
 - **Node >=22** (el repositorio usa la versión de `.nvmrc`), npm
