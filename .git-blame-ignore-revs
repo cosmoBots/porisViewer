@@ -1,0 +1,6 @@
+# Commits that only reformat code, hidden from `git blame`.
+# Enable with: git config blame.ignoreRevsFile .git-blame-ignore-revs
+# (GitHub reads this file by itself.)
+
+# style: format sources and tests with prettier
+92634b8d2cfd419151ae7d8469060caf9b7fc272

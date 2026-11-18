@@ -13,7 +13,9 @@ export function commitPorisState(payload, { url, csrfToken } = {}) {
 }
 
 export function executePorisCommand(commandName) {
-  return axios.post(`${baseURL}/api/poris/command/${commandName}`, {}).then((response) => response.data)
+  return axios
+    .post(`${baseURL}/api/poris/command/${commandName}`, {})
+    .then((response) => response.data)
 }
 
 export function getPorisState() {

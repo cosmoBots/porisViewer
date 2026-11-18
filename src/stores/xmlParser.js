@@ -287,7 +287,9 @@ function dereferenceCommandReferences(model, nodes) {
 function dereferenceDefaultValue(nodes) {
   nodes.forEach((node) => {
     node.defaultValue =
-      node.valuesNodes?.find((value) => value.id === node.defaultValueId) || node.valuesNodes?.[0] || null
+      node.valuesNodes?.find((value) => value.id === node.defaultValueId) ||
+      node.valuesNodes?.[0] ||
+      null
   })
 }
 
@@ -295,20 +297,24 @@ function installImplicitUnknownModes(model) {
   const unknownIds = new Set()
   model.subsystems.forEach((subsystem) => {
     subsystem.modesNodes ||= []
-    const explicitUnknown = subsystem.modesNodes.find((mode) => mode.name?.trim().toLowerCase() === 'unknown')
-    const unknown = explicitUnknown || new PorisNode({
-      id: `unknown:${subsystem.id}`,
-      ident: `unknown:${subsystem.ident}`,
-      name: 'Unknown',
-      label: 'Unknown',
-      nodeTypeId: 6,
-      type: MODE_TYPE,
-      destinations: [],
-      hasValues: false,
-      hasRealValues: false,
-      hasModes: false,
-      hasSubsystems: false
-    })
+    const explicitUnknown = subsystem.modesNodes.find(
+      (mode) => mode.name?.trim().toLowerCase() === 'unknown'
+    )
+    const unknown =
+      explicitUnknown ||
+      new PorisNode({
+        id: `unknown:${subsystem.id}`,
+        ident: `unknown:${subsystem.ident}`,
+        name: 'Unknown',
+        label: 'Unknown',
+        nodeTypeId: 6,
+        type: MODE_TYPE,
+        destinations: [],
+        hasValues: false,
+        hasRealValues: false,
+        hasModes: false,
+        hasSubsystems: false
+      })
 
     unknown.name = 'Unknown'
     unknown.label = 'Unknown'

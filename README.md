@@ -61,6 +61,12 @@ También puede abrirse manualmente:
 http://127.0.0.1:5173/?model=%2Fruntime%2Fexample_example.xml
 ```
 
+**Formato**: el código de `src/` y `tests/` se formatea con Prettier
+(`.prettierrc.json`). `npm run format` lo aplica y `npm run format:check`, que
+también ejecuta la CI, sólo comprueba. Para que `git blame` ignore el commit que
+reformateó todo el código, ejecutar una vez en cada clon
+`git config blame.ignoreRevsFile .git-blame-ignore-revs`.
+
 **IDE recomendado**: VSCode + Volar (para Vue 3).
 
 **Estructura relevante**:

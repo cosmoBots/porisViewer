@@ -49,6 +49,9 @@ jobs:
       - name: Lint
         run: npm run lint:check
 
+      - name: Check formatting
+        run: npm run format:check
+
       - name: Build the library (demo and dev entries)
         run: npm run build
 

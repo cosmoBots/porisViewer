@@ -7,13 +7,12 @@
   </div>
 </template>
 <script setup>
-import { computed } from 'vue';
-import { useModelStore } from '@/stores/model';
+import { computed } from 'vue'
+import { useModelStore } from '@/stores/model'
 
 const store = useModelStore()
 
 const xmlModel = computed(() => store.xmlModel)
-
 </script>
 
 <style>
