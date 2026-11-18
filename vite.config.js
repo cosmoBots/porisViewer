@@ -3,12 +3,11 @@ import { fileURLToPath, URL } from 'node:url'
 
 import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
-import vueJsx from '@vitejs/plugin-vue-jsx'
 export default ({ mode }) => {
   const isCsysPlugin = mode === 'csys-plugin'
 
   return defineConfig({
-    plugins: [vue(), vueJsx()],
+    plugins: [vue()],
     ...(isCsysPlugin ? { publicDir: false } : {}),
     envPrefix: isCsysPlugin ? 'COSMOSYS_PORIS_BUILD_' : 'VITE_',
     resolve: {
