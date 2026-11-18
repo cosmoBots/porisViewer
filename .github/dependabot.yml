@@ -1,0 +1,38 @@
+# Keeps the npm dependencies and the actions of the CI workflow up to date.
+# Every pull request has to pass the CI workflow before it can merge, and a
+# release only becomes a candidate after a week, so a bad release has time
+# to be noticed and withdrawn first. Minor and patch updates arrive together
+# in a single pull request, and major updates of npm packages are not
+# proposed; the actions are pinned by commit, and each pull request moves the
+# commit and its version comment.
+version: 2
+updates:
+  - package-ecosystem: npm
+    directory: /
+    schedule:
+      interval: weekly
+    cooldown:
+      default-days: 7
+    groups:
+      npm:
+        update-types: [minor, patch]
+    commit-message:
+      prefix: build
+      include: scope
+    # Major updates are migrations, not routine bumps: they are planned as
+    # separate work instead of arriving as a pull request each.
+    ignore:
+      - dependency-name: '*'
+        update-types: ['version-update:semver-major']
+
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: weekly
+    cooldown:
+      default-days: 7
+    groups:
+      actions:
+        patterns: ['*']
+    commit-message:
+      prefix: ci
