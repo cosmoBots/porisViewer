@@ -7,6 +7,14 @@ import { join } from 'node:path'
 
 export const pause = (ms) => new Promise((resolve) => setTimeout(resolve, ms))
 
+// How long Chrome may take to open its DevTools port. A cold CI runner can
+// be slow to start it, so the default is generous; CHROME_START_TIMEOUT_MS
+// overrides it.
+const startTimeout = Number(process.env.CHROME_START_TIMEOUT_MS) || 30000
+
+// Keeps only the end of Chrome's stderr, enough to explain a failed start.
+const STDERR_TAIL_BYTES = 4096
+
 // Launches headless Chrome (CHROME_BIN or google-chrome) with a throwaway
 // profile and attaches to its first page. `exceptions` collects uncaught
 // exceptions and unhandled rejections; `consoleErrors` collects console.error
@@ -25,11 +33,25 @@ export async function launchChrome({ windowSize = '1280,720', callTimeout = 1000
       `--window-size=${windowSize}`,
       'about:blank'
     ],
-    { stdio: 'ignore' }
+    { stdio: ['ignore', 'ignore', 'pipe'] }
   )
+  // Always drain stderr so Chrome never blocks on a full pipe, but keep only
+  // its tail for error messages.
+  let stderrTail = ''
+  chrome.stderr.setEncoding('utf8')
+  chrome.stderr.on('data', (chunk) => {
+    stderrTail = (stderrTail + chunk).slice(-STDERR_TAIL_BYTES)
+  })
+  const withStderr = (message) =>
+    stderrTail.trim() ? `${message}\nChrome stderr (last lines):\n${stderrTail.trim()}` : message
+
   let spawnError
+  let exitStatus
   const exited = new Promise((resolve) => {
-    chrome.once('exit', resolve)
+    chrome.once('exit', (code, signal) => {
+      exitStatus = signal ? `signal ${signal}` : `code ${code}`
+      resolve()
+    })
     chrome.once('error', (error) => {
       spawnError = error
       resolve()
@@ -49,8 +71,11 @@ export async function launchChrome({ windowSize = '1280,720', callTimeout = 1000
   }
 
   try {
+    // Wait for DevToolsActivePort, but stop at once if Chrome dies: a crash
+    // and a slow start need different fixes, so they get different errors.
+    const startDeadline = Date.now() + startTimeout
     let port
-    for (let i = 0; i < 100 && !port && !spawnError; i++) {
+    while (!port && !spawnError && !exitStatus && Date.now() < startDeadline) {
       try {
         port = (await readFile(join(profile, 'DevToolsActivePort'), 'utf8')).split('\n')[0]
       } catch {
@@ -59,7 +84,10 @@ export async function launchChrome({ windowSize = '1280,720', callTimeout = 1000
       if (!port) await pause(100)
     }
     if (spawnError) throw new Error(`Chrome could not be launched: ${spawnError.message}`)
-    if (!port) throw new Error('Chrome did not start')
+    if (!port && exitStatus) {
+      throw new Error(withStderr(`Chrome exited before it was ready (${exitStatus})`))
+    }
+    if (!port) throw new Error(withStderr(`Chrome did not start within ${startTimeout} ms`))
 
     // Chrome may write DevToolsActivePort before its endpoint answers; bound
     // both the target lookup and the WebSocket handshake so that a stuck

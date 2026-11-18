@@ -31,7 +31,9 @@ entrega al plugin cosmoSys (`--mode csys-plugin`), comprueba `prod.js` y
 `public/models/osiris/` en Chrome headless.
 
 Ambos tests necesitan Node 22+ y Chrome: `google-chrome` en PATH o la ruta del
-ejecutable en `CHROME_BIN`.
+ejecutable en `CHROME_BIN`. Chrome tiene 30 s para arrancar
+(`CHROME_START_TIMEOUT_MS` cambia ese plazo); si no arranca o se cierra antes,
+el error incluye el final de su salida de error.
 
 **Requisitos**:
 - **Node >=22** (el repositorio usa la versión de `.nvmrc`), npm
