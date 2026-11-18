@@ -30,7 +30,10 @@ export default ({ mode }) => {
               dev: './src/main-dev.js'
             },
         ...(mode === 'csys-plugin' ? { fileName: () => 'prod.js' } : {}),
-        formats: mode === 'csys-plugin' ? ['es'] : ['es', 'cjs']
+        formats: mode === 'csys-plugin' ? ['es'] : ['es', 'cjs'],
+        // The plugin serves the stylesheet as style.css next to prod.js.
+        // Since Vite 6 a library's CSS is named after the package instead.
+        cssFileName: 'style'
       }
     },
     // Vue, Pinia and vue-router read process.env.NODE_ENV, which Vite does
