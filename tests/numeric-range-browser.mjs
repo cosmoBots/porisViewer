@@ -5,10 +5,10 @@ import assert from 'node:assert/strict'
 import { launchChrome, pause } from './cdp.mjs'
 
 const browser = await launchChrome()
-const { call, evaluate, exceptions: errors } = browser
+const { page, call, goto, evaluate, exceptions: errors } = browser
 try {
-  await call('Emulation.setFocusEmulationEnabled', { enabled: true })
-  await call('Page.navigate', { url: `${process.env.VIEWER_TEST_URL || 'http://127.0.0.1:5189'}/tests/numeric-range.html` })
+  await page.emulateFocusedPage(true)
+  await goto(`${process.env.VIEWER_TEST_URL || 'http://127.0.0.1:5189'}/tests/numeric-range.html`)
   for (let i = 0; i < 100 && !await evaluate(`!!document.querySelector('.numberPicker')`); i++) await pause(100)
   assert(await evaluate(`!!document.querySelector('.numberPicker')`), 'Numeric field missing')
   for (let i = 0; i < 100 && !await evaluate(`document.readyState === 'complete'`); i++) await pause(50)

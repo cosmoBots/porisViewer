@@ -30,11 +30,13 @@ entrega al plugin cosmoSys (`--mode csys-plugin`), comprueba `prod.js` y
 `style.css` y monta con él cada `*.xml` de `public/models/` y de
 `public/models/osiris/` en Chrome headless.
 
-Ambos tests necesitan Node 22+ y Chrome: `google-chrome` en PATH o la ruta del
-ejecutable en `CHROME_BIN`.
+Ambos tests manejan Chrome con `puppeteer-core`, que no descarga ningún
+navegador: necesitan Node 22.12+ y Chrome estable instalado, o la ruta de otro
+Chrome o Chromium en `CHROME_BIN`. Chrome tiene 30 s para arrancar
+(`CHROME_START_TIMEOUT_MS` cambia ese plazo).
 
 **Requisitos**:
-- **Node >=22** (el repositorio usa la versión de `.nvmrc`), npm
+- **Node >=22.12** (el repositorio usa la versión de `.nvmrc`), npm
 - Ejecutar `npm install` para instalar dependencias
 
 **Comandos comunes**:

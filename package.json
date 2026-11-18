@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "private": true,
   "engines": {
-    "node": ">=22"
+    "node": ">=22.12"
   },
   "type": "module",
   "scripts": {
@@ -32,6 +32,7 @@
     "eslint": "^8.49.0",
     "eslint-plugin-vue": "^9.17.0",
     "prettier": "^3.0.3",
+    "puppeteer-core": "^25.18.1",
     "sass": "^1.71.1",
     "vite": "^5.0.11"
   }
