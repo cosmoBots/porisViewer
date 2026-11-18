@@ -30,70 +30,76 @@ export const useModelStore = defineStore('model', () => {
   function loadModel(modelName) {
     isLoading.value = true
     let doc = xmlModelLoader(`/models/${modelName}.xml`)
-    doc.then((model) => {
-      xmlModel.value = model
+    doc
+      .then((model) => {
+        xmlModel.value = model
 
-      let JSONmodel = parseToPorisModel(this, model)
+        let JSONmodel = parseToPorisModel(this, model)
 
-      values.value = JSONmodel.values
-      modes.value = JSONmodel.modes
-      subsystems.value = JSONmodel.subsystems
-      rootSubsystem.value = JSONmodel.rootSubsystem
+        values.value = JSONmodel.values
+        modes.value = JSONmodel.modes
+        subsystems.value = JSONmodel.subsystems
+        rootSubsystem.value = JSONmodel.rootSubsystem
 
-      //console.log('LIMPIANDO valores por defecto')
-      currentModes.value = []
+        //console.log('LIMPIANDO valores por defecto')
+        currentModes.value = []
 
-      systemValues.value = {}
+        systemValues.value = {}
 
-      //console.log('Initial setValidMode')
-      setValidMode(JSONmodel.rootSubsystem)
-    }).finally(() => {
-      isLoading.value = false
-    })
+        //console.log('Initial setValidMode')
+        setValidMode(JSONmodel.rootSubsystem)
+      })
+      .finally(() => {
+        isLoading.value = false
+      })
   }
 
   function loadModelURL(path) {
     isLoading.value = true
     let doc = xmlModelLoader(`${path}`)
-    doc.then((model) => {
-      xmlModel.value = model
+    doc
+      .then((model) => {
+        xmlModel.value = model
 
-      let JSONmodel = parseToPorisModel(this, model)
+        let JSONmodel = parseToPorisModel(this, model)
 
-      values.value = JSONmodel.values
-      modes.value = JSONmodel.modes
-      subsystems.value = JSONmodel.subsystems
-      rootSubsystem.value = JSONmodel.rootSubsystem
+        values.value = JSONmodel.values
+        modes.value = JSONmodel.modes
+        subsystems.value = JSONmodel.subsystems
+        rootSubsystem.value = JSONmodel.rootSubsystem
 
-      //console.log('LIMPIANDO valores por defecto')
-      currentModes.value = []
+        //console.log('LIMPIANDO valores por defecto')
+        currentModes.value = []
 
-      systemValues.value = {}
+        systemValues.value = {}
 
-      //console.log('Initial setValidMode')
-      setValidMode(JSONmodel.rootSubsystem)
-    }).finally(() => {
-      isLoading.value = false
-    })
+        //console.log('Initial setValidMode')
+        setValidMode(JSONmodel.rootSubsystem)
+      })
+      .finally(() => {
+        isLoading.value = false
+      })
   }
 
   function loadModelXML(xmlText) {
     isLoading.value = true
-    Promise.resolve(xmlText).then((model) => {
-      xmlModel.value = model
+    Promise.resolve(xmlText)
+      .then((model) => {
+        xmlModel.value = model
 
-      let JSONmodel = parseToPorisModel(this, model)
+        let JSONmodel = parseToPorisModel(this, model)
 
-      values.value = JSONmodel.values
-      modes.value = JSONmodel.modes
-      subsystems.value = JSONmodel.subsystems
-      rootSubsystem.value = JSONmodel.rootSubsystem
-      currentModes.value = []
-      systemValues.value = {}
-      setValidMode(JSONmodel.rootSubsystem)
-    }).finally(() => {
-      isLoading.value = false
-    })
+        values.value = JSONmodel.values
+        modes.value = JSONmodel.modes
+        subsystems.value = JSONmodel.subsystems
+        rootSubsystem.value = JSONmodel.rootSubsystem
+        currentModes.value = []
+        systemValues.value = {}
+        setValidMode(JSONmodel.rootSubsystem)
+      })
+      .finally(() => {
+        isLoading.value = false
+      })
   }
   function getValue(id) {
     return values.value.find((element) => element.id == id)
@@ -179,7 +185,9 @@ export const useModelStore = defineStore('model', () => {
     const subsystemModeIds = new Set(subsystem.modesNodes.map((candidate) => candidate.id))
     // The supermode's destination order carries PORIS priority. Preserve it
     // while limiting the list to modes actually offered by this subsystem.
-    let validModes = (supermode.modesNodes || []).filter((candidate) => subsystemModeIds.has(candidate.id))
+    let validModes = (supermode.modesNodes || []).filter((candidate) =>
+      subsystemModeIds.has(candidate.id)
+    )
     /*
     validModes.forEach((m) => {
       debugLog(`setValidMode_ valid:`, m)
@@ -225,7 +233,9 @@ export const useModelStore = defineStore('model', () => {
       debugLog(`parent mode: ${obj.parent.currentMode.name}`)
       debugLog(`parent.mode.submodes:`, obj.parent.currentMode.modesNodes)
       const childModeIds = new Set(obj.modesNodes.map((candidate) => candidate.id))
-      return (obj.parent.currentMode.modesNodes || []).filter((candidate) => childModeIds.has(candidate.id))
+      return (obj.parent.currentMode.modesNodes || []).filter((candidate) =>
+        childModeIds.has(candidate.id)
+      )
     } else if (obj.parent != null) {
       return []
     } else {
@@ -255,7 +265,10 @@ export const useModelStore = defineStore('model', () => {
         ? subsystem.unknownMode
         : getMode(row.mode_id)
       const validModes = subsystem.getValidModes()
-      if (mode && (validModes.includes(mode) || (mode === subsystem.unknownMode && validModes.length === 0))) {
+      if (
+        mode &&
+        (validModes.includes(mode) || (mode === subsystem.unknownMode && validModes.length === 0))
+      ) {
         setValidMode(subsystem, mode)
       }
 
@@ -289,12 +302,20 @@ export const useModelStore = defineStore('model', () => {
       setSystemValue(system, null, null)
       return { value: null, data: null }
     }
-    const defaultValue = valueOptions.find((option) => option.id === mode.defaultValue?.id) || valueOptions[0]
-    let value = valueOptions.find((option) => option.id === (requestedValue || previous.value)?.id) || defaultValue
+    const defaultValue =
+      valueOptions.find((option) => option.id === mode.defaultValue?.id) || valueOptions[0]
+    let value =
+      valueOptions.find((option) => option.id === (requestedValue || previous.value)?.id) ||
+      defaultValue
     let data = previous.data
 
     if (value.type === VALUE_DOUBLE_RANGE_TYPE) {
-      if (typeof data !== 'number' || !Number.isFinite(data) || data < Number(value.rangemin) || data > Number(value.rangemax)) {
+      if (
+        typeof data !== 'number' ||
+        !Number.isFinite(data) ||
+        data < Number(value.rangemin) ||
+        data > Number(value.rangemax)
+      ) {
         data = Number(value.defaultFloat)
       }
     } else if (value.type === VALUE_STRING_TYPE || value.type === VALUE_FILE_PATH_TYPE) {

@@ -97,16 +97,24 @@ function syncValue(requestedValue = null) {
 
 syncValue()
 
-watch(selectedValue, (newValue) => {
-  if (newValue) {
-    const state = store.getSystemValue(props.subsystem, currentMode.value, newValue)
-    if (dataValue.value !== state.data) dataValue.value = state.data
-  }
-}, { flush: 'sync' })
+watch(
+  selectedValue,
+  (newValue) => {
+    if (newValue) {
+      const state = store.getSystemValue(props.subsystem, currentMode.value, newValue)
+      if (dataValue.value !== state.data) dataValue.value = state.data
+    }
+  },
+  { flush: 'sync' }
+)
 
-watch(dataValue, (newValue) => {
-  if (selectedValue.value) store.setSystemValue(props.subsystem, selectedValue.value, newValue)
-}, { flush: 'sync' })
+watch(
+  dataValue,
+  (newValue) => {
+    if (selectedValue.value) store.setSystemValue(props.subsystem, selectedValue.value, newValue)
+  },
+  { flush: 'sync' }
+)
 
 watch(
   () => store.systemValues[`${props.subsystem.id}`],

@@ -1,10 +1,6 @@
 <template>
   <div class="input">
-    <select
-      v-if="values.length > 1"
-      v-model="selectedValue"
-      class="active-value-selector"
-    >
+    <select v-if="values.length > 1" v-model="selectedValue" class="active-value-selector">
       <option v-for="v in values" :key="v.id" :value="v">{{ v.name }}</option>
     </select>
 
@@ -37,7 +33,7 @@
     <span v-else-if="isValue() && values.length === 1">{{ activeValue.name }}</span>
 
     <span v-else-if="!activeValue">No values!</span>
-    {{ " " }}
+    {{ ' ' }}
   </div>
 </template>
 <script setup>
@@ -101,7 +97,9 @@ function restoreInvalidValue(event) {
   if (isWithinActiveRange(dataValue.value, valueNode)) return
 
   const previous = previousValue.value
-  const restoreValue = isWithinActiveRange(previous, valueNode) ? previous : Number(valueNode.defaultFloat)
+  const restoreValue = isWithinActiveRange(previous, valueNode)
+    ? previous
+    : Number(valueNode.defaultFloat)
   const commandButton = event.relatedTarget?.closest?.('[data-poris-command]')
 
   if (commandButton) {
@@ -126,7 +124,9 @@ const values = computed(() => {
   }
 })
 
-const activeValue = computed(() => selectedValue.value || mode.value.defaultValue || values.value[0])
+const activeValue = computed(
+  () => selectedValue.value || mode.value.defaultValue || values.value[0]
+)
 
 const isValueString = () => activeValue.value?.type === VALUE_STRING_TYPE
 

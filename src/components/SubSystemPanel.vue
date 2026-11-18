@@ -84,10 +84,12 @@ function shallShowSubPanels(s) {
 }
 
 function shallShowInputPanel(s) {
-  return s.hasRealValues ||
+  return (
+    s.hasRealValues ||
     fakeParam(s) ||
     fakeParamWithNoValue(s) ||
     (!s.hasSubsystems && s.currentMode?.hasValues)
+  )
 }
 
 function shallShowModeSelector(s) {
@@ -139,15 +141,18 @@ function launchCommand(command, event) {
 
 //console.log(`SubSystem name: ${subsystem.name}, ident: ${subsystem.ident} props.isRoot: ${props.isRoot}`)
 
-watch(() => subsystem.candidateMode, () => {
-  debugLog(
-    `watch.mode. mode ${subsystem.currentMode?.name}, newMode :${subsystem.candidateMode?.name}`
-  )
-  if (subsystem.candidateMode != null && subsystem.candidateMode != subsystem.currentMode) {
-    store.setValidMode(subsystem, subsystem.candidateMode)
-    debugLog(`watch result >> ${subsystem.currentMode.name}`)
+watch(
+  () => subsystem.candidateMode,
+  () => {
+    debugLog(
+      `watch.mode. mode ${subsystem.currentMode?.name}, newMode :${subsystem.candidateMode?.name}`
+    )
+    if (subsystem.candidateMode != null && subsystem.candidateMode != subsystem.currentMode) {
+      store.setValidMode(subsystem, subsystem.candidateMode)
+      debugLog(`watch result >> ${subsystem.currentMode.name}`)
+    }
   }
-})
+)
 </script>
 <style lang="scss">
 .subsystem-panel {

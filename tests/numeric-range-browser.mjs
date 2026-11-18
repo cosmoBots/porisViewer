@@ -9,52 +9,128 @@ const { page, call, goto, evaluate, exceptions: errors } = browser
 try {
   await page.emulateFocusedPage(true)
   await goto(`${process.env.VIEWER_TEST_URL || 'http://127.0.0.1:5189'}/tests/numeric-range.html`)
-  for (let i = 0; i < 100 && !await evaluate(`!!document.querySelector('.numberPicker')`); i++) await pause(100)
+  for (let i = 0; i < 100 && !(await evaluate(`!!document.querySelector('.numberPicker')`)); i++)
+    await pause(100)
   assert(await evaluate(`!!document.querySelector('.numberPicker')`), 'Numeric field missing')
-  for (let i = 0; i < 100 && !await evaluate(`document.readyState === 'complete'`); i++) await pause(50)
-  assert(!await evaluate(`!!document.querySelector('input[type=range]')`), 'Slider visible before focus')
+  for (let i = 0; i < 100 && !(await evaluate(`document.readyState === 'complete'`)); i++)
+    await pause(50)
+  assert(
+    !(await evaluate(`!!document.querySelector('input[type=range]')`)),
+    'Slider visible before focus'
+  )
   await evaluate(`document.querySelector('.numberPicker').focus()`)
   await pause(100)
-  assert(await evaluate(`!!document.querySelector('body > .poris-numeric-slider input[type=range]')`),
-    'Floating slider missing: ' + await evaluate(`(() => {const c=document.querySelector('.numberPicker').__vueParentComponent; return JSON.stringify({props:c.props, range:c.setupState.hasRange, open:c.setupState.open, keys:Object.keys(c.setupState)})})()`) + JSON.stringify(errors))
-  assert(await evaluate(`getComputedStyle(document.querySelector('.poris-numeric-slider')).position === 'fixed'`))
-  await evaluate(`(() => { const r=document.querySelector('input[type=range]'); r.focus(); r.value='42.25'; r.dispatchEvent(new Event('input',{bubbles:true})); })()`)
+  assert(
+    await evaluate(`!!document.querySelector('body > .poris-numeric-slider input[type=range]')`),
+    'Floating slider missing: ' +
+      (await evaluate(
+        `(() => {const c=document.querySelector('.numberPicker').__vueParentComponent; return JSON.stringify({props:c.props, range:c.setupState.hasRange, open:c.setupState.open, keys:Object.keys(c.setupState)})})()`
+      )) +
+      JSON.stringify(errors)
+  )
+  assert(
+    await evaluate(
+      `getComputedStyle(document.querySelector('.poris-numeric-slider')).position === 'fixed'`
+    )
+  )
+  await evaluate(
+    `(() => { const r=document.querySelector('input[type=range]'); r.focus(); r.value='42.25'; r.dispatchEvent(new Event('input',{bubbles:true})); })()`
+  )
   await pause(50)
   assert.equal(await evaluate(`document.querySelector('.numberPicker').value`), '42.25')
   assert.equal(await evaluate(`document.querySelector('#value').textContent`), '42.25')
-  assert(await evaluate(`!!document.querySelector('input[type=range]')`), 'Slider lost during focus transfer')
-  await evaluate(`document.querySelector('input[type=range]').dispatchEvent(new KeyboardEvent('keydown',{key:'Escape',bubbles:true}))`)
+  assert(
+    await evaluate(`!!document.querySelector('input[type=range]')`),
+    'Slider lost during focus transfer'
+  )
+  await evaluate(
+    `document.querySelector('input[type=range]').dispatchEvent(new KeyboardEvent('keydown',{key:'Escape',bubbles:true}))`
+  )
   await pause(50)
-  assert(!await evaluate(`!!document.querySelector('input[type=range]')`), 'Escape did not close')
+  assert(!(await evaluate(`!!document.querySelector('input[type=range]')`)), 'Escape did not close')
   assert(await evaluate(`document.activeElement === document.querySelector('.numberPicker')`))
-  await evaluate(`document.querySelector('#outside').focus(); document.querySelector('.numberPicker').focus()`)
+  await evaluate(
+    `document.querySelector('#outside').focus(); document.querySelector('.numberPicker').focus()`
+  )
   await pause(50)
-  await evaluate(`(() => { const n=document.querySelector('.numberPicker'); n.value='12.34'; n.dispatchEvent(new Event('input',{bubbles:true})); })()`)
+  await evaluate(
+    `(() => { const n=document.querySelector('.numberPicker'); n.value='12.34'; n.dispatchEvent(new Event('input',{bubbles:true})); })()`
+  )
   await pause(50)
   assert.equal(await evaluate(`document.querySelector('input[type=range]').value`), '12.34')
-  await call('Input.dispatchKeyEvent', { type: 'keyDown', key: 'ArrowUp', code: 'ArrowUp', windowsVirtualKeyCode: 38 })
-  await call('Input.dispatchKeyEvent', { type: 'keyUp', key: 'ArrowUp', code: 'ArrowUp', windowsVirtualKeyCode: 38 })
+  await call('Input.dispatchKeyEvent', {
+    type: 'keyDown',
+    key: 'ArrowUp',
+    code: 'ArrowUp',
+    windowsVirtualKeyCode: 38
+  })
+  await call('Input.dispatchKeyEvent', {
+    type: 'keyUp',
+    key: 'ArrowUp',
+    code: 'ArrowUp',
+    windowsVirtualKeyCode: 38
+  })
   await pause(50)
-  assert.equal(await evaluate(`document.querySelector('.numberPicker').value`), '12.35', 'Fine keyboard step changed')
-  await evaluate(`(() => {const r=document.querySelector('input[type=range]');r.value='1000';r.dispatchEvent(new Event('input',{bubbles:true}));})()`)
+  assert.equal(
+    await evaluate(`document.querySelector('.numberPicker').value`),
+    '12.35',
+    'Fine keyboard step changed'
+  )
+  await evaluate(
+    `(() => {const r=document.querySelector('input[type=range]');r.value='1000';r.dispatchEvent(new Event('input',{bubbles:true}));})()`
+  )
   await pause(50)
-  assert.equal(await evaluate(`document.querySelector('#value').textContent`), '77.5', 'Slider exceeded range')
-  await call('Input.dispatchKeyEvent', { type: 'keyDown', key: 'ArrowUp', code: 'ArrowUp', windowsVirtualKeyCode: 38 })
-  await call('Input.dispatchKeyEvent', { type: 'keyUp', key: 'ArrowUp', code: 'ArrowUp', windowsVirtualKeyCode: 38 })
-  assert.equal(await evaluate(`document.querySelector('.numberPicker').value`), '77.5', 'Fine step exceeded max')
+  assert.equal(
+    await evaluate(`document.querySelector('#value').textContent`),
+    '77.5',
+    'Slider exceeded range'
+  )
+  await call('Input.dispatchKeyEvent', {
+    type: 'keyDown',
+    key: 'ArrowUp',
+    code: 'ArrowUp',
+    windowsVirtualKeyCode: 38
+  })
+  await call('Input.dispatchKeyEvent', {
+    type: 'keyUp',
+    key: 'ArrowUp',
+    code: 'ArrowUp',
+    windowsVirtualKeyCode: 38
+  })
+  assert.equal(
+    await evaluate(`document.querySelector('.numberPicker').value`),
+    '77.5',
+    'Fine step exceeded max'
+  )
   await evaluate(`document.querySelector('#outside').focus()`)
   await pause(50)
-  assert(!await evaluate(`!!document.querySelector('input[type=range]')`), 'Focus exit did not close')
-  await evaluate(`(() => {const s=document.querySelector('select');s.selectedIndex=1;s.dispatchEvent(new Event('change',{bubbles:true}));})()`)
+  assert(
+    !(await evaluate(`!!document.querySelector('input[type=range]')`)),
+    'Focus exit did not close'
+  )
+  await evaluate(
+    `(() => {const s=document.querySelector('select');s.selectedIndex=1;s.dispatchEvent(new Event('change',{bubbles:true}));})()`
+  )
   await pause(50)
   await evaluate(`document.querySelector('.numberPicker').focus()`)
   await pause(50)
-  assert.equal(await evaluate(`document.querySelector('input[type=range]').max`), '1', 'Selected value limits not updated')
-  await evaluate(`document.querySelector('#outside').dispatchEvent(new PointerEvent('pointerdown',{bubbles:true}))`)
+  assert.equal(
+    await evaluate(`document.querySelector('input[type=range]').max`),
+    '1',
+    'Selected value limits not updated'
+  )
+  await evaluate(
+    `document.querySelector('#outside').dispatchEvent(new PointerEvent('pointerdown',{bubbles:true}))`
+  )
   await pause(50)
-  assert(!await evaluate(`!!document.querySelector('input[type=range]')`), 'Outside pointer did not close')
+  assert(
+    !(await evaluate(`!!document.querySelector('input[type=range]')`)),
+    'Outside pointer did not close'
+  )
   assert.deepEqual(errors, [])
-  console.log('PASS: number/slider synchronization, floating outside scroll panel, limits, fine keyboard step, selected value switch, focus transfer, Escape and outside focus/pointer')
+  console.log(
+    'PASS: number/slider synchronization, floating outside scroll panel, limits, fine keyboard step, selected value switch, focus transfer, Escape and outside focus/pointer'
+  )
 } finally {
   await browser.close()
 }

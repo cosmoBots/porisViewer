@@ -1,5 +1,10 @@
 <template>
-  <div class="poris-main" :class="{ compact: props.compact }" @click.capture="clearCommandMessage" @keydown.capture="clearCommandMessage">
+  <div
+    class="poris-main"
+    :class="{ compact: props.compact }"
+    @click.capture="clearCommandMessage"
+    @keydown.capture="clearCommandMessage"
+  >
     <div v-if="isLoading" class="loading">
       <span class="spinner"></span>
     </div>
@@ -19,8 +24,15 @@
         <button v-if="canCommit" type="button" :disabled="isBusy" @click="commitChanges">
           {{ props.commitUrl ? 'Commit' : 'Commit changes' }}
         </button>
-        <button v-if="controlEnabled" type="button" :disabled="isBusy" @click="cancelChanges">Cancel</button>
-        <button v-if="commandName" type="button" :disabled="isBusy" @click="executeCommand(commandName)">
+        <button v-if="controlEnabled" type="button" :disabled="isBusy" @click="cancelChanges">
+          Cancel
+        </button>
+        <button
+          v-if="commandName"
+          type="button"
+          :disabled="isBusy"
+          @click="executeCommand(commandName)"
+        >
           {{ commandName }}
         </button>
       </div>
@@ -40,7 +52,12 @@ import SubSystemPanel from '../components/SubSystemPanel.vue'
 
 import { computed, onBeforeUnmount, onMounted, ref, watch } from 'vue'
 import { useModelStore } from '@/stores/model'
-import { commitPorisState, executePorisCommand, getPorisState, hasPorisControl } from '@/api/porisControl'
+import {
+  commitPorisState,
+  executePorisCommand,
+  getPorisState,
+  hasPorisControl
+} from '@/api/porisControl'
 const store = useModelStore()
 
 const isLoading = computed(() => store.isLoading)
@@ -53,7 +70,9 @@ const controlEnabled = hasPorisControl()
 const canCommit = computed(() => Boolean(props.commitUrl) || controlEnabled)
 const commandName = import.meta.env.VITE_PORIS_COMMAND_NAME || ''
 const monitorCapsules = ref([])
-const visibleMonitorCapsules = computed(() => monitorCapsules.value.filter((capsule) => capsule.visible))
+const visibleMonitorCapsules = computed(() =>
+  monitorCapsules.value.filter((capsule) => capsule.visible)
+)
 let monitorTimer = null
 
 const props = defineProps({
@@ -86,7 +105,8 @@ const emit = defineEmits(['committed'])
 
 function currentValueFor(system) {
   const state = store.systemValues[`${system.id}`]
-  const selected = state?.value || system.currentMode?.defaultValue || system.currentMode?.valuesNodes?.[0]
+  const selected =
+    state?.value || system.currentMode?.defaultValue || system.currentMode?.valuesNodes?.[0]
   if (!selected) return null
 
   if (typeof state?.data === 'number') {
@@ -109,9 +129,7 @@ function serializeSystem(system) {
   return {
     id: system.id,
     name: system.name,
-    mode: system.currentMode
-      ? { id: system.currentMode.id, name: system.currentMode.name }
-      : null,
+    mode: system.currentMode ? { id: system.currentMode.id, name: system.currentMode.name } : null,
     value: currentValueFor(system),
     subsystems: (system.subsystemsNodes || []).map(serializeSystem)
   }
@@ -153,7 +171,8 @@ async function runAction(action, successText) {
 
 async function commitChanges() {
   const result = await runAction(
-    () => commitPorisState(buildPorisPayload(), { url: props.commitUrl, csrfToken: props.csrfToken }),
+    () =>
+      commitPorisState(buildPorisPayload(), { url: props.commitUrl, csrfToken: props.csrfToken }),
     'Commit applied to the PORIS runtime'
   )
   if (result?.state) {
@@ -170,20 +189,23 @@ async function handleCommandLaunched({ systemId, systemName, commandId, commandN
   hasError.value = false
   if (props.commitUrl) {
     const result = await runAction(
-      () => commitPorisState(
-        {
-          ...buildPorisPayload(),
-          operations: [{ type: 'invoke_command', node_id: systemId, command_id: commandId }]
-        },
-        { url: props.commitUrl, csrfToken: props.csrfToken }
-      ),
+      () =>
+        commitPorisState(
+          {
+            ...buildPorisPayload(),
+            operations: [{ type: 'invoke_command', node_id: systemId, command_id: commandId }]
+          },
+          { url: props.commitUrl, csrfToken: props.csrfToken }
+        ),
       `Command ${systemName}.${commandName} sent to the PORIS runtime`
     )
     if (result?.state) {
       store.applyRuntimeState(result.state)
       emit('committed', result)
     }
-    const commandResult = result?.operations?.find((operation) => operation.type === 'invoke_command')
+    const commandResult = result?.operations?.find(
+      (operation) => operation.type === 'invoke_command'
+    )
     if (commandResult?.accepted) {
       commandMessage.value = `We launched ${systemName}.${commandName}`
     } else if (commandResult) {
@@ -314,5 +336,4 @@ onBeforeUnmount(() => {
 .status.error {
   color: #9f2222;
 }
-
 </style>

@@ -52,9 +52,11 @@ const numberInput = ref(null)
 const popup = ref(null)
 const open = ref(false)
 const position = ref({})
-const hasRange = computed(() =>
-  Number.isFinite(Number(props.min)) && Number.isFinite(Number(props.max)) &&
-  Number(props.min) < Number(props.max)
+const hasRange = computed(
+  () =>
+    Number.isFinite(Number(props.min)) &&
+    Number.isFinite(Number(props.max)) &&
+    Number(props.min) < Number(props.max)
 )
 const sliderValue = computed({
   get() {
@@ -63,7 +65,9 @@ const sliderValue = computed({
       ? Math.min(Number(props.max), Math.max(Number(props.min), numeric))
       : Number(props.min)
   },
-  set(next) { value.value = Number(next) }
+  set(next) {
+    value.value = Number(next)
+  }
 })
 
 function reposition() {
@@ -71,10 +75,14 @@ function reposition() {
   const rect = numberInput.value.getBoundingClientRect()
   const width = Math.min(260, Math.max(0, window.innerWidth - 16))
   const height = popup.value?.offsetHeight || 64
-  const top = rect.bottom + height + 6 <= window.innerHeight
-    ? rect.bottom + 6 : Math.max(8, rect.top - height - 6)
+  const top =
+    rect.bottom + height + 6 <= window.innerHeight
+      ? rect.bottom + 6
+      : Math.max(8, rect.top - height - 6)
   position.value = {
-    position: 'fixed', width: `${width}px`, top: `${top}px`,
+    position: 'fixed',
+    width: `${width}px`,
+    top: `${top}px`,
     left: `${Math.max(8, Math.min(rect.left, window.innerWidth - width - 8))}px`
   }
 }
@@ -116,13 +124,22 @@ function closeOutside(event) {
   if (!contains(event.target)) open.value = false
 }
 
-watch(open, (visible) => {
-  const method = visible ? 'addEventListener' : 'removeEventListener'
-  window[method]('resize', reposition)
-  window[method]('scroll', reposition, true)
-  document[method]('pointerdown', closeOutside, true)
-}, { flush: 'sync' })
-watch(() => [props.min, props.max], () => { open.value = false })
+watch(
+  open,
+  (visible) => {
+    const method = visible ? 'addEventListener' : 'removeEventListener'
+    window[method]('resize', reposition)
+    window[method]('scroll', reposition, true)
+    document[method]('pointerdown', closeOutside, true)
+  },
+  { flush: 'sync' }
+)
+watch(
+  () => [props.min, props.max],
+  () => {
+    open.value = false
+  }
+)
 onBeforeUnmount(() => {
   window.removeEventListener('resize', reposition)
   window.removeEventListener('scroll', reposition, true)
@@ -131,7 +148,9 @@ onBeforeUnmount(() => {
 </script>
 
 <style scoped>
-.numberPicker { text-align: right; }
+.numberPicker {
+  text-align: right;
+}
 .poris-numeric-slider {
   z-index: 10000;
   box-sizing: border-box;
@@ -142,7 +161,11 @@ onBeforeUnmount(() => {
   color: #333;
   box-shadow: 0 3px 12px #0003;
 }
-.poris-numeric-slider input { display: block; width: 100%; margin: 0; }
+.poris-numeric-slider input {
+  display: block;
+  width: 100%;
+  margin: 0;
+}
 .poris-numeric-slider-limits {
   display: flex;
   justify-content: space-between;
