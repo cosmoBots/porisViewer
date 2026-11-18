@@ -1,12 +1,11 @@
 /* eslint-env node */
 import { fileURLToPath, URL } from 'node:url'
 
-import { defineConfig, loadEnv } from 'vite'
+import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
 import vueJsx from '@vitejs/plugin-vue-jsx'
 export default ({ mode }) => {
   const isCsysPlugin = mode === 'csys-plugin'
-  const env = isCsysPlugin ? {} : loadEnv(mode, process.cwd(), '')
 
   return defineConfig({
     plugins: [vue(), vueJsx()],
@@ -35,8 +34,13 @@ export default ({ mode }) => {
         formats: mode === 'csys-plugin' ? ['es'] : ['es', 'cjs']
       }
     },
-    define: isCsysPlugin
-      ? { 'process.env.NODE_ENV': JSON.stringify('production') }
-      : { 'process.env': env }
+    // Vue, Pinia and vue-router read process.env.NODE_ENV, which Vite does
+    // not replace in library mode. Nothing else in the bundle reads
+    // process.env: defining the whole object would inline every variable of
+    // the environment that builds. Outside the plugin build the value is the
+    // NODE_ENV that Vite resolves before loading this file.
+    define: {
+      'process.env.NODE_ENV': JSON.stringify(isCsysPlugin ? 'production' : process.env.NODE_ENV)
+    }
   })
 }
